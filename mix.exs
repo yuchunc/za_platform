@@ -20,7 +20,11 @@ defmodule Cassius.Mixfile do
   def application do
     [
       mod: {Cassius.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [
+        :logger,
+        :httpoison,
+        :runtime_tools
+      ]
     ]
   end
 
@@ -41,7 +45,8 @@ defmodule Cassius.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:flow, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:httpoison, "~> 0.13"}
     ]
   end
 
