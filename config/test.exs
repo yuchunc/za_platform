@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :cassius, CassiusWeb.Endpoint,
+config :live_auction, LiveAuctionWeb.Endpoint,
   http: [port: 4001],
   server: false
 
@@ -10,10 +10,10 @@ config :cassius, CassiusWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :cassius, Cassius.Repo,
+config :live_auction, LiveAuction.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "cassius_test",
+  database: "live_auction_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

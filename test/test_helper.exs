@@ -1,4 +1,4 @@
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Cassius.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, :manual)
 

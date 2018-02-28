@@ -1,4 +1,4 @@
-defmodule CassiusWeb.ChannelCase do
+defmodule LiveAuctionWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule CassiusWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint CassiusWeb.Endpoint
+      @endpoint LiveAuctionWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cassius.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cassius.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
     :ok
   end

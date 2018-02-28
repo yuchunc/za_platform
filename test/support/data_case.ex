@@ -1,4 +1,4 @@
-defmodule Cassius.DataCase do
+defmodule LiveAuction.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Cassius.DataCase do
 
   using do
     quote do
-      alias Cassius.Repo
+      alias LiveAuction.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Cassius.DataCase
+      import LiveAuction.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cassius.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cassius.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
 
     :ok

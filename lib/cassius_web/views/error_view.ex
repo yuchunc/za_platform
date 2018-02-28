@@ -1,5 +1,5 @@
-defmodule CassiusWeb.ErrorView do
-  use CassiusWeb, :view
+defmodule LiveAuctionWeb.ErrorView do
+  use LiveAuctionWeb, :view
 
   def render("404.html", _assigns) do
     "Page not found"

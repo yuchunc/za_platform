@@ -1,6 +1,6 @@
-defmodule Cassius do
+defmodule LiveAuction do
   @moduledoc """
-  Cassius keeps the contexts that define your domain
+  LiveAuction keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

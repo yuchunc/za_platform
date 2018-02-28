@@ -1,12 +1,12 @@
-defmodule CassiusWeb do
+defmodule LiveAuctionWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use CassiusWeb, :controller
-      use CassiusWeb, :view
+      use LiveAuctionWeb, :controller
+      use LiveAuctionWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,17 +19,17 @@ defmodule CassiusWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: CassiusWeb
+      use Phoenix.Controller, namespace: LiveAuctionWeb
       import Plug.Conn
-      import CassiusWeb.Router.Helpers
-      import CassiusWeb.Gettext
+      import LiveAuctionWeb.Router.Helpers
+      import LiveAuctionWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/cassius_web/templates",
-                        namespace: CassiusWeb
+      use Phoenix.View, root: "lib/live_auction_web/templates",
+                        namespace: LiveAuctionWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -37,9 +37,9 @@ defmodule CassiusWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import CassiusWeb.Router.Helpers
-      import CassiusWeb.ErrorHelpers
-      import CassiusWeb.Gettext
+      import LiveAuctionWeb.Router.Helpers
+      import LiveAuctionWeb.ErrorHelpers
+      import LiveAuctionWeb.Gettext
     end
   end
 
@@ -54,7 +54,7 @@ defmodule CassiusWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import CassiusWeb.Gettext
+      import LiveAuctionWeb.Gettext
     end
   end
 

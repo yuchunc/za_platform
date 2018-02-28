@@ -1,4 +1,4 @@
-defmodule Cassius.Application do
+defmodule LiveAuction.Application do
   use Application
 
   # See https://hexdocs.pm/elixir/Application.html
@@ -9,23 +9,23 @@ defmodule Cassius.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Cassius.Repo, []),
+      supervisor(LiveAuction.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(CassiusWeb.Endpoint, []),
-      # Start your own worker by calling: Cassius.Worker.start_link(arg1, arg2, arg3)
-      # worker(Cassius.Worker, [arg1, arg2, arg3]),
+      supervisor(LiveAuctionWeb.Endpoint, []),
+      # Start your own worker by calling: LiveAuction.Worker.start_link(arg1, arg2, arg3)
+      # worker(LiveAuction.Worker, [arg1, arg2, arg3]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Cassius.Supervisor]
+    opts = [strategy: :one_for_one, name: LiveAuction.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    CassiusWeb.Endpoint.config_change(changed, removed)
+    LiveAuctionWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

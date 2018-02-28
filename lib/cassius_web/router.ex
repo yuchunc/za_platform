@@ -1,5 +1,5 @@
-defmodule CassiusWeb.Router do
-  use CassiusWeb, :router
+defmodule LiveAuctionWeb.Router do
+  use LiveAuctionWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,14 +13,14 @@ defmodule CassiusWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", CassiusWeb do
+  scope "/", LiveAuctionWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", CassiusWeb do
+  # scope "/api", LiveAuctionWeb do
   #   pipe_through :api
   # end
 end

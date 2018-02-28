@@ -1,4 +1,4 @@
-defmodule CassiusWeb.ErrorHelpers do
+defmodule LiveAuctionWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -32,9 +32,9 @@ defmodule CassiusWeb.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(CassiusWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(LiveAuctionWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(CassiusWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(LiveAuctionWeb.Gettext, "errors", msg, opts)
     end
   end
 end

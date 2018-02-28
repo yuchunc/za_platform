@@ -1,5 +1,5 @@
-defmodule CassiusWeb.PageControllerTest do
-  use CassiusWeb.ConnCase
+defmodule LiveAuctionWeb.PageControllerTest do
+  use LiveAuctionWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

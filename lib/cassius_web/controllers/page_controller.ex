@@ -1,5 +1,5 @@
-defmodule CassiusWeb.PageController do
-  use CassiusWeb, :controller
+defmodule LiveAuctionWeb.PageController do
+  use LiveAuctionWeb, :controller
 
   def index(conn, _params) do
     render conn, "index.html"

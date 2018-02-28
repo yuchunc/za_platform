@@ -1,4 +1,4 @@
-defmodule CassiusWeb.ConnCase do
+defmodule LiveAuctionWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule CassiusWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import CassiusWeb.Router.Helpers
+      import LiveAuctionWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint CassiusWeb.Endpoint
+      @endpoint LiveAuctionWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cassius.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cassius.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end

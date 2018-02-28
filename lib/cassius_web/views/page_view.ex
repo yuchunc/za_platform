@@ -1,3 +1,3 @@
-defmodule CassiusWeb.PageView do
-  use CassiusWeb, :view
+defmodule LiveAuctionWeb.PageView do
+  use LiveAuctionWeb, :view
 end
