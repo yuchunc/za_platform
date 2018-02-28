@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :cassius,
-  ecto_repos: [Cassius.Repo]
+config :live_auction,
+  ecto_repos: [LiveAuction.Repo]
 
 # Configures the endpoint
-config :cassius, CassiusWeb.Endpoint,
+config :live_auction, LiveAuctionWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "MOILzEC2RzH6h4ClnlxDe4tUNVuEH19jZeszWOpCDeWUX9BfNTGuaLYMDM4oswGh",
-  render_errors: [view: CassiusWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Cassius.PubSub,
+  render_errors: [view: LiveAuctionWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: LiveAuction.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

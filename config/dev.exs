@@ -51,8 +51,6 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :cassius, Cassius.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "cassius_dev",
+  database: "live_auction_dev",
   hostname: "localhost",
   pool_size: 10

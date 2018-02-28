@@ -1,9 +1,9 @@
-defmodule Cassius.Mixfile do
+defmodule LiveAuction.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :cassius,
+      app: :live_auction,
       version: "0.0.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
@@ -19,7 +19,7 @@ defmodule Cassius.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Cassius.Application, []},
+      mod: {LiveAuction.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

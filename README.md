@@ -1,4 +1,4 @@
-# Cassius
+# LiveAuction
 
 To start your Phoenix server:
 

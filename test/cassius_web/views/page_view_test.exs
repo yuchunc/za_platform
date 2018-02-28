@@ -1,3 +1,3 @@
-defmodule CassiusWeb.PageViewTest do
-  use CassiusWeb.ConnCase, async: true
+defmodule LiveAuctionWeb.PageViewTest do
+  use LiveAuctionWeb.ConnCase, async: true
 end

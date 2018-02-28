@@ -1,5 +1,5 @@
-defmodule Cassius.Repo do
-  use Ecto.Repo, otp_app: :cassius
+defmodule LiveAuction.Repo do
+  use Ecto.Repo, otp_app: :live_auction
 
   @doc """
   Dynamically loads the repository url from the

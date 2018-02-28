@@ -1,11 +1,11 @@
-defmodule CassiusWeb.Gettext do
+defmodule LiveAuctionWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 
   By using [Gettext](https://hexdocs.pm/gettext),
   your module gains a set of macros for translations, for example:
 
-      import CassiusWeb.Gettext
+      import LiveAuctionWeb.Gettext
 
       # Simple translation
       gettext "Here is the string to translate"
@@ -20,5 +20,5 @@ defmodule CassiusWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :cassius
+  use Gettext, otp_app: :live_auction
 end
