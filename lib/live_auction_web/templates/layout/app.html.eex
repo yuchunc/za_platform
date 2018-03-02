@@ -9,9 +9,15 @@
 
     <title>Hello LiveAuction!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <%= {:safe, css_link_tag()} %>
   </head>
 
   <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <a class="navbar-brand"> LiveAuction </a>
+      </div>
+    </nav>
     <div class="container">
       <header class="header">
         <nav role="navigation">
@@ -30,6 +36,6 @@
       </main>
 
     </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/bundle.js") %>"></script>
+    <%= {:safe, js_script_tag()} %>
   </body>
 </html>
