@@ -17,6 +17,10 @@ defmodule LiveAuctionWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+
+    resources "/streams", LiveStreamController, only: [:show]
+
+    resources "/m", MembershipController, only: [:index]
   end
 
   # Other scopes may use custom stacks.
