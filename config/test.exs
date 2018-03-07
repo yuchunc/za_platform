@@ -12,8 +12,6 @@ config :logger, level: :warn
 # Configure your database
 config :live_auction, LiveAuction.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
   database: "live_auction_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
