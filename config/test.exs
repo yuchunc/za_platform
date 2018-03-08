@@ -15,3 +15,5 @@ config :live_auction, LiveAuction.Repo,
   database: "live_auction_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+import_config "test.secret.exs"

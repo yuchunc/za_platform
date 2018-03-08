@@ -10,8 +10,18 @@ defmodule OpenTok.ConfigTest do
   alias OpenTok.Config
 
   describe "initialize/0" do
-    test "throws error tuple when config is invalid" do
-      assert {:error, :invalid_config} = Config.initialize()
+    test "throws error tuple when key is empty" do
+      stub_creds = %{
+        key: nil
+      }
+      assert {:error, :invalid_config} = with_config(stub_creds, &Config.initialize/0)
+    end
+
+    test "throws error tuple when secret is empty" do
+      stub_creds = %{
+        secret: nil
+      }
+      assert {:error, :invalid_config} = with_config(stub_creds, &Config.initialize/0)
     end
 
     test "minimum config from app configs" do
@@ -22,7 +32,7 @@ defmodule OpenTok.ConfigTest do
 
       assert with_config(stub_creds, fn() ->
         response = Config.initialize
-        app_config = Application.get_env(:opentok, :config)
+        app_config = Application.get_env(:live_auction, OpenTok) |> Map.new
         assert app_config == Map.merge(stub_creds, default_configuration())
         response
       end) == :ok

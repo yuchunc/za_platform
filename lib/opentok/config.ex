@@ -9,13 +9,15 @@ defmodule OpenTok.Config do
   }
 
   def initialize do
-    app_config = Application.get_env(:opentok, :config, %{})
+    app_config =
+      Application.get_env(:live_auction, OpenTok, %{})
+      |> Map.new
 
     config =
       @default_config
       |> Map.merge(app_config)
 
-    Application.put_env(:opentok, :config, config)
+    Application.put_env(:live_auction, OpenTok, config)
 
     if config[:key] && config[:secret] do
       :ok
