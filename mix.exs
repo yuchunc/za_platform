@@ -38,6 +38,7 @@ defmodule LiveAuction.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
+      {:httpoison, "~> 1.0"},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
