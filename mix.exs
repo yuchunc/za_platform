@@ -40,6 +40,7 @@ defmodule LiveAuction.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:httpoison, "~> 1.0"},
       {:gettext, "~> 0.11"},
+      {:guardian, "~> 1.0"},
       {:cowboy, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false}
