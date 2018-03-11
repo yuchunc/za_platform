@@ -11,13 +11,4 @@ defmodule OpenTok.OpenTokTest do
       assert is_binary(session_id)
     end
   end
-
-  @tag :skip
-  describe "generate_toke/1" do
-    test "generates some token from session_id" do
-      {:ok, _session_id} = OpenTok.create_session
-
-      assert {:ok, _some_token} = OpenTok.generate_token
-    end
-  end
 end
