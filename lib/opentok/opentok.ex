@@ -4,51 +4,56 @@ defmodule OpenTok do
   """
   use HTTPoison.Base
 
-  #require Logger
+  alias OpenTok.Config
 
-  #@app_config Application.get_env(:opentok, OpenTok)
+  @doc """
+  Generates session_id from config
+  """
+  def create_session do
+    with config <- get_config(),
+         jwt <- generate_jwt(config),
+         request_header <- wrap_request_header(jwt),
+         {:ok, response} <- request_session_id(request_header, config)
+    do
+      response |> IO.inspect(label: "httpoison response")
+    end
+    # Trake generated JWT for session_id from opentok
 
-  #@doc """
-  #Creates an OpenTok session
-  #"""
-  #def create_session(config \\ @app_config) do
-    #headers = ["X-OPENTOK-AUTH": jwt(), "Accept": "application/json"]
-    #response = HTTPotion.post(@endpoint <> "/session/create", [headers: headers])
-    #opentok_process_response(response)
-  #end
+    # Format it, catch exceptions
+  end
 
-  #@doc """
-  #Generates a JWT for OpenTok
-  #"""
-  #def jwt do
-    #life_length = config(:ttl, 60 * 5)
-    #salt = Base.encode16(:crypto.strong_rand_bytes(8))
-    #claims = %{
-      #iss: config(:key),
-      #ist: config(:iss, "project"),
-      #iat: :os.system_time(:seconds),
-      #exp: :os.system_time(:seconds) + life_length,
-      #jti: salt
-    #}
+  defp get_config do
+    case Config.initialize do
+      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new
+      {:error, _} = e -> e
+    end
+  end
 
-    #{_, jwt_string} =
-      #nil
-      #|> jose_jwk
-      #|> JOSE.JWT.sign(jose_jws(%{}), claims)
-      #|> JOSE.JWS.compact
-      ## { :ok, jwt, full_claims } = Guardian.encode_and_sign("smth", :access, claims)
+  defp generate_jwt(config) do
+    current_utc_seconds = :os.system_time(:seconds)
+    secret_jwk = JOSE.JWK.from_oct(config.secret)
 
-    #jwt_string
-  #end
+    payload = %{
+      iss: config.key,
+      ist: "project",
+      iat: current_utc_seconds,
+      exp: current_utc_seconds + 180, # This authentication jwt expires in 3 mins
+    }
 
-  #defp opentok_process_response(response) do
-    #case response do
-      #%{status_code: 200, body: body} ->
-        #json = Poison.decode!(body)
-        #{:json, json}
-      #_ ->
-      #Logger.error fn -> "OpenTok query: #{inspect(response)}" end
-        #{:error, OpenTok.ApiError}
-    #end
-  #end
+    {_, jwt} = JOSE.JWT.sign(secret_jwk, %{"alg" => "HS256"}, payload)
+               |> JOSE.JWS.compact
+
+    jwt
+  end
+
+  defp wrap_request_header(jwt) do
+    [
+      {"X-OPENTOK-AUTH", jwt},
+      {"Accept", "application/json"}
+    ]
+  end
+
+  defp request_session_id(headers, config) do
+    HTTPoison.post(config.endpoint <> "/session/create", "", headers)
+  end
 end
