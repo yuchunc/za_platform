@@ -7,7 +7,8 @@ defmodule OpenTok.OpenTokTest do
 
   describe "create_session/0" do
     test "creates a session from config" do
-      assert {:ok, _session_id} = OpenTok.create_session
+      assert {:ok, session_id} = OpenTok.create_session
+      assert is_binary(session_id)
     end
   end
 

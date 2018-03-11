@@ -15,11 +15,9 @@ defmodule OpenTok do
          request_header <- wrap_request_header(jwt),
          {:ok, response} <- request_session_id(request_header, config)
     do
-      response |> IO.inspect(label: "httpoison response")
+      [%{"session_id" => session_id}] = response
+      {:ok, session_id}
     end
-    # Trake generated JWT for session_id from opentok
-
-    # Format it, catch exceptions
   end
 
   defp get_config do
@@ -54,6 +52,12 @@ defmodule OpenTok do
   end
 
   defp request_session_id(headers, config) do
-    HTTPoison.post(config.endpoint <> "/session/create", "", headers)
+    {:ok, response} = HTTPoison.post(config.endpoint <> "/session/create", [], headers)
+
+    case response.status_code do
+      403 -> {:error, "Authentication failed while creating a session."}
+      sc when sc in 200..300 -> Poison.decode(response.body)
+      sc -> {:error, "Failed to create session. Response code: #{sc}"}
+    end
   end
 end
