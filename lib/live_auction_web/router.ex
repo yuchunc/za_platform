@@ -20,7 +20,7 @@ defmodule LiveAuctionWeb.Router do
 
     resources "/streams", LiveStreamController, only: [:show]
 
-    resources "/m", MembershipController, only: [:index]
+    resources "/m", MembershipController, singleton: true, only: [:show]
   end
 
   # Other scopes may use custom stacks.

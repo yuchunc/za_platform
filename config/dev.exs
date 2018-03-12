@@ -58,3 +58,5 @@ config :live_auction, LiveAuction.Repo,
   database: "live_auction_dev",
   hostname: "localhost",
   pool_size: 10
+
+import_config "test.secret.exs"
