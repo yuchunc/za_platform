@@ -6,6 +6,8 @@ defmodule OpenTok do
 
   alias OpenTok.Config
 
+  @token_prefix "T1=="
+
   @doc """
   Generates session_id from config
   """
@@ -18,6 +20,32 @@ defmodule OpenTok do
       [%{"session_id" => session_id}] = response
       {:ok, session_id}
     end
+  end
+
+  @doc """
+  Generats a OpenTok valid token
+  """
+  def generate_token(session_id, role, data \\ "") do
+    nonce = :crypto.strong_rand_bytes(16) |> Base.encode16
+    encoded_data = URI.encode(data)
+    current_utc_seconds = :os.system_time(:seconds)
+    secret = Application.get_env(:live_auction, OpenTok) |> Map.get(:secret)
+    key = Application.get_env(:live_auction, OpenTok) |> Map.get(:key)
+
+    data_params = %{
+      session_id: session_id,
+      role: role,
+      nonce: nonce,
+      create_time: current_utc_seconds,
+      connection_data: encoded_data
+    }
+
+    data_string = URI.encode_query(data_params)
+
+    signed_string = :crypto.hmac(:sha, secret, data_string)
+                    |> Base.encode16
+
+    {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
   end
 
   defp get_config do
