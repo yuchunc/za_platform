@@ -14,6 +14,8 @@
 import "phoenix_html";
 import "bootstrap";
 
+import "@opentok/client";
+
 // Import local files
 //
 // Local files can be imported directly using relative
