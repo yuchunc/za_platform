@@ -9,6 +9,7 @@ defmodule OpenTok.OpenTokTest do
     test "creates a session from config" do
       assert {:ok, session_id} = OpenTok.create_session
       assert is_binary(session_id)
+      assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
     end
   end
 end

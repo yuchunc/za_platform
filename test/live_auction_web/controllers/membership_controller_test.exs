@@ -8,7 +8,8 @@ defmodule LiveAuctionWeb.MembershipControllerTest do
       result = conn
                |> get(membership_path(conn, :show))
                |> html_response(200)
-               |> IO.inspect(label: "foo")
+
+      assert Regex.scan(~r/session_id: (\d_\w{15}-\w{51}-\w{2})/, result)
     end
   end
 end

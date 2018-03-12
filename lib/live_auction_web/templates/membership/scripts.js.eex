@@ -1,0 +1,38 @@
+<script charset="utf-8">
+
+  const key = "<%= @ot_config.key %>"
+  const session_id =  "<%= @ot_session_id %>"
+  const token = "publisherToken1"
+
+  // Handling all of our errors here by alerting them
+  function handleError(error) {
+    if (error) {
+      alert(error.message);
+    }
+  }
+
+  function initializeSession() {
+    const session = OT.initSession(key, session_id);
+
+    // Subscribe to a newly created stream
+
+    // Create a publisher
+    const publisher = OT.initPublisher('publisher', {
+      insertMode: 'append',
+      width: '100%',
+      height: '100%'
+    }, handleError);
+
+    // Connect to the session
+    let foo = session.connect(token, function(error) {
+      // If the connection is successful, publish to the session
+      if (error) {
+        handleError(error);
+      } else {
+        session.publish(publisher, handleError);
+      }
+    });
+
+    console.log("foo");
+  }
+</script>

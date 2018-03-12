@@ -1,3 +1,5 @@
 <h1>Membership Dashboard</h1>
 
-<%= @ot_session_id %>
+<div id="session_id">
+  session_id: <%= @ot_session_id %>
+<div>
