@@ -37,6 +37,7 @@ defmodule OpenTok do
       role: role,
       nonce: nonce,
       create_time: current_utc_seconds,
+      expire_time: current_utc_seconds + (60 * 60 * 24 * 7),
       connection_data: encoded_data
     }
 
