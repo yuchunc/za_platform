@@ -8,7 +8,16 @@ defmodule OpenTok.OpenTokTest do
   describe "create_session/0" do
     test "creates a session from config" do
       assert {:ok, session_id} = OpenTok.create_session
-      assert is_binary(session_id)
+      assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
+    end
+  end
+
+  describe "generate_token/3" do
+    test "generates an valid token" do
+      {:ok, session_id} = OpenTok.create_session
+
+      assert {:ok, token} = OpenTok.generate_token(session_id, :publisher, "foobar")
+      assert is_binary(token)
     end
   end
 end

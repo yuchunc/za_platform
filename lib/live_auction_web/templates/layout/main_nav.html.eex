@@ -11,7 +11,7 @@
           <a class="nav-link" href= <%= live_stream_path(@conn, :show, 1) %>>Stream Page</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href= <%= membership_path(@conn, :index) %>>Member Dash</a>
+          <a class="nav-link" href= <%= membership_path(@conn, :show) %>>Member Dash</a>
         </li>
       </ul>
     </div>
