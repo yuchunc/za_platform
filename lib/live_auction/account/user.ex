@@ -6,13 +6,19 @@ defmodule LiveAuction.Account.User do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
+    field :username, :string
+    field :phone, :string
+    field :email, :string
+
     timestamps()
   end
 
-  @doc false
+  @doc """
+  Base User changeset
+  """
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:username, :phone, :email])
+    |> validate_required([:username, :phone, :email])
   end
 end
