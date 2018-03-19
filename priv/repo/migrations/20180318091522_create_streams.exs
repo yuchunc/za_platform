@@ -12,5 +12,6 @@ defmodule LiveAuction.Repo.Migrations.CreateStreams do
       timestamps()
     end
 
+    create unique_index(:streams, :ot_session_id)
   end
 end

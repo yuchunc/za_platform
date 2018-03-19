@@ -20,5 +20,6 @@ defmodule LiveAuction.Streaming.Stream do
     stream
     |> cast(attrs, [:end_at, :social_links])
     |> validate_required([:ot_session_id, :end_at, :social_links])
+    |> unique_constraint(:ot_session_id)
   end
 end
