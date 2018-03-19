@@ -10,6 +10,8 @@ defmodule LiveAuction.Account.User do
     field :phone, :string
     field :email, :string
 
+    field :tier, UserTierEnum
+
     timestamps()
   end
 

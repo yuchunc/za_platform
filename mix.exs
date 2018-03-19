@@ -42,6 +42,7 @@ defmodule LiveAuction.Mixfile do
       {:gettext, "~> 0.11"},
       {:guardian, "~> 1.0"},
       {:cowboy, "~> 1.0"},
+      {:ecto_enum, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
       {:ex_machina, "~> 2.2", only: [:test, :dev]},
