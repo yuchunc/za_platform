@@ -5,5 +5,13 @@
 </h3>
 
 <h3>
-  stream: <%= @stream %>
+  stream: <%= @opentok_params.session_id %>
 </h3>
+
+<h3>
+  token: <%= @opentok_params.token %>
+</h3>
+
+<div class="subscriber" style="height:300px; width:300px;">
+
+</div>

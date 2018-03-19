@@ -3,9 +3,12 @@ defmodule LiveAuctionWeb.LiveStreamController do
 
   def show(conn, params) do
     with %{"id" => streamer_id} <- params,
-         stream <- Streaming.current_stream(streamer_id)
+         stream <- Streaming.current_stream(streamer_id),
+         {:ok, token} <- OpenTok.generate_token(stream.ot_session_id, :subscriber, "subscriber1"),
+         ot_config <- Application.get_env(:live_auction, OpenTok),
+         opentok_params <- %{session_id: stream.ot_session_id, token: token, config: ot_config}
     do
-      render conn, "show.html", stream_id: streamer_id, stream: stream
+      render conn, "show.html", stream_id: streamer_id, opentok_params: opentok_params
     end
   end
 end
