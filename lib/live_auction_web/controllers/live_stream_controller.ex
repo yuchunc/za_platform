@@ -5,7 +5,7 @@ defmodule LiveAuctionWeb.LiveStreamController do
     with %{"id" => streamer_id} <- params,
          stream <- Streaming.current_stream(streamer_id)
     do
-      render conn, "show.html", stream_id: streamer_id
+      render conn, "show.html", stream_id: streamer_id, stream: stream
     end
   end
 end

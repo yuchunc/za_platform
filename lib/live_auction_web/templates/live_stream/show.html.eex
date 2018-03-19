@@ -3,3 +3,7 @@
 <h3>
   stream_id: <%= @stream_id %>
 </h3>
+
+<h3>
+  stream: <%= @stream %>
+</h3>
