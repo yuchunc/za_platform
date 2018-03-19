@@ -20,5 +20,8 @@ defmodule LiveAuction.Account.User do
     user
     |> cast(attrs, [:username, :phone, :email])
     |> validate_required([:username, :phone, :email])
+    |> unique_constraint(:username)
+    |> unique_constraint(:phone)
+    |> unique_constraint(:email)
   end
 end
