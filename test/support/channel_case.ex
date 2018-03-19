@@ -20,6 +20,8 @@ defmodule LiveAuctionWeb.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      import LiveAuction.Factory
+
       # The default endpoint for testing
       @endpoint LiveAuctionWeb.Endpoint
     end

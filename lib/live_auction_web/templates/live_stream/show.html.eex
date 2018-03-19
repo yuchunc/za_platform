@@ -1,1 +1,5 @@
 <h1>Inidividual Stream Page</h1>
+
+<h3>
+  stream_id: <%= @stream_id %>
+</h3>

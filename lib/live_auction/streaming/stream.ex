@@ -3,6 +3,7 @@ defmodule LiveAuction.Streaming.Stream do
   import Ecto.Changeset
   alias LiveAuction.Streaming.Stream
 
+  @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "streams" do
     field :ot_session_id, :string
