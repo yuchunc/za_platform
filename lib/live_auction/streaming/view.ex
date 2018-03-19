@@ -7,7 +7,7 @@ defmodule LiveAuction.Streaming.View do
   schema "views" do
     field :end_at, :naive_datetime
     field :user_id, Ecto.UUID
-    belongs_to :stream_id, Streaming.Streams
+    belongs_to :stream_id, Streaming.Stream
 
     timestamps()
   end

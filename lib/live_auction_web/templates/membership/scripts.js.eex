@@ -1,7 +1,7 @@
 <script charset="utf-8">
 
-  const key = "<%= @ot_config.key %>"
-  const session_id =  "<%= @ot_session_id %>"
+  const key = "<%= @opentok_params.config.key %>"
+  const session_id =  "<%= @opentok_params.session_id %>"
   const token = "publisherToken1"
 
   // Handling all of our errors here by alerting them
