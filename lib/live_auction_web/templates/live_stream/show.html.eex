@@ -12,6 +12,6 @@
   token: <%= @opentok_params.token %>
 </h3>
 
-<div class="subscriber" style="height:300px; width:300px;">
+<div id="subscriber" style="height:300px; width:300px;">
 
 </div>

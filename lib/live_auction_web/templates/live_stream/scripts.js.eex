@@ -12,14 +12,16 @@
   function startSubscribing() {
     const session = OT.initSession(apiKey, sessionId)
 
-    const subscriber = session.on("treamCreated", (event) => {
-      session.subscribe(event.stream, 'subscriber', {
+    session.on("streamCreated", function(event) {
+      console.log(event, "event");
+      bar = session.subscribe(event.stream, 'subscriber', {
         insertMode: 'append',
         width: '100%',
         height: '100%'
       }, handleError);
     })
 
-    session.connect(token, handleError)
+    foo = session.connect(token, handleError)
+    subscriber = session.subscribe
   }
 </script>

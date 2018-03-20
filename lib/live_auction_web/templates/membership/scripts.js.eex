@@ -23,7 +23,7 @@
     }, handleError);
 
     // Connect to the session
-    session.connect(token, (error) => {
+    ot_session = session.connect(token, (error) => {
       // If the connection is successful, publish to the session
       if (error) {
         handleError(error);
