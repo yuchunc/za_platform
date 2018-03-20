@@ -23,6 +23,8 @@ defmodule LiveAuctionWeb do
       import Plug.Conn
       import LiveAuctionWeb.Router.Helpers
       import LiveAuctionWeb.Gettext
+
+      LiveAuctionWeb.context_schema_aliases()
     end
   end
 
@@ -63,5 +65,14 @@ defmodule LiveAuctionWeb do
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
+  end
+
+  defmacro context_schema_aliases do
+    quote do
+      alias LiveAuction.Account
+      alias Account.User
+      alias LiveAuction.Streaming
+      alias Streaming.{Stream, View}
+    end
   end
 end

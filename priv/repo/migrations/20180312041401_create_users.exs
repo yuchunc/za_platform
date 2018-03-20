@@ -8,8 +8,13 @@ defmodule LiveAuction.Repo.Migrations.CreateUsers do
       add :username, :string, null: false
       add :phone, :string, null: false
       add :email, :string, null: false
+      add :tier, :string, null: false, default: "viewer"
 
       timestamps()
     end
+
+    create unique_index(:users, :username)
+    create unique_index(:users, :phone)
+    create unique_index(:users, :email)
   end
 end

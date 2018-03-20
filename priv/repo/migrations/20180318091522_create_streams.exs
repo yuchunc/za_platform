@@ -9,8 +9,12 @@ defmodule LiveAuction.Repo.Migrations.CreateStreams do
       add :end_at, :naive_datetime
       add :social_links, :map
 
+      add :streamer_id, references(:users, type: :uuid, on_delete: :nothing)
+
       timestamps()
     end
 
+    create unique_index(:streams, :ot_session_id)
+    create unique_index(:streams, :end_at, where: "end_at = null")
   end
 end

@@ -22,6 +22,7 @@ defmodule LiveAuction.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import LiveAuction.DataCase
+      import LiveAuction.Factory
     end
   end
 
