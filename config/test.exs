@@ -16,4 +16,7 @@ config :live_auction, LiveAuction.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :live_auction, LiveAuction.Guardian,
+  secret_key: "prny2TAQ3ETSsfPaelwWTs2/9EyxKKGqH32i4VV2HfEnTXM8KFhib6XDUEvmpXs3"
+
 import_config "test.secret.exs"
