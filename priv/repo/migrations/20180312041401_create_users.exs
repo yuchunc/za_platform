@@ -6,7 +6,7 @@ defmodule LiveAuction.Repo.Migrations.CreateUsers do
       add :id, :uuid, primary_key: true
 
       add :username, :string, null: false
-      add :encrypted_password, :string
+      add :encrypted_password, :string, null: false
       add :phone, :string, null: false
       add :email, :string, null: false
       add :tier, :string, null: false, default: "viewer"

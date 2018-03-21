@@ -41,7 +41,10 @@ defmodule LiveAuction.Account.User do
   defp validate_and_encrypt_password(changeset) do
     case password = get_change(changeset, :password) do
       nil -> changeset
-      _ -> put_change(changeset, :encrypted_password, Comeonin.Argon2.hashpwsalt(password))
+      _ ->
+        changeset
+        |> validate_length(:password, min: 6)
+        |> put_change(:encrypted_password, Comeonin.Argon2.hashpwsalt(password))
     end
   end
 end
