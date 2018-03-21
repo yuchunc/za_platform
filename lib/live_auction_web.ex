@@ -69,6 +69,8 @@ defmodule LiveAuctionWeb do
 
   defmacro context_schema_aliases do
     quote do
+      alias LiveAuctionWeb.FallbackController
+
       alias LiveAuction.Account
       alias Account.User
       alias LiveAuction.Streaming

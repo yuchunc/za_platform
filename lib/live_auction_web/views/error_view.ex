@@ -1,6 +1,10 @@
 defmodule LiveAuctionWeb.ErrorView do
   use LiveAuctionWeb, :view
 
+  def render("401.html", _assigns) do
+    "Unauthenticated"
+  end
+
   def render("404.html", _assigns) do
     "Page not found"
   end
