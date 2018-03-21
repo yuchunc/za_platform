@@ -1,7 +1,6 @@
 defmodule LiveAuction.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias LiveAuction.Account.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
@@ -9,8 +8,12 @@ defmodule LiveAuction.Account.User do
     field :username, :string
     field :phone, :string
     field :email, :string
-
     field :tier, UserTierEnum
+
+    field :encrypted_password, :string
+    field :password, :string, virtual: true
+
+    field :refresh_token, :string
 
     timestamps()
   end
@@ -18,12 +21,27 @@ defmodule LiveAuction.Account.User do
   @doc """
   Base User changeset
   """
-  def changeset(%User{} = user, attrs) do
+  def changeset(%__MODULE__{} = user, attrs) do
     user
-    |> cast(attrs, [:username, :phone, :email])
+    |> cast(attrs, [:username, :phone, :email, :password])
     |> validate_required([:username, :phone, :email])
+    |> validate_and_encrypt_password
     |> unique_constraint(:username)
     |> unique_constraint(:phone)
     |> unique_constraint(:email)
+  end
+
+  def refresh_token_changeset(%__MODULE__{} = user, attrs) do
+    user
+    |> changeset(attrs)
+    |> cast(attrs, [:refresh_token])
+    |> validate_required([:refresh_token])
+  end
+
+  defp validate_and_encrypt_password(changeset) do
+    case password = get_change(changeset, :password) do
+      nil -> changeset
+      _ -> put_change(changeset, :encrypted_password, Comeonin.Argon2.hashpwsalt(password))
+    end
   end
 end
