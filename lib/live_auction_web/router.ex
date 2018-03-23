@@ -13,20 +13,22 @@ defmodule LiveAuctionWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    LiveAuction.Auth.AuthPipeline
+  end
+
   scope "/", LiveAuctionWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
 
     resources "/auth", SessionController, only: [:create, :delete]
-
-    resources "/s", LiveStreamController, only: [:show]
-
-    resources "/m", MembershipController, singleton: true, only: [:show]
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", LiveAuctionWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", LiveAuctionWeb do
+    pipe_through [:browser, :auth]
+
+    resources "/s", LiveStreamController, only: [:show]
+    resources "/m", MembershipController, singleton: true, only: [:show]
+  end
 end

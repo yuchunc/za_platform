@@ -24,7 +24,7 @@ defmodule LiveAuction.AccountTest do
 
       result = Account.authenticate(user.email, user.password)
 
-      assert {:ok, {_refresh_token, _access_token}} = result
+      assert {:ok, _refresh_token} = result
     end
   end
 end

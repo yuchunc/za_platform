@@ -8,14 +8,13 @@ defmodule LiveAuctionWeb.SessionControllerTest do
 
       params = Map.take(user, [:email, :password])
 
-      response = conn
-                 |> post(session_path(conn, :create), params)
+      result = conn
+               |> post(session_path(conn, :create), params)
 
-      response
+      result
       |> html_response(302)
 
-      assert response.cookies["token"]
-      assert response.resp_headers |> Enum.filter(&(elem(&1, 0) == "auth")) |> Enum.count == 1
+      assert get_session(result, "auth")
     end
 
     test "throws 401 with incorrect email password combination", context do

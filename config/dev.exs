@@ -66,7 +66,10 @@ config :live_auction, LiveAuction.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :live_auction, LiveAuction.Guardian,
-  secret_key: "TLzXhQ2+gSqRNaEMvuZrWwkfHiNkkcAARlrh4iavEYA/RrQ6A896FtrxnUxn5Qpp"
+config :live_auction, LiveAuction.Auth.Serializer,
+  secret_key: "TLzXhQ2+gSqRNaEMvuZrWwkfHiNkkcAARlrh4iavEYA/RrQ6A896FtrxnUxn5Qpp",
+  ttl: {30, :days},
+  verify_issuer: true
+
 
 import_config "test.secret.exs"

@@ -1,4 +1,4 @@
-defmodule LiveAuction.Guardian do
+defmodule LiveAuction.Auth.Serializer do
   use Guardian, otp_app: :live_auction
 
   alias LiveAuction.Account
