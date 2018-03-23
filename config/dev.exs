@@ -6,14 +6,21 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
+#
+# NOTE setup https locally from this
+# http://ohanhi.com/phoenix-ssl-localhost.html
 config :live_auction, LiveAuctionWeb.Endpoint,
   http: [port: 4000],
+  https: [
+    port: 4443,
+    otp_app: :live_auction,
+    keyfile: "priv/keys/localhost.key",
+    certfile: "priv/keys/localhost.cert"
+  ],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: [node: [
-    #"node_modules/.bin/webpack-dev-server", "--inline", "--colors", "--hot", "--stdin",
-    #"--host", "localhost", "--port", "8080", "--public", "localhost:8080",
     "node_modules/.bin/webpack", "--watch", "--colors",
     cd: Path.expand("../assets", __DIR__)
   ]]
