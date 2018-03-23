@@ -5,7 +5,14 @@ defmodule LiveAuctionWeb.SessionController do
 
   # create a session
   def create(conn, params) do
-    {:error, :invalid_credentials}
+    with %{"email" => email, "password" => password} = creds <- params,
+         {:ok, {refresh_token, access_token}} <- Account.authenticate(email, password)
+    do
+      conn
+      |> put_resp_cookie("token", refresh_token, secure: true)
+      |> put_resp_header("auth", access_token)
+      |> redirect(to: membership_path(conn, :show))
+    end
   end
 
   # delete a session
