@@ -3,14 +3,15 @@ defmodule LiveAuctionWeb.SessionController do
 
   action_fallback FallbackController
 
+  alias LiveAuction.Auth.Guardian
+
   # create a session
   def create(conn, params) do
     with %{"email" => email, "password" => password} = creds <- params,
-         {:ok, token} <- Account.authenticate(email, password)
+         {:ok, user} <- Account.authenticate(email, password),
+         signed_in_conn <- Guardian.Plug.sign_in(conn, user)
     do
-      conn
-      |> put_session("auth", token)
-      |> redirect(to: membership_path(conn, :show))
+      redirect(conn, to: membership_path(conn, :show))
     end
   end
 

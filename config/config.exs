@@ -22,7 +22,7 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :live_auction, LiveAuction.Auth.Serializer,
+config :live_auction, LiveAuction.Auth.Guardian,
   issuer: "live_auction",
   error_handler: LiveAuction.Auth.ErrorHandler
 

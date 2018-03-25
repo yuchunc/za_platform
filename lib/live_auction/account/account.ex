@@ -4,8 +4,7 @@ defmodule LiveAuction.Account do
   """
 
   alias LiveAuction.Repo
-  alias LiveAuction.Auth
-  alias Auth.Serializer
+  alias LiveAuction.Auth.Guardian
 
   alias LiveAuction.Account
   alias Account.User
@@ -21,10 +20,9 @@ defmodule LiveAuction.Account do
 
   def authenticate(email, password) do
     with user <- Repo.get_by(User, email: email),
-         {:ok, _} <- Comeonin.Argon2.check_pass(user, password),
-         {:ok, token, _} <- Serializer.encode_and_sign(user, %{}, @refresh_token_options)
+         {:ok, _} <- Comeonin.Argon2.check_pass(user, password)
     do
-      {:ok, token}
+      {:ok, user}
     else
       {:error, message} ->
         Logger.info(message)

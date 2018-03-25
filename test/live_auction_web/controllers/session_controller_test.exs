@@ -11,8 +11,7 @@ defmodule LiveAuctionWeb.SessionControllerTest do
       result = conn
                |> post(session_path(conn, :create), params)
 
-      result
-      |> html_response(302)
+      html_response(result, 302)
 
       assert get_session(result, "auth")
     end

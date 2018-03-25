@@ -15,6 +15,14 @@ defmodule LiveAuctionWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  import LiveAuction.Factory
+  import Plug.Conn
+  import Phoenix.ConnTest
+
+  alias LiveAuction.Auth.Guardian
+
+  @endpoint LiveAuctionWeb.Endpoint
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -27,13 +35,22 @@ defmodule LiveAuctionWeb.ConnCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+
+    user = insert(:user)
+    {:ok, token, _} = Guardian.encode_and_sign(user, %{})
+
+    conn = Phoenix.ConnTest.build_conn()
+           |> bypass_through(LiveAuctionWeb.Router, :browser)
+           |> get("/")
+           |> put_session("auth", token)
+           |> send_resp(:ok, "")
+
+    {:ok, conn: conn, user: user}
   end
 
 end
