@@ -71,6 +71,8 @@ defmodule LiveAuctionWeb do
     quote do
       alias LiveAuctionWeb.FallbackController
 
+      alias LiveAuction.Auth
+      alias Auth.Guardian
       alias LiveAuction.Account
       alias Account.User
       alias LiveAuction.Streaming

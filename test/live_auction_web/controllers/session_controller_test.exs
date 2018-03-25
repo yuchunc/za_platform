@@ -14,8 +14,7 @@ defmodule LiveAuctionWeb.SessionControllerTest do
       response
       |> html_response(302)
 
-      assert response.cookies["token"]
-      assert response.resp_headers |> Enum.filter(&(elem(&1, 0) == "auth")) |> Enum.count == 1
+      assert Guardian.Plug.current_resource(response) |> Map.get(:id) == user.id
     end
 
     test "throws 401 with incorrect email password combination", context do

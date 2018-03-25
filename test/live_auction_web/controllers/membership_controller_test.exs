@@ -2,6 +2,14 @@ defmodule LiveAuctionWeb.MembershipControllerTest do
   use LiveAuctionWeb.ConnCase, async: true
 
   describe "GET /m" do
+    test "redirects to login page", context do
+      %{conn: conn} = context
+
+      conn
+      |> get(membership_path(conn, :show))
+      |> html_response(301)
+    end
+
     @tag :skip
     # FIXME fix this after authentication has been added
     test "gets a session_id", context do

@@ -23,7 +23,12 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :live_auction, LiveAuction.Auth.Guardian,
-  issuer: "live_auction"
+  issuer: "live_auction",
+  ttl: {1, :day},
+  token_ttl: %{
+    "refresh" => {30, :days},
+    "access" => {1, :day}
+  }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

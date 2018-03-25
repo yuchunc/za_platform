@@ -44,7 +44,7 @@ defmodule LiveAuction.Mixfile do
       # DB
       {:postgrex, ">= 0.0.0"},
       # authentication
-      {:guardian, "~> 1.0"},
+      {:guardian, github: "ueberauth/guardian"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       # util
