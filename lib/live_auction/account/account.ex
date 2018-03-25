@@ -4,7 +4,7 @@ defmodule LiveAuction.Account do
   """
 
   alias LiveAuction.Repo
-  alias LiveAuction.Guardian
+  alias LiveAuction.Auth.Guardian
 
   alias LiveAuction.Account
   alias Account.User

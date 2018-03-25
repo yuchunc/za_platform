@@ -66,7 +66,7 @@ config :live_auction, LiveAuction.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :live_auction, LiveAuction.Guardian,
+config :live_auction, LiveAuction.Auth.Guardian,
   secret_key: "TLzXhQ2+gSqRNaEMvuZrWwkfHiNkkcAARlrh4iavEYA/RrQ6A896FtrxnUxn5Qpp"
 
 import_config "test.secret.exs"

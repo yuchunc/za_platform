@@ -22,7 +22,7 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :live_auction, LiveAuction.Guardian,
+config :live_auction, LiveAuction.Auth.Guardian,
   issuer: "live_auction"
 
 # Import environment specific config. This must remain at the bottom
