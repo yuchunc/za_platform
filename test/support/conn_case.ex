@@ -16,12 +16,8 @@ defmodule LiveAuctionWeb.ConnCase do
   use ExUnit.CaseTemplate
 
   import LiveAuction.Factory
-  import Plug.Conn
-  import Phoenix.ConnTest
 
   alias LiveAuction.Auth.Guardian
-
-  @endpoint LiveAuctionWeb.Endpoint
 
   using do
     quote do

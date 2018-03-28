@@ -11,7 +11,7 @@ defmodule LiveAuctionWeb.SessionController do
 
   # create a session
   def create(conn, params) do
-    with %{"email" => email, "password" => password} = creds <- params,
+    with %{"email" => email, "password" => password} <- params,
          {:ok, user} <- Account.authenticate(email, password)
     do
       conn
