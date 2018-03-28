@@ -26,10 +26,7 @@ defmodule LiveAuctionWeb do
 
       LiveAuctionWeb.context_schema_aliases()
 
-      def auth_resource(conn) do
-        conn
-        |> assign(:current_user, Guardian.Plug.current_resource(conn))
-      end
+      def auth_resource(conn), do: Guardian.Plug.current_resource(conn)
     end
   end
 

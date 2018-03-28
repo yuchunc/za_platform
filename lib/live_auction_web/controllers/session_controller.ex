@@ -5,13 +5,18 @@ defmodule LiveAuctionWeb.SessionController do
 
   alias LiveAuction.Auth.Guardian
 
+  def show(_, _) do
+    {:error, :invalid_credentials}
+  end
+
   # create a session
   def create(conn, params) do
     with %{"email" => email, "password" => password} = creds <- params,
-         {:ok, user} <- Account.authenticate(email, password),
-         signed_in_conn <- Guardian.Plug.sign_in(conn, user)
+         {:ok, user} <- Account.authenticate(email, password)
     do
-      redirect(conn, to: membership_path(conn, :show))
+      conn
+      |> Guardian.Plug.sign_in(user)
+      |> redirect(to: membership_path(conn, :show))
     end
   end
 
