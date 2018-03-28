@@ -25,6 +25,8 @@ defmodule LiveAuctionWeb do
       import LiveAuctionWeb.Gettext
 
       LiveAuctionWeb.context_schema_aliases()
+
+      def auth_resource(conn), do: Guardian.Plug.current_resource(conn)
     end
   end
 
@@ -69,6 +71,9 @@ defmodule LiveAuctionWeb do
 
   defmacro context_schema_aliases do
     quote do
+      alias LiveAuctionWeb.FallbackController
+      alias LiveAuction.Auth.Guardian
+
       alias LiveAuction.Account
       alias Account.User
       alias LiveAuction.Streaming

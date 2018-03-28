@@ -29,8 +29,8 @@ defmodule OpenTok do
     nonce = :crypto.strong_rand_bytes(16) |> Base.encode16
     encoded_data = URI.encode(data)
     current_utc_seconds = :os.system_time(:seconds)
-    secret = Application.get_env(:live_auction, OpenTok) |> Map.get(:secret)
-    key = Application.get_env(:live_auction, OpenTok) |> Map.get(:key)
+    secret = Map.get(get_config(), :secret)
+    key = Map.get(get_config(), :key)
 
     data_params = %{
       session_id: session_id,

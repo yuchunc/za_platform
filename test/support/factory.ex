@@ -19,10 +19,13 @@ defmodule LiveAuction.Factory do
   end
 
   def user_factory do
+    password = "12345678"
     %Account.User{
       username: sequence(Faker.Internet.user_name),
       phone: Faker.Phone.EnUs.phone,
-      email: Faker.Internet.email
+      email: Faker.Internet.email,
+      password: password,
+      encrypted_password: Comeonin.Argon2.hashpwsalt(password)
     }
   end
 

@@ -1,6 +1,6 @@
 defmodule LiveAuction.Streaming do
   @moduledoc """
-  Streaming Context
+  Streaming Context Module
   """
   import Ecto.Query
 
