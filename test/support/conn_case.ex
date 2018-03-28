@@ -1,6 +1,6 @@
 defmodule LiveAuctionWeb.ConnCase do
   @moduledoc """
-
+  This module defines the test case to be used by
   tests that require setting up a connection.
 
   Such tests rely on `Phoenix.ConnTest` and also
@@ -45,7 +45,6 @@ defmodule LiveAuctionWeb.ConnCase do
 
     conn = Phoenix.ConnTest.build_conn()
            |> Guardian.Plug.sign_in(user)
-           |> send_resp(:ok, "")
 
     {:ok, conn: conn, user: user}
   end

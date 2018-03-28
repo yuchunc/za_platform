@@ -16,6 +16,8 @@ defmodule LiveAuctionWeb.Router do
   pipeline :auth do
     plug Guardian.Plug.Pipeline, module: LiveAuction.Auth.Guardian, error_handler: LiveAuction.Auth.ErrorHandler
     plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.EnsureAuthenticated
     plug Guardian.Plug.LoadResource
   end
 

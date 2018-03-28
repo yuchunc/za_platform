@@ -12,8 +12,7 @@ defmodule LiveAuction.Auth.Guardian do
     {:error, :cannot_encode_jwt}
   end
 
-  def resource_form_claims(claims) do
-    user_id = claims["sub"]
+  def resource_from_claims(%{"sub" => user_id}) do
     user = Account.get_user(user_id)
     {:ok, user}
   end
