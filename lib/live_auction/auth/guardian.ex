@@ -4,7 +4,7 @@ defmodule LiveAuction.Auth.Guardian do
   alias LiveAuction.Account
   alias Account.User
 
-  def subject_for_token(%User{id: user_id}, claims) do
+  def subject_for_token(%User{id: user_id}, _claims) do
     {:ok, user_id}
   end
 

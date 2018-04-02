@@ -4,15 +4,11 @@ defmodule LiveAuction.Account do
   """
 
   alias LiveAuction.Repo
-  alias LiveAuction.Auth.Guardian
 
   alias LiveAuction.Account
   alias Account.User
 
   require Logger
-
-  @refresh_token_options [token_type: "refresh", ttl: {2, :week}]
-  @access_tokoen_options [token_type: "access", ttl: {10, :minute}]
 
   def get_user(user_id) do
     Repo.get(User, user_id)
