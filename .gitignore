@@ -30,3 +30,6 @@ yarn-error.log
 # Release Folder
 /rel/*
 !/rel/config.exs
+
+# GCP certs
+/ansible/deployer-cert.json
