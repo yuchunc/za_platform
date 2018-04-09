@@ -20,7 +20,23 @@ defmodule LiveAuction.Mixfile do
   def application do
     [
       mod: {LiveAuction.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      applications: [
+        :edeliver,
+        :argon2_elixir,
+        :comeonin,
+        :cowboy,
+        :ecto_enum,
+        :gettext,
+        :guardian,
+        :guardian_db,
+        :httpoison,
+        :phoenix,
+        :phoenix_ecto,
+        :phoenix_html,
+        :phoenix_pubsub,
+        :postgrex
+      ],
+      extra_applications: [:logger, :runtime_tools, :edeliver],
     ]
   end
 
@@ -53,7 +69,7 @@ defmodule LiveAuction.Mixfile do
       {:httpoison, "~> 1.0"},
       # deployment
       {:edeliver, "~> 1.4.5"},
-      {:distillery, "~> 1.5", runtime: false},
+      {:distillery, "~> 1.0.0"},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
