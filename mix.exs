@@ -52,6 +52,7 @@ defmodule LiveAuction.Mixfile do
       {:ecto_enum, "~> 1.0"},
       {:httpoison, "~> 1.0"},
       # deployment
+      {:edeliver, "~> 1.4.5"},
       {:distillery, "~> 1.5", runtime: false},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
