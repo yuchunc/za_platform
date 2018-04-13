@@ -27,6 +27,10 @@ post_erlang_clean_compile() {
     # prepare something
     mkdir -p priv/static # required by the phoenix.digest task
     # run your custom task
+    cd '$BUILD_AT/assets'
+    yarn install
+    yarn run deploy $SILENCE
+    cd '$BUILD_AT'
     APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest $SILENCE
   "
 }
