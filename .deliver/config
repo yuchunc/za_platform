@@ -1,0 +1,36 @@
+APP="live_auction"
+
+BUILD_HOST="104.199.142.23"
+BUILD_USER="Mickey"
+BUILD_AT="/home/Mickey/app_builds"
+
+PRODUCTION_HOSTS="104.199.142.23"
+PRODUCTION_USER="Mickey"
+DELIVER_TO="/home/Mickey/app_release"
+
+# For *Phoenix* projects, symlink prod.secret.exs to our tmp source
+pre_erlang_get_and_update_deps() {
+  local _prod_secret_path="/home/Mickey/config/prod.secret.exs"
+  if [ "$TARGET_MIX_ENV" = "prod" ]; then
+    __sync_remote "
+      ln -sfn '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
+    "
+  fi
+}
+
+post_erlang_clean_compile() {
+  status "Running phoenix.digest" # log output prepended with "----->"
+  __sync_remote " # runs the commands on the build host
+    [ -f ~/.profile ] && source ~/.profile # load profile (optional)
+    set -e # fail if any command fails (recommended)
+    cd '$BUILD_AT' # enter the build directory on the build host (required)
+    # prepare something
+    mkdir -p priv/static # required by the phoenix.digest task
+    # run your custom task
+    cd '$BUILD_AT/assets'
+    yarn install
+    yarn run deploy $SILENCE
+    cd '$BUILD_AT'
+    APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest $SILENCE
+  "
+}
