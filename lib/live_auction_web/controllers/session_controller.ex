@@ -9,6 +9,10 @@ defmodule LiveAuctionWeb.SessionController do
     {:error, :invalid_credentials}
   end
 
+  def new(conn, _params) do
+    render(conn, "new.html")
+  end
+
   # create a session
   def create(conn, params) do
     with %{"email" => email, "password" => password} <- params,

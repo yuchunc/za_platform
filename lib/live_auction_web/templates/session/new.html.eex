@@ -1,0 +1,13 @@
+<%= form_tag(session_path(@conn, :create)) do %>
+  <label>
+    Email:
+    <input type="text" value="" name="email"/>
+  </label>
+
+  <label>
+    密碼:
+    <input type="password" value="" name="password"/>
+  </label>
+
+  <%= submit "登入" %>
+<% end %>
