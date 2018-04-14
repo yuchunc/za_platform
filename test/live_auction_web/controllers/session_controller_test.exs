@@ -3,14 +3,12 @@ defmodule LiveAuctionWeb.SessionControllerTest do
 
   describe "POST /auth" do
     test "log user in with correct email and password" do
-      conn = Phoenix.ConnTest.build_conn()
       user = insert(:user)
       params = Map.take(user, [:email, :password])
+      conn = build_conn()
+             |> post(session_path(build_conn(), :create), params)
 
-      result = conn
-               |> post(session_path(conn, :create), params)
-
-      html_response(result, 302)
+      assert redirected_to(conn) == membership_path(conn, :show)
     end
 
     test "throws 401 with incorrect email password combination", context do
