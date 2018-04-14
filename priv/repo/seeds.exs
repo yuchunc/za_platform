@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+if Mix.env == :dev do
+  import LiveAuction.Factory
+
+  {:ok, ot_session} = OpenTok.create_session
+
+  insert(:stream, ot_session_id: ot_session)
+end
