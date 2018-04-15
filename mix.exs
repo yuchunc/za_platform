@@ -20,25 +20,6 @@ defmodule LiveAuction.Mixfile do
   def application do
     [
       mod: {LiveAuction.Application, []},
-      applications: [
-        :edeliver,
-        :argon2_elixir,
-        :comeonin,
-        :cowboy,
-        :ecto_enum,
-        :gettext,
-        :guardian,
-        :guardian_db,
-        :httpoison,
-        :phoenix,
-        :phoenix_ecto,
-        :phoenix_html,
-        :phoenix_pubsub,
-        :postgrex,
-        # Tests
-        :faker,
-        :ex_machina
-      ],
       extra_applications: [:logger, :runtime_tools, :edeliver],
     ]
   end

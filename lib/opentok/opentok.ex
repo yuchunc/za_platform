@@ -7,15 +7,15 @@ defmodule OpenTok do
   alias OpenTok.Config
 
   @token_prefix "T1=="
+  @config Config.get_config()
 
   @doc """
   Generates session_id from config
   """
   def create_session do
-    with config <- get_config(),
-         jwt <- generate_jwt(config),
+    with jwt <- generate_jwt(@config),
          request_header <- wrap_request_header(jwt),
-         {:ok, response} <- request_session_id(request_header, config)
+         {:ok, response} <- request_session_id(request_header, @config)
     do
       [%{"session_id" => session_id}] = response
       {:ok, session_id}
@@ -29,8 +29,8 @@ defmodule OpenTok do
     nonce = :crypto.strong_rand_bytes(16) |> Base.encode16
     encoded_data = URI.encode(data)
     current_utc_seconds = :os.system_time(:seconds)
-    secret = Map.get(get_config(), :secret)
-    key = Map.get(get_config(), :key)
+    secret = Map.get(@config, :secret)
+    key = Map.get(@config, :key)
 
     data_params = %{
       session_id: session_id,
@@ -49,11 +49,11 @@ defmodule OpenTok do
     {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
   end
 
-  defp get_config do
-    case Config.initialize do
-      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new
-      {:error, _} = e -> e
-    end
+  @doc """
+  Monitor a Session
+  """
+  def session_state(session_id) do
+    HTTPoison.get(@config.endpoint <> "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/")
   end
 
   defp generate_jwt(config) do
