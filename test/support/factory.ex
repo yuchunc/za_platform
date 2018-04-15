@@ -28,5 +28,4 @@ defmodule LiveAuction.Factory do
       encrypted_password: Comeonin.Argon2.hashpwsalt(password)
     }
   end
-
 end

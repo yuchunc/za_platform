@@ -34,7 +34,10 @@ defmodule LiveAuction.Mixfile do
         :phoenix_ecto,
         :phoenix_html,
         :phoenix_pubsub,
-        :postgrex
+        :postgrex,
+        # Tests
+        :faker,
+        :ex_machina
       ],
       extra_applications: [:logger, :runtime_tools, :edeliver],
     ]

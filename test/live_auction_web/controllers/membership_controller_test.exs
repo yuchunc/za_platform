@@ -4,9 +4,9 @@ defmodule LiveAuctionWeb.MembershipControllerTest do
   describe "GET /m" do
     test "redirects to login page" do
       conn = build_conn()
-      conn
-      |> get(membership_path(conn, :show))
-      |> html_response(302)
+             |> get(membership_path(build_conn(), :show))
+
+      assert redirected_to(conn) == session_path(conn, :new)
     end
 
     test "gets a session_id", context do
