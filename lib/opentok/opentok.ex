@@ -13,12 +13,11 @@ defmodule OpenTok do
   @doc """
   Generates session_id from config
   """
-  def create_session do
+  def request_session_id do
     with jwt <- generate_jwt(@config),
          request_header <- wrap_request_header(jwt),
-         {:ok, response} <- request_session_id(request_header, @config)
+         {:ok, session_id} <- @ot_api.request_session_id(request_header, @config)
     do
-      [%{"session_id" => session_id}] = response
       {:ok, session_id}
     end
   end
@@ -79,15 +78,5 @@ defmodule OpenTok do
       {"X-OPENTOK-AUTH", jwt},
       {"Accept", "application/json"}
     ]
-  end
-
-  defp request_session_id(headers, config) do
-    {:ok, response} = @ot_api.create_session(headers, config)
-
-    case response.status_code do
-      403 -> {:error, "Authentication failed while creating a session."}
-      sc when sc in 200..300 -> Poison.decode(response.body)
-      sc -> {:error, "Failed to create session. Response code: #{sc}"}
-    end
   end
 end

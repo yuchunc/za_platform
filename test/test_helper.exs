@@ -5,3 +5,4 @@ ExUnit.start()
 
 Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, :manual)
 
+Mox.defmock(OpenTok.ApiMock, for: OpenTok.Behaviour)
