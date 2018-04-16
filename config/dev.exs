@@ -71,5 +71,6 @@ config :live_auction, LiveAuction.Auth.Guardian,
   ttl: {30, :days},
   verify_issuer: true
 
+config :live_auction, :ot_api, OpenTok.Api
 
 import_config "test.secret.exs"

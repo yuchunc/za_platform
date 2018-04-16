@@ -58,7 +58,8 @@ defmodule LiveAuction.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
       {:ex_machina, "~> 2.2", only: [:test, :dev]},
-      {:faker, "~> 0.9", only: [:test, :dev]}
+      {:faker, "~> 0.9", only: [:test, :dev]},
+      {:mox, "~> 0.3", only: :test}
     ]
   end
 

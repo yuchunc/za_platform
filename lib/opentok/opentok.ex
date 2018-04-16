@@ -8,6 +8,7 @@ defmodule OpenTok do
 
   @token_prefix "T1=="
   @config Config.get_config()
+  @ot_api Application.get_env(:live_auction, :ot_api)
 
   @doc """
   Generates session_id from config
@@ -81,7 +82,7 @@ defmodule OpenTok do
   end
 
   defp request_session_id(headers, config) do
-    {:ok, response} = HTTPoison.post(config.endpoint <> "/session/create", [], headers)
+    {:ok, response} = @ot_api.create_session(headers, config)
 
     case response.status_code do
       403 -> {:error, "Authentication failed while creating a session."}

@@ -23,6 +23,8 @@ config :live_auction, LiveAuctionWeb.Endpoint,
   code_reloader: false
   #cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :live_auction, :ot_api, OpenTok.Api
+
 # Do not print debug messages in production
 config :logger, level: :info
 
