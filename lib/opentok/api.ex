@@ -30,9 +30,13 @@ defmodule OpenTok.Api do
       403 ->
         {:error, "Failed Authentication"}
       404 ->
-        {:ok, :noclient}
+        {:ok, :inactive}
       sc when sc in 200..300 ->
-        Poison.decode(response.body)
+        case Poison.decode(response.body) do
+          {:ok, %{"count" => 0}} -> {:ok, :nohost}
+          {:ok, %{"count" => 1}} -> {:ok, :active}
+          true -> {:error, "an error has occurred"}
+        end
       sc ->
         {:error, "Failed to get stream info. Reponse code: #{sc}"}
     end

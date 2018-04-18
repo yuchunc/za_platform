@@ -48,4 +48,14 @@ defmodule OpenTok do
 
     {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
   end
+
+  @doc """
+  Get the current session state
+  """
+  def session_state(session_id) do
+    headers = @config
+              |> Util.generate_jwt
+              |> Util.wrap_request_headers
+    @ot_api.get_session_state(session_id, headers)
+  end
 end

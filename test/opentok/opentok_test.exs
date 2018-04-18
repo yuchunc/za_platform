@@ -34,10 +34,31 @@ defmodule OpenTok.OpenTokTest do
   end
 
   describe "session_state/2" do
-    test "monitors a session by session_id" do
+    test "session_id is active" do
+      expect(OpenTok.ApiMock, :get_session_state, fn(_, _) ->
+        {:ok, :active}
+      end)
       {:ok, session_id} = OpenTok.request_session_id
 
-      assert {:ok, %HTTPoison.Response{}} = OpenTok.session_state(session_id)
+      assert {:ok, :active} = OpenTok.session_state(session_id)
+    end
+
+    test "session_id is nohost" do
+      expect(OpenTok.ApiMock, :get_session_state, fn(_, _) ->
+        {:ok, :nohost}
+      end)
+      {:ok, session_id} = OpenTok.request_session_id
+
+      assert {:ok, :nohost} = OpenTok.session_state(session_id)
+    end
+
+    test "session_id is inactive" do
+      expect(OpenTok.ApiMock, :get_session_state, fn(_, _) ->
+        {:ok, :inactive}
+      end)
+      {:ok, session_id} = OpenTok.request_session_id
+
+      assert {:ok, :inactive} = OpenTok.session_state(session_id)
     end
   end
 end

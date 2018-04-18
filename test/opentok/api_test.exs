@@ -31,7 +31,7 @@ defmodule OpenTok.ApiTest do
     test "no active stream_id", context do
       %{headers: headers, session_id: session_id} = context
 
-      assert OpenTok.Api.get_session_state(session_id, headers) == {:ok, :noclient}
+      assert OpenTok.Api.get_session_state(session_id, headers) == {:ok, :inactive}
     end
 
     @tag :skip
