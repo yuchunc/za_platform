@@ -20,31 +20,12 @@ defmodule LiveAuction.Mixfile do
   def application do
     [
       mod: {LiveAuction.Application, []},
-      applications: [
-        :edeliver,
-        :argon2_elixir,
-        :comeonin,
-        :cowboy,
-        :ecto_enum,
-        :gettext,
-        :guardian,
-        :guardian_db,
-        :httpoison,
-        :phoenix,
-        :phoenix_ecto,
-        :phoenix_html,
-        :phoenix_pubsub,
-        :postgrex,
-        # Tests
-        :faker,
-        :ex_machina
-      ],
       extra_applications: [:logger, :runtime_tools, :edeliver],
     ]
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["test/support", "lib"]
   defp elixirc_paths(:dev), do: ["lib", "test/support/factory.ex"]
   defp elixirc_paths(_),     do: ["lib"]
 
@@ -77,7 +58,8 @@ defmodule LiveAuction.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
       {:ex_machina, "~> 2.2", only: [:test, :dev]},
-      {:faker, "~> 0.9", only: [:test, :dev]}
+      {:faker, "~> 0.9", only: [:test, :dev]},
+      {:mox, "~> 0.3", only: :test}
     ]
   end
 
@@ -91,7 +73,8 @@ defmodule LiveAuction.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      "test.api": ["test --only ot_api"]
     ]
   end
 end

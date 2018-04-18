@@ -21,4 +21,6 @@ config :live_auction, LiveAuction.Auth.Guardian,
 
 config :argon2_elixir, t_cost: 1, m_cost: 8
 
+config :live_auction, :ot_api, OpenTok.ApiMock
+
 import_config "test.secret.exs"

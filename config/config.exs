@@ -29,6 +29,8 @@ config :live_auction, LiveAuction.Auth.Guardian,
 config :guardian, Guardian.DB,
   repo: LiveAuction.Repo
 
+config :live_auction, :ot_api, OpenTok.Api
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
