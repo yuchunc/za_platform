@@ -4,7 +4,7 @@ defmodule OpenTok do
   """
   use HTTPoison.Base
 
-  alias OpenTok.Config
+  alias OpenTok.{Config, Util}
 
   @token_prefix "T1=="
   @config Config.get_config()
@@ -14,8 +14,8 @@ defmodule OpenTok do
   Generates session_id from config
   """
   def request_session_id do
-    with jwt <- generate_jwt(@config),
-         request_header <- wrap_request_header(jwt),
+    with jwt <- Util.generate_jwt(@config),
+         request_header <- Util.wrap_request_header(jwt),
          {:ok, session_id} <- @ot_api.request_session_id(request_header, @config)
     do
       {:ok, session_id}
@@ -56,27 +56,4 @@ defmodule OpenTok do
     HTTPoison.get(@config.endpoint <> "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/")
   end
 
-  defp generate_jwt(config) do
-    current_utc_seconds = :os.system_time(:seconds)
-    secret_jwk = JOSE.JWK.from_oct(config.secret)
-
-    payload = %{
-      iss: config.key,
-      ist: "project",
-      iat: current_utc_seconds,
-      exp: current_utc_seconds + 180, # This authentication jwt expires in 3 mins
-    }
-
-    {_, jwt} = JOSE.JWT.sign(secret_jwk, %{"alg" => "HS256"}, payload)
-               |> JOSE.JWS.compact
-
-    jwt
-  end
-
-  defp wrap_request_header(jwt) do
-    [
-      {"X-OPENTOK-AUTH", jwt},
-      {"Accept", "application/json"}
-    ]
-  end
 end
