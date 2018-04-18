@@ -18,7 +18,7 @@ defmodule OpenTok.Util do
     |> elem(1)
   end
 
-  def wrap_request_header(jwt) do
+  def wrap_request_headers(jwt) do
     [
       {"X-OPENTOK-AUTH", jwt},
       {"Accept", "application/json"}

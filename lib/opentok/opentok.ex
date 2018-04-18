@@ -4,7 +4,7 @@ defmodule OpenTok do
   """
   use HTTPoison.Base
 
-  alias OpenTok.{Config, Util}
+  alias OpenTok.{Util}
 
   @token_prefix "T1=="
   @config Util.get_config()
@@ -15,7 +15,7 @@ defmodule OpenTok do
   """
   def request_session_id do
     with jwt <- Util.generate_jwt(@config),
-         request_header <- Util.wrap_request_header(jwt),
+         request_header <- Util.wrap_request_headers(jwt),
          {:ok, session_id} <- @ot_api.request_session_id(request_header)
     do
       {:ok, session_id}

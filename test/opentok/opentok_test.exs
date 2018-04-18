@@ -11,7 +11,7 @@ defmodule OpenTok.OpenTokTest do
 
   setup do
     session_id = "1_MX40NjA3NDA1Mn5-MTUyMzg2Njg0NjIzN35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
-    expect(OpenTok.ApiMock, :request_session_id, fn(_, _) ->
+    expect(OpenTok.ApiMock, :request_session_id, fn(_) ->
       {:ok, session_id}
     end)
 
