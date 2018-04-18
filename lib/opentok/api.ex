@@ -24,14 +24,15 @@ defmodule OpenTok.Api do
   Monitor a Session
   """
   def get_session_state(session_id, headers) do
-    {:ok, response} = HTTPoison.get(@config.endpoint <> "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/")
-
+    {:ok, response} = HTTPoison.get(@config.endpoint <> "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/", headers)
 
     case response.status_code do
       403 ->
         {:error, "Failed Authentication"}
+      404 ->
+        {:ok, :noclient}
       sc when sc in 200..300 ->
-        IO.inspect(response, label: "status")
+        Poison.decode(response.body)
       sc ->
         {:error, "Failed to get stream info. Reponse code: #{sc}"}
     end

@@ -21,13 +21,25 @@ defmodule OpenTok.ApiTest do
   end
 
   describe "get_session_state/1" do
-    test "gets the current state of the given session id" do
+    setup do
       headers = create_session_headers(@ot_config)
-
       {:ok, session_id} = OpenTok.Api.request_session_id(headers)
 
-      OpenTok.Api.get_session_state(session_id, headers)
-      |> IO.inspect(label: "label")
+      {:ok, headers: headers, session_id: session_id}
+    end
+
+    test "no active stream_id", context do
+      %{headers: headers, session_id: session_id} = context
+
+      assert OpenTok.Api.get_session_state(session_id, headers) == {:ok, :noclient}
+    end
+
+    @tag :skip
+    test "has active stream_id", context do
+      %{headers: headers} = context
+      session_id = "some session_id"
+
+      {:ok, %{"count" => _, "items" => _}} = OpenTok.Api.get_session_state(session_id, headers)
     end
   end
 
