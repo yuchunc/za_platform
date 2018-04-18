@@ -25,11 +25,4 @@ defmodule OpenTok.Config do
       {:error, :invalid_config}
     end
   end
-
-  def get_config do
-    case initialize() do
-      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new
-      {:error, _} = e -> e
-    end
-  end
 end

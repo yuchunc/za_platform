@@ -1,4 +1,7 @@
 defmodule OpenTok.Util do
+
+  alias OpenTok.Config
+
   def generate_jwt(config) do
     current_utc_seconds = :os.system_time(:seconds)
     secret_jwk = JOSE.JWK.from_oct(config.secret)
@@ -20,5 +23,12 @@ defmodule OpenTok.Util do
       {"X-OPENTOK-AUTH", jwt},
       {"Accept", "application/json"}
     ]
+  end
+
+  def get_config do
+    case Config.initialize() do
+      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new
+      {:error, _} = e -> e
+    end
   end
 end

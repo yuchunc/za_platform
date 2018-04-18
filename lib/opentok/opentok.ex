@@ -7,7 +7,7 @@ defmodule OpenTok do
   alias OpenTok.{Config, Util}
 
   @token_prefix "T1=="
-  @config Config.get_config()
+  @config Util.get_config()
   @ot_api Application.get_env(:live_auction, :ot_api)
 
   @doc """
@@ -16,7 +16,7 @@ defmodule OpenTok do
   def request_session_id do
     with jwt <- Util.generate_jwt(@config),
          request_header <- Util.wrap_request_header(jwt),
-         {:ok, session_id} <- @ot_api.request_session_id(request_header, @config)
+         {:ok, session_id} <- @ot_api.request_session_id(request_header)
     do
       {:ok, session_id}
     end
@@ -48,12 +48,4 @@ defmodule OpenTok do
 
     {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
   end
-
-  @doc """
-  Monitor a Session
-  """
-  def session_state(session_id) do
-    HTTPoison.get(@config.endpoint <> "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/")
-  end
-
 end
