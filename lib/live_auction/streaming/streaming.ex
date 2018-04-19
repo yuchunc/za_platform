@@ -8,7 +8,16 @@ defmodule LiveAuction.Streaming do
   alias LiveAuction.Streaming
   alias Streaming.Stream
 
-  def current_stream(streamer_id) do
+  def get_streams do
+    query =
+      from s in Stream,
+      order_by: s.updated_at
+      # TODO add active_at and sort on that
+
+    Repo.all(query)
+  end
+
+  def current_stream_for(streamer_id) do
     query =
       from s in Stream,
       where: s.streamer_id == ^streamer_id

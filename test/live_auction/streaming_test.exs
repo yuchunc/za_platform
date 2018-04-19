@@ -8,11 +8,24 @@ defmodule LiveAuction.StreamingTest do
 
   setup :verify_on_exit!
 
-  describe "current_stream/1" do
+  describe "get_streams/0" do
+    test "gets a list of streams" do
+      stream_list = insert_list(10, :stream)
+
+      result = Streaming.get_streams
+
+      Enum.each(result, &(assert %Stream{} = &1))
+      assert Enum.count(result) == 10
+      assert result |> Enum.map(&(&1.id)) |> Enum.sort ==
+        stream_list |> Enum.map(&(&1.id)) |> Enum.sort
+    end
+  end
+
+  describe "current_stream_for/1" do
     test "gets the current stream" do
       stream = insert(:stream)
 
-      assert %Stream{} = Streaming.current_stream(stream.streamer_id)
+      assert %Stream{} = Streaming.current_stream_for(stream.streamer_id)
     end
   end
 

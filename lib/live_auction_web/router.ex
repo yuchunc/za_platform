@@ -24,7 +24,6 @@ defmodule LiveAuctionWeb.Router do
   scope "/", LiveAuctionWeb do
     pipe_through [:browser, :auth]
 
-    resources "/s", LiveStreamController, only: [:show]
     resources "/m", MembershipController, singleton: true, only: [:show]
   end
 
@@ -32,6 +31,9 @@ defmodule LiveAuctionWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+
     resources "/auth", SessionController, only: [:new, :create, :delete]
+
+    resources "/s", LiveStreamController, only: [:index, :show]
   end
 end
