@@ -6,8 +6,7 @@ defmodule LiveAuction.Repo.Migrations.CreateStreams do
       add :id, :uuid, primary_key: true
 
       add :ot_session_id, :string, null: false
-      add :end_at, :naive_datetime
-      add :social_links, :map
+      add :facebook_stream_key, :string
 
       add :streamer_id, references(:users, type: :uuid, on_delete: :nothing)
 
@@ -15,6 +14,6 @@ defmodule LiveAuction.Repo.Migrations.CreateStreams do
     end
 
     create unique_index(:streams, :ot_session_id)
-    create unique_index(:streams, :end_at, where: "end_at = null")
+    create unique_index(:streams, :facebook_stream_key)
   end
 end
