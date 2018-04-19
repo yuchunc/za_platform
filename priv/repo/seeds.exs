@@ -13,7 +13,8 @@
 if Mix.env == :dev do
   import LiveAuction.Factory
 
-  {:ok, ot_session} = OpenTok.create_session
+  Logger.info("Adding stream")
 
+  {:ok, ot_session} = OpenTok.request_session_id
   insert(:stream, ot_session_id: ot_session)
 end

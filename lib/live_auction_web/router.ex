@@ -21,7 +21,7 @@ defmodule LiveAuctionWeb.Router do
     plug Guardian.Plug.LoadResource
   end
 
-  scope "/api", LiveAuctionWeb do
+  scope "/", LiveAuctionWeb do
     pipe_through [:browser, :auth]
 
     resources "/s", LiveStreamController, only: [:show]

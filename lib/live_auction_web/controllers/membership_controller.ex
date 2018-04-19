@@ -4,7 +4,7 @@ defmodule LiveAuctionWeb.MembershipController do
   action_fallback FallbackController
 
   def show(conn, _) do
-    with user <- current_resource(conn),
+    with %User{} = user <- current_resource(conn),
          {:ok, stream} <- Streaming.new_session(user.id),
          ot_config <- OpenTok.Util.get_config,
          {:ok, token} <- OpenTok.generate_token(stream.ot_session_id, :publisher, "publisher1"),
