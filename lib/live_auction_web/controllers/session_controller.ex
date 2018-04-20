@@ -5,10 +5,6 @@ defmodule LiveAuctionWeb.SessionController do
 
   alias LiveAuction.Auth.Guardian
 
-  def show(_, _) do
-    {:error, :invalid_credentials}
-  end
-
   def new(conn, _params) do
     render(conn, "new.html")
   end
@@ -24,5 +20,5 @@ defmodule LiveAuctionWeb.SessionController do
     end
   end
 
-  # delete a session
+  # TODO delete a session
 end
