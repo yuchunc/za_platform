@@ -12,7 +12,7 @@ defmodule LiveAuctionWeb.SessionController do
   # create a session
   def create(conn, params) do
     with %{"email" => email, "password" => password} <- params,
-         {:ok, user} <- Account.authenticate(email, password)
+         {:ok, user} <- Account.login(email, password)
     do
       conn
       |> Guardian.Plug.sign_in(user)
