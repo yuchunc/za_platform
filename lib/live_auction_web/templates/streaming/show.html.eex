@@ -1,0 +1,18 @@
+<h1>Membership Streaming Page</h1>
+
+<div id="params">
+  <p>
+    session_id: <%= @opentok_params.session_id %>
+  </p>
+  <p>
+    key: <%= @opentok_params.config.key %>
+  </p>
+  <p>
+    token:
+  </p>
+  <p>
+    <%= @opentok_params.token %>
+  </p>
+<div>
+
+<div id="publisher" style="width:300px;height:300px;"></div>

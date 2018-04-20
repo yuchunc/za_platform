@@ -1,7 +1,7 @@
 <script charset="utf-8">
-  const apiKey = "<%= @opentok_params.config.key %>";
-  const sessionId = "<%= @opentok_params.session_id %>";
-  const token = "<%= @opentok_params.token %>";
+  const apiKey = "<%= @opentok_params[:config][:key] %>";
+  const sessionId = "<%= @opentok_params[:session_id] %>";
+  const token = "<%= @opentok_params[:token] %>";
 
   function handleError(error) {
     if (error) {

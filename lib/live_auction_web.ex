@@ -26,7 +26,7 @@ defmodule LiveAuctionWeb do
 
       LiveAuctionWeb.context_schema_aliases()
 
-      def auth_resource(conn), do: Guardian.Plug.current_resource(conn)
+      def current_resource(conn), do: Guardian.Plug.current_resource(conn)
     end
   end
 
@@ -69,6 +69,10 @@ defmodule LiveAuctionWeb do
     apply(__MODULE__, which, [])
   end
 
+  @doc """
+  This alias most used schemas
+  NOTE use only for pattern matching!!
+  """
   defmacro context_schema_aliases do
     quote do
       alias LiveAuctionWeb.FallbackController

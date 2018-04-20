@@ -8,4 +8,10 @@ defmodule LiveAuctionWeb.FallbackController do
     |> put_status(:unauthorized)
     |> render(ErrorView, "401.html")
   end
+
+  def call(conn, nil) do
+    conn
+    |> put_status(:not_found)
+    |> render(ErrorView, "404.html")
+  end
 end

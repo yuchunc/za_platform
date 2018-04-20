@@ -33,7 +33,9 @@ defmodule LiveAuction.DataCase do
       Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
 
-    :ok
+    session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
+
+    {:ok, session_id: session_id}
   end
 
   @doc """

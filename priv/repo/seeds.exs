@@ -1,19 +1,11 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     LiveAuction.Repo.insert!(%LiveAuction.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+require Logger
 
 if Mix.env == :dev do
   import LiveAuction.Factory
 
-  {:ok, ot_session} = OpenTok.create_session
+  Logger.info("Adding stream")
 
-  insert(:stream, ot_session_id: ot_session)
+  {:ok, ot_session} = OpenTok.request_session_id
+  dev_streamer = insert(:user, email: "foo@bar.com", password: "123123", encrypted_password: Comeonin.Argon2.hashpwsalt("123123"))
+  insert(:stream, ot_session_id: ot_session, streamer_id: dev_streamer.id)
 end

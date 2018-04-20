@@ -10,7 +10,7 @@ defmodule OpenTok.OpenTokTest do
   setup :verify_on_exit!
 
   setup do
-    session_id = "1_MX40NjA3NDA1Mn5-MTUyMzg2Njg0NjIzN35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
+    session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
     expect(OpenTok.ApiMock, :request_session_id, fn(_) ->
       {:ok, session_id}
     end)

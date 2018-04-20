@@ -1,0 +1,5 @@
+<%= Enum.map @streams, fn(stream) -> %>
+
+  <%= link("link", to: live_stream_path(@conn, :show, stream.streamer_id)) %>
+
+<% end %>
