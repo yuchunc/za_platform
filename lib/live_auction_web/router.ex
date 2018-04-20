@@ -24,7 +24,9 @@ defmodule LiveAuctionWeb.Router do
   scope "/", LiveAuctionWeb do
     pipe_through [:browser, :auth]
 
-    resources "/m", MembershipController, singleton: true, only: [:show]
+    resources "/m", MembershipController, singleton: true, only: [:show] do
+      resources "/streaming", StreamingController, singleton: true, only: [:show]
+    end
   end
 
   scope "/", LiveAuctionWeb do
