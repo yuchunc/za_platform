@@ -22,8 +22,14 @@ defmodule LiveAuctionWeb.ChannelCase do
 
       import LiveAuction.Factory
 
+      require LiveAuctionWeb
+
+      alias LiveAuctionWeb.UserSocket
+
       # The default endpoint for testing
       @endpoint LiveAuctionWeb.Endpoint
+
+      LiveAuctionWeb.context_schema_aliases()
     end
   end
 
