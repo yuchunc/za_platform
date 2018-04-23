@@ -25,6 +25,7 @@ defmodule LiveAuctionWeb.ChannelCase do
       require LiveAuctionWeb
 
       alias LiveAuctionWeb.UserSocket
+      alias LiveAuction.Repo
 
       # The default endpoint for testing
       @endpoint LiveAuctionWeb.Endpoint

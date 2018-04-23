@@ -46,7 +46,9 @@ defmodule OpenTok do
     signed_string = :crypto.hmac(:sha, secret, data_string)
                     |> Base.encode16
 
-    {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
+    token = @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")
+
+    {:ok, key, token}
   end
 
   @doc """

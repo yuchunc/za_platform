@@ -59,6 +59,9 @@ defmodule LiveAuctionWeb do
     quote do
       use Phoenix.Channel
       import LiveAuctionWeb.Gettext
+      import Phoenix.View
+
+      LiveAuctionWeb.context_schema_aliases()
 
       def current_resource(socket), do: Guardian.Phoenix.Socket.current_resource(socket)
     end

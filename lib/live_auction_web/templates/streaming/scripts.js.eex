@@ -13,8 +13,6 @@
   function startStreaming() {
     const session = OT.initSession(key, session_id);
 
-    // Subscribe to a newly created stream
-
     // Create a publisher
     const publisher = OT.initPublisher('publisher', {
       insertMode: 'append',

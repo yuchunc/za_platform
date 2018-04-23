@@ -11,7 +11,28 @@ defmodule LiveAuctionWeb.StreamChannel do
       nil -> %{}
       user -> %{user: user}
     end
-    broadcast!(socket, "stream:#{streamer_id}:joined", payload)
+
+    if Streaming.current_stream_for(streamer_id) do
+      broadcast(socket, "stream:joined", payload)
+    end
+
     {:noreply, socket}
+  end
+
+  def handle_in("stream:show_start", params, socket) do
+    with %{"message" => message} <- params,
+         %{topic: "stream:" <> streamer_id} <- socket,
+         %User{} = streamer <- current_resource(socket),
+         true <- streamer_id == streamer.id,
+         {:ok, stream} <- Streaming.new_session(streamer.id),
+         {:ok, key, token} <- OpenTok.generate_token(stream.ot_session_id, :publisher, streamer.id)
+    do
+      opentok_params = %{session_id: stream.ot_session_id, token: token, key: key}
+      broadcast(socket, "stream:show_started", %{message: message})
+      {:reply, {:ok, opentok_params}, socket}
+    else
+      _ ->
+        render(ErrorView, "404.html", %{})
+    end
   end
 end
