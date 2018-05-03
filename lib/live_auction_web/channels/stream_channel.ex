@@ -35,4 +35,16 @@ defmodule LiveAuctionWeb.StreamChannel do
         render(ErrorView, "404.html", %{})
     end
   end
+
+  def terminate(_reason, socket) do
+    %{topic: "stream:" <> streamer_id} = socket
+
+    case current_resource(socket) do
+      nil -> broadcast!(socket, "stream:viewer_left", %{})
+      %{id: uid} = user when uid == streamer_id -> broadcast!(socket, "stream:show_ended", %{})
+      user -> broadcast!(socket, "stream:viewer_left", %{user: user})
+    end
+
+    :ok
+  end
 end

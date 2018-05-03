@@ -5,17 +5,17 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
   setup do
     stream = insert(:stream)
-    {:ok, socket: socket(), stream: stream}
+    {:ok, socket} = connect(UserSocket, %{})
+    {:ok, socket: socket, stream: stream}
   end
 
   describe "join a channel" do
     test "anybody can join a stream channel", context do
       %{socket: socket, stream: stream} = context
 
-      subscribe_and_join(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
       receiving_topic = "stream:joined"
-
       assert_broadcast(^receiving_topic, %{})
     end
 
@@ -25,10 +25,10 @@ defmodule LiveAuctionWeb.StreamChannelTest do
       user = insert(:user)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
+
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+
       receiving_topic = "stream:joined"
-
-      subscribe_and_join(socket, StreamChannel, "stream:" <> stream.streamer_id)
-
       assert_broadcast(^receiving_topic, payload)
       assert payload.user.id == user.id
     end
@@ -40,9 +40,9 @@ defmodule LiveAuctionWeb.StreamChannelTest do
       user = Repo.get(User, stream.streamer_id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      new_socket = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
-      {:ok, socket: new_socket}
+      {:ok, socket: socket_1}
     end
 
     test "streamer can start broadcasting on her own stream", context do
@@ -53,6 +53,48 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       assert_broadcast("stream:show_started", %{message: _})
       assert_reply(ref, :ok, %{token: "T1==" <> _})
+    end
+  end
+
+  describe "terminate" do
+    setup context do
+      %{socket: socket, stream: stream} = context
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+
+      {:ok, socket: socket_1}
+    end
+
+    test "broadcast stream:viewer_left when an anonymous user left", context do
+      %{socket: socket} = context
+
+      StreamChannel.terminate("", socket)
+
+      assert_broadcast("stream:viewer_left", %{})
+    end
+
+    test "broadcast stream:viewer_left when a user left", context do
+      %{stream: stream} = context
+      viewer = insert(:user)
+      {:ok, jwt, _} = Guardian.encode_and_sign(viewer)
+      {:ok, socket} = connect(UserSocket, %{token: jwt})
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+
+      StreamChannel.terminate("", socket_1)
+
+      assert_broadcast("stream:viewer_left", payload)
+      assert payload.user.id == viewer.id
+    end
+
+    test "broadcast stream:show_ended when the streamer left", context do
+      %{stream: stream} = context
+      streamer = Repo.get(User, stream.streamer_id)
+      {:ok, jwt, _} = Guardian.encode_and_sign(streamer)
+      {:ok, socket} = connect(UserSocket, %{token: jwt})
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+
+      StreamChannel.terminate("", socket_1)
+
+      assert_broadcast("stream:show_ended", _payload)
     end
   end
 end
