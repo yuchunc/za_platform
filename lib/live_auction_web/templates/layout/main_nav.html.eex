@@ -13,6 +13,13 @@
         <li class="nav-item active">
           <a class="nav-link" href= <%= membership_path(@conn, :show) %>>Member Dash</a>
         </li>
+        <li class="nav-item active">
+          <%= if current_token(@conn) |> IO.inspect(label: "conn") do %>
+            <%= link("Sign Out", to: session_path(@conn, :delete), method: :delete) %>
+          <% else %>
+            <%= link("Sign In", to: session_path(@conn, :show)) %>
+          <% end %>
+        </li>
       </ul>
     </div>
   </div>

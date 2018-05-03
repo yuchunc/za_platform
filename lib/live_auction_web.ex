@@ -44,6 +44,8 @@ defmodule LiveAuctionWeb do
       import LiveAuctionWeb.Router.Helpers
       import LiveAuctionWeb.ErrorHelpers
       import LiveAuctionWeb.Gettext
+
+      def current_token(conn), do: Guardian.Plug.current_token(conn)
     end
   end
 

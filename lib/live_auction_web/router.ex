@@ -34,7 +34,7 @@ defmodule LiveAuctionWeb.Router do
 
     get "/", PageController, :index
 
-    resources "/auth", SessionController, only: [:new, :create, :delete]
+    resources "/auth", SessionController, singleton: true, only: [:show, :create, :delete]
 
     resources "/s", LiveStreamController, only: [:index, :show]
   end
