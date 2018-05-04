@@ -25,7 +25,9 @@ defmodule OpenTok do
   @doc """
   Generats a OpenTok valid token
   """
-  def generate_token(session_id, role, data \\ "") do
+  def generate_token(session_id, role, data \\ "")
+  def generate_token(session_id, role, nil), do: generate_token(session_id, role, "")
+  def generate_token(session_id, role, data) do
     nonce = :crypto.strong_rand_bytes(16) |> Base.encode16
     encoded_data = URI.encode(data)
     current_utc_seconds = :os.system_time(:seconds)

@@ -1,20 +1,7 @@
-<%= render_existing(@view_module, "show.js", assigns) %>
-
 <h1>Inidividual Stream Page</h1>
-
-<h3>
-  stream_id: <%= @stream_id %>
-</h3>
-
-<h3>
-  stream: <%= @opentok_params.session_id %>
-</h3>
-
-<h3>
-  token: <%= @opentok_params.token %>
-</h3>
 
 <div id="subscriber" style="height:300px; width:300px;">
 
 </div>
 
+<%= render_existing(@view_module, "show.js", assigns) %>
