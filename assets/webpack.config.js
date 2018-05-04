@@ -46,6 +46,11 @@ const config_fn = (env) => {
       ]
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
+      }),
+
       new CopyWebpackPlugin([{
         from: "./static",
         to: path.resolve(__dirname, "../priv/static")

@@ -25,7 +25,9 @@ defmodule OpenTok do
   @doc """
   Generats a OpenTok valid token
   """
-  def generate_token(session_id, role, data \\ "") do
+  def generate_token(session_id, role, data \\ "")
+  def generate_token(session_id, role, nil), do: generate_token(session_id, role, "")
+  def generate_token(session_id, role, data) do
     nonce = :crypto.strong_rand_bytes(16) |> Base.encode16
     encoded_data = URI.encode(data)
     current_utc_seconds = :os.system_time(:seconds)
@@ -46,7 +48,9 @@ defmodule OpenTok do
     signed_string = :crypto.hmac(:sha, secret, data_string)
                     |> Base.encode16
 
-    {:ok, @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")}
+    token = @token_prefix <> Base.encode64("partner_id=#{key}&sig=#{signed_string}:#{data_string}")
+
+    {:ok, key, token}
   end
 
   @doc """

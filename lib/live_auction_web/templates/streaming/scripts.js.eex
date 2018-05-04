@@ -1,6 +1,6 @@
 <script charset="utf-8">
 
-  const key = "<%= @opentok_params.config.key %>"
+  const key = "<%= @opentok_params.key %>"
   const session_id =  "<%= @opentok_params.session_id %>"
   const token = "<%= @opentok_params.token %>"
 
@@ -12,8 +12,6 @@
 
   function startStreaming() {
     const session = OT.initSession(key, session_id);
-
-    // Subscribe to a newly created stream
 
     // Create a publisher
     const publisher = OT.initPublisher('publisher', {
@@ -31,5 +29,11 @@
         session.publish(publisher, handleError);
       }
     });
+  }
+
+  document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+      startStreaming();
+    }
   }
 </script>

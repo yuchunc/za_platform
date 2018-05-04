@@ -44,6 +44,8 @@ defmodule LiveAuctionWeb do
       import LiveAuctionWeb.Router.Helpers
       import LiveAuctionWeb.ErrorHelpers
       import LiveAuctionWeb.Gettext
+
+      def current_token(conn), do: Guardian.Plug.current_token(conn)
     end
   end
 
@@ -59,6 +61,11 @@ defmodule LiveAuctionWeb do
     quote do
       use Phoenix.Channel
       import LiveAuctionWeb.Gettext
+      import Phoenix.View
+
+      LiveAuctionWeb.context_schema_aliases()
+
+      def current_resource(socket), do: Guardian.Phoenix.Socket.current_resource(socket)
     end
   end
 

@@ -5,14 +5,13 @@ defmodule LiveAuctionWeb.SessionController do
 
   alias LiveAuction.Auth.Guardian
 
-  def new(conn, _params) do
+  def show(conn, _params) do
     render(conn, "new.html")
   end
 
-  # create a session
   def create(conn, params) do
     with %{"email" => email, "password" => password} <- params,
-         {:ok, user} <- Account.authenticate(email, password)
+         {:ok, user} <- Account.login(email, password)
     do
       conn
       |> Guardian.Plug.sign_in(user)
@@ -20,5 +19,9 @@ defmodule LiveAuctionWeb.SessionController do
     end
   end
 
-  # TODO delete a session
+  def delete(conn, _params) do
+    conn
+    |> Guardian.Plug.sign_out
+    |> redirect(to: "/")
+  end
 end

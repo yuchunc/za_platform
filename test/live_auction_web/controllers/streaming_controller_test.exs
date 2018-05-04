@@ -10,7 +10,7 @@ defmodule LiveAuctionWeb.StreamingControllerTest do
       conn = build_conn()
              |> get(membership_streaming_path(build_conn(), :show))
 
-      assert redirected_to(conn) == session_path(conn, :new)
+      assert redirected_to(conn) == session_path(conn, :show)
     end
 
     test "gets a session_id from opentok", context do
