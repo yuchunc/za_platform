@@ -5,11 +5,11 @@ defmodule LiveAuction.Streaming.Stream do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "streams" do
-    field :ot_session_id, :string
+    field(:ot_session_id, :string)
 
-    field :facebook_stream_key, :string
+    field(:facebook_stream_key, :string)
 
-    field :streamer_id, Ecto.UUID
+    field(:streamer_id, Ecto.UUID)
 
     timestamps()
   end

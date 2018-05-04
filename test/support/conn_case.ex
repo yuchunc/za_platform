@@ -33,16 +33,17 @@ defmodule LiveAuctionWeb.ConnCase do
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
     end
 
     user = insert(:user)
 
-    conn = Phoenix.ConnTest.build_conn()
-           |> Guardian.Plug.sign_in(user)
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Guardian.Plug.sign_in(user)
 
     {:ok, conn: conn, user: user}
   end
-
 end

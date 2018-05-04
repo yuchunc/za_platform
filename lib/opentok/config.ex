@@ -4,14 +4,14 @@ defmodule OpenTok.Config do
   """
 
   @default_config %{
-    env: Mix.env,
-    endpoint: "https://api.opentok.com",
+    env: Mix.env(),
+    endpoint: "https://api.opentok.com"
   }
 
   def initialize do
     app_config =
       Application.get_env(:live_auction, OpenTok, %{})
-      |> Map.new
+      |> Map.new()
 
     config =
       @default_config

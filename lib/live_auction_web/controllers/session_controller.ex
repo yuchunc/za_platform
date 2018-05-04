@@ -1,7 +1,7 @@
 defmodule LiveAuctionWeb.SessionController do
   use LiveAuctionWeb, :controller
 
-  action_fallback FallbackController
+  action_fallback(FallbackController)
 
   alias LiveAuction.Auth.Guardian
 
@@ -11,8 +11,7 @@ defmodule LiveAuctionWeb.SessionController do
 
   def create(conn, params) do
     with %{"email" => email, "password" => password} <- params,
-         {:ok, user} <- Account.login(email, password)
-    do
+         {:ok, user} <- Account.login(email, password) do
       conn
       |> Guardian.Plug.sign_in(user)
       |> redirect(to: membership_path(conn, :show))
@@ -21,7 +20,7 @@ defmodule LiveAuctionWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> Guardian.Plug.sign_out
+    |> Guardian.Plug.sign_out()
     |> redirect(to: "/")
   end
 end

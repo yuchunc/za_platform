@@ -5,7 +5,7 @@ defmodule OpenTok.ApiTest do
 
   @moduletag :ot_api
 
-  @ot_config Util.get_config
+  @ot_config Util.get_config()
 
   describe "request_session_id/1" do
     test "sends error with back information" do
@@ -45,7 +45,7 @@ defmodule OpenTok.ApiTest do
 
   defp create_session_headers(config) do
     config
-    |> Util.generate_jwt
-    |> Util.wrap_request_headers
+    |> Util.generate_jwt()
+    |> Util.wrap_request_headers()
   end
 end

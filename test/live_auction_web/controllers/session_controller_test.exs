@@ -5,8 +5,10 @@ defmodule LiveAuctionWeb.SessionControllerTest do
     test "log user in with correct email and password" do
       user = insert(:user)
       params = Map.take(user, [:email, :password])
-      conn = build_conn()
-             |> post(session_path(build_conn(), :create), params)
+
+      conn =
+        build_conn()
+        |> post(session_path(build_conn(), :create), params)
 
       assert redirected_to(conn) == membership_path(conn, :show)
     end

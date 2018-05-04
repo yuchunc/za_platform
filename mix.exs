@@ -6,9 +6,9 @@ defmodule LiveAuction.Mixfile do
       app: :live_auction,
       version: "0.0.1",
       elixir: "~> 1.6",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -20,14 +20,14 @@ defmodule LiveAuction.Mixfile do
   def application do
     [
       mod: {LiveAuction.Application, []},
-      extra_applications: [:logger, :runtime_tools, :edeliver],
+      extra_applications: [:logger, :runtime_tools, :edeliver]
     ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["test/support", "lib"]
   defp elixirc_paths(:dev), do: ["lib", "test/support/factory.ex"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -73,7 +73,7 @@ defmodule LiveAuction.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.api": ["test --only ot_api"]
     ]
   end

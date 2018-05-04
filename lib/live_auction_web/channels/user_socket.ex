@@ -4,11 +4,11 @@ defmodule LiveAuctionWeb.UserSocket do
   require Logger
 
   ## Channels
-  channel "stream:*", LiveAuctionWeb.StreamChannel
+  channel("stream:*", LiveAuctionWeb.StreamChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
-  transport :longpoll, Phoenix.Transports.LongPoll
+  transport(:websocket, Phoenix.Transports.WebSocket)
+  transport(:longpoll, Phoenix.Transports.LongPoll)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -26,6 +26,7 @@ defmodule LiveAuctionWeb.UserSocket do
     case Guardian.Phoenix.Socket.authenticate(socket, LiveAuction.Auth.Guardian, token) do
       {:ok, authed_socket} ->
         {:ok, authed_socket}
+
       {:error, error} ->
         Logger.debug(error)
         :error

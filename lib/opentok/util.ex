@@ -1,5 +1,4 @@
 defmodule OpenTok.Util do
-
   alias OpenTok.Config
 
   def generate_jwt(config) do
@@ -10,11 +9,12 @@ defmodule OpenTok.Util do
       iss: config.key,
       ist: "project",
       iat: current_utc_seconds,
-      exp: current_utc_seconds + 180, # This authentication jwt expires in 3 mins
+      # This authentication jwt expires in 3 mins
+      exp: current_utc_seconds + 180
     }
 
     JOSE.JWT.sign(secret_jwk, %{"alg" => "HS256"}, payload)
-    |> JOSE.JWS.compact
+    |> JOSE.JWS.compact()
     |> elem(1)
   end
 
@@ -27,7 +27,7 @@ defmodule OpenTok.Util do
 
   def get_config do
     case Config.initialize() do
-      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new
+      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new()
       {:error, _} = e -> e
     end
   end

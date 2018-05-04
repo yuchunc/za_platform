@@ -5,15 +5,15 @@ defmodule LiveAuction.Account.User do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
-    field :username, :string
-    field :phone, :string
-    field :email, :string
-    field :tier, UserTierEnum
+    field(:username, :string)
+    field(:phone, :string)
+    field(:email, :string)
+    field(:tier, UserTierEnum)
 
-    field :encrypted_password, :string
-    field :password, :string, virtual: true
+    field(:encrypted_password, :string)
+    field(:password, :string, virtual: true)
 
-    field :refresh_token, :string
+    field(:refresh_token, :string)
 
     timestamps()
   end
@@ -40,7 +40,9 @@ defmodule LiveAuction.Account.User do
 
   defp validate_and_encrypt_password(changeset) do
     case password = get_change(changeset, :password) do
-      nil -> changeset
+      nil ->
+        changeset
+
       _ ->
         changeset
         |> validate_length(:password, min: 6)

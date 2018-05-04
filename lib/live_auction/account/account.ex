@@ -16,14 +16,15 @@ defmodule LiveAuction.Account do
 
   def login(email, password) do
     with user <- Repo.get_by(User, email: email),
-         {:ok, _} <- Comeonin.Argon2.check_pass(user, password)
-    do
+         {:ok, _} <- Comeonin.Argon2.check_pass(user, password) do
       {:ok, user}
     else
       {:error, message} ->
         Logger.info(message)
         {:error, :invalid_credentials}
-      _ -> {:error, :invalid_credentials}
+
+      _ ->
+        {:error, :invalid_credentials}
     end
   end
 end

@@ -7,8 +7,9 @@ defmodule LiveAuctionWeb.StreamingControllerTest do
 
   describe "GET /m/streaming" do
     test "redirects to login page" do
-      conn = build_conn()
-             |> get(membership_streaming_path(build_conn(), :show))
+      conn =
+        build_conn()
+        |> get(membership_streaming_path(build_conn(), :show))
 
       assert redirected_to(conn) == session_path(conn, :show)
     end
@@ -19,13 +20,15 @@ defmodule LiveAuctionWeb.StreamingControllerTest do
       insert(:user)
 
       session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
-      expect(OpenTok.ApiMock, :request_session_id, fn(_) ->
+
+      expect(OpenTok.ApiMock, :request_session_id, fn _ ->
         {:ok, session_id}
       end)
 
-      result = conn
-               |> get(membership_streaming_path(conn, :show))
-               |> html_response(200)
+      result =
+        conn
+        |> get(membership_streaming_path(conn, :show))
+        |> html_response(200)
 
       assert Regex.scan(~r/session_id: (\d_\w{15}-\w{51}-\w{2})/, result)
     end

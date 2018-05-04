@@ -15,8 +15,8 @@ defmodule LiveAuction.AccountTest do
 
   describe "authenticate/2" do
     test "returns :invalid_credential error when bad creds" do
-       result = Account.login("bad@email.com", "badpassword")
-       assert result == {:error, :invalid_credentials}
+      result = Account.login("bad@email.com", "badpassword")
+      assert result == {:error, :invalid_credentials}
     end
 
     test "generates refresh token and access token from creds" do

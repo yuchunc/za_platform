@@ -12,7 +12,6 @@ defmodule LiveAuction.Application do
       supervisor(LiveAuction.Repo, []),
       # Start the endpoint when the application starts
       supervisor(LiveAuctionWeb.Endpoint, []),
-
       worker(Guardian.DB.Token.SweeperServer, [])
       # Start your own worker by calling: LiveAuction.Worker.start_link(arg1, arg2, arg3)
       # worker(LiveAuction.Worker, [arg1, arg2, arg3]),

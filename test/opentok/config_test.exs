@@ -14,6 +14,7 @@ defmodule OpenTok.ConfigTest do
       stub_creds = %{
         key: nil
       }
+
       assert {:error, :invalid_config} = with_config(stub_creds, &Config.initialize/0)
     end
 
@@ -21,6 +22,7 @@ defmodule OpenTok.ConfigTest do
       stub_creds = %{
         secret: nil
       }
+
       assert {:error, :invalid_config} = with_config(stub_creds, &Config.initialize/0)
     end
 
@@ -30,18 +32,18 @@ defmodule OpenTok.ConfigTest do
         secret: "00000000000000000000000000000000"
       }
 
-      assert with_config(stub_creds, fn() ->
-        response = Config.initialize
-        app_config = Application.get_env(:live_auction, OpenTok) |> Map.new
-        assert app_config == Map.merge(stub_creds, default_configuration())
-        response
-      end) == :ok
+      assert with_config(stub_creds, fn ->
+               response = Config.initialize()
+               app_config = Application.get_env(:live_auction, OpenTok) |> Map.new()
+               assert app_config == Map.merge(stub_creds, default_configuration())
+               response
+             end) == :ok
     end
   end
 
   defp default_configuration() do
     %{
-      env: Mix.env,
+      env: Mix.env(),
       endpoint: "https://api.opentok.com"
     }
   end
