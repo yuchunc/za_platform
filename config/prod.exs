@@ -15,8 +15,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :live_auction, LiveAuctionWeb.Endpoint,
   # load_from_system_env: true,
-  http: [port: "80"],
-  url: [host: "104.199.142.23", port: 80],
+  http: [port: "4000"],
+  url: [host: "104.199.142.23", port: 4000],
   # check_origin: false,
   server: true,
   root: ".",
