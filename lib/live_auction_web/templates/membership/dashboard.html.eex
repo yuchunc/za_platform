@@ -1,1 +1,7 @@
-This will be the Dashboard
+<div>
+  This will be the Dashboard
+</div>
+
+<a class="btn btn-primary" href= <%= membership_streaming_path(@conn, :show) %>>
+  Start Streaming
+</a>

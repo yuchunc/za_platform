@@ -1,6 +1,6 @@
 <script charset="utf-8">
 
-  const key = "<%= @opentok_params.config.key %>"
+  const key = "<%= @opentok_params.key %>"
   const session_id =  "<%= @opentok_params.session_id %>"
   const token = "<%= @opentok_params.token %>"
 
@@ -31,14 +31,9 @@
     });
   }
 
-  [].forEach.call(
-    document.querySelectorAll("#startStream"),
-
-    function ( button ) {
-      button.addEventListener( 'click', function ( e ) {
-        startStreaming();
-        e.preventDefault();
-      }, false );
+  document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+      startStreaming();
     }
-  );
+  }
 </script>
