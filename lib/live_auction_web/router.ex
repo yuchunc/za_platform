@@ -38,10 +38,10 @@ defmodule LiveAuctionWeb.Router do
     # Use the default browser stack
     pipe_through(:browser)
 
-    get("/", PageController, :index)
+    get("/", LiveStreamController, :index)
 
     resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
 
-    resources("/s", LiveStreamController, only: [:index, :show])
+    resources("/s", LiveStreamController, only: [:show])
   end
 end

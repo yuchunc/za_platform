@@ -45,12 +45,8 @@ const config_fn = (env) => {
         }
       ]
     },
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery'
-      }),
 
+    plugins: [
       new CopyWebpackPlugin([{
         from: "./static",
         to: path.resolve(__dirname, "../priv/static")
@@ -60,7 +56,19 @@ const config_fn = (env) => {
         filename: "css/[name].css",
         allChunks: true
       })
-    ]
+    ],
+
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          theme: {
+            test: /[\\/]vendor[\\/]/,
+            name: "theme",
+            chunks: "all"
+          }
+        }
+      }
+    }
   }
 };
 
