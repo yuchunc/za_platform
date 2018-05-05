@@ -1,26 +1,26 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-sm navbar-dark" id="main-nav">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"> LiveAuction </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navItems" aria-controls="navItems" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="octicon-three-bars">retractable</span>
+      <span class="octicon-three-bars">
+        ＝
+      </span>
     </button>
 
     <div class="collapse navbar-collapse" id="navItems">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href= <%= live_stream_path(@conn, :index) %>>Stream Page</a>
+        <li class="nav-item">
+          <a class="nav-link text-light" href= <%= membership_path(@conn, :show) %>>Member Dash</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href= <%= membership_path(@conn, :show) %>>Member Dash</a>
-        </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <%= if current_token(@conn) do %>
-            <%= link("Sign Out", to: session_path(@conn, :delete), method: :delete) %>
+            <%= link("Sign Out", to: session_path(@conn, :delete), method: :delete, class: "nav-link text-light") %>
           <% else %>
-            <%= link("Sign In", to: session_path(@conn, :show)) %>
+            <%= link("Sign In", to: session_path(@conn, :show), class: "nav-link text-light") %>
           <% end %>
         </li>
       </ul>
     </div>
+
   </div>
 </nav>
