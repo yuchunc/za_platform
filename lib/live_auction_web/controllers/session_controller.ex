@@ -6,7 +6,7 @@ defmodule LiveAuctionWeb.SessionController do
   alias LiveAuction.Auth.Guardian
 
   def show(conn, _params) do
-    render(conn, "new.html")
+    render(conn, "sign_in.html")
   end
 
   def create(conn, params) do
