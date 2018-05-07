@@ -25,7 +25,7 @@ const config_fn = (env) => {
     output: {
       path: path.resolve(__dirname, "../priv/static"),
       filename: 'js/[name].js',
-      publicPath: 'http://localhost:8080/'
+      publicPath: 'http://localhost:4000/'
     },
 
     devServer: {
@@ -44,10 +44,25 @@ const config_fn = (env) => {
           })
         },
         {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          loader: 'url-loader',
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader",
+          query: {
+            name: "fonts/[hash].[ext]",
+            mimetype: "application/font-woff"
+          }
+        },
+        {
+          test: /\.(eot|svg|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader",
+          query: {
+            name: "fonts/[hash].[ext]"
+          }
+        },
+        {
+          test: /\.png$/,
+          loader: 'file-loader',
           options: {
-            limit: 8192
+            name: 'images/[name].[ext]'
           }
         }
       ]
@@ -68,19 +83,7 @@ const config_fn = (env) => {
         filename: "css/[name].css",
         allChunks: true
       })
-    ],
-
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          theme: {
-            test: /[\\/]vendor[\\/]/,
-            name: "theme",
-            chunks: "all"
-          }
-        }
-      }
-    }
+    ]
   }
 };
 

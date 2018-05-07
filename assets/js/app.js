@@ -13,7 +13,7 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html";
 import "popper.js";
-import "semantic-ui-css";
+import "../semantic/dist/semantic.min.js";
 
 import "@opentok/client";
 
