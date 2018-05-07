@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="four wide column">
+    <%= link to: live_stream_path(@conn, :show, @stream.streamer_id) do %>
+      <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
+    <% end %>
+  </div>
+  <div class="five wide column">
+    <%= link "Some Random Stream", to: live_stream_path(@conn, :show, @stream.streamer_id) %>
+  </div>
+</div>

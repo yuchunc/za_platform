@@ -25,7 +25,7 @@ const config_fn = (env) => {
     output: {
       path: path.resolve(__dirname, "../priv/static"),
       filename: 'js/[name].js',
-      publicPath: 'http://localhost:8080/'
+      publicPath: 'http://localhost:4000/'
     },
 
     devServer: {
@@ -42,9 +42,32 @@ const config_fn = (env) => {
             fallback: "sass-loader",
             use: ['css-loader', 'postcss-loader', 'sass-loader']
           })
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader",
+          query: {
+            name: "fonts/[hash].[ext]",
+            mimetype: "application/font-woff"
+          }
+        },
+        {
+          test: /\.(eot|svg|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader",
+          query: {
+            name: "fonts/[hash].[ext]"
+          }
+        },
+        {
+          test: /\.png$/,
+          loader: 'file-loader',
+          options: {
+            name: 'images/[name].[ext]'
+          }
         }
       ]
     },
+
     plugins: [
       new webpack.ProvidePlugin({
         $: 'jquery',

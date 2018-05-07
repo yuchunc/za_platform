@@ -1,5 +1,3 @@
-<%= Enum.map @streams, fn(stream) -> %>
-
-  <%= link("link", to: live_stream_path(@conn, :show, stream.streamer_id)) %>
-
-<% end %>
+<div class="ui celled grid">
+  <%= render_many @streams, __MODULE__, "_stream.html", as: :stream, conn: @conn %>
+</div>

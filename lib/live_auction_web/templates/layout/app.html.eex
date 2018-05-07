@@ -14,13 +14,10 @@
   <body>
     <%= render("main_nav.html", conn: @conn) %>
 
-    <div class="container">
+    <main role="main" class="ui container">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <%= render_existing(@view_module, "scripts.js", assigns) %>
   </body>
