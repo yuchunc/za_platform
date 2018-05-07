@@ -42,11 +42,23 @@ const config_fn = (env) => {
             fallback: "sass-loader",
             use: ['css-loader', 'postcss-loader', 'sass-loader']
           })
+        },
+        {
+          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+          loader: 'url-loader',
+          options: {
+            limit: 8192
+          }
         }
       ]
     },
 
     plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
+      }),
+
       new CopyWebpackPlugin([{
         from: "./static",
         to: path.resolve(__dirname, "../priv/static")
