@@ -5,7 +5,9 @@ export default function loadView(viewPath) {
 
   try {
     const ViewClass = require('./' + viewPath);
+
     view = new ViewClass();
+
   } catch (e) {
     view = new MainView();
   }

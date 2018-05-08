@@ -19,6 +19,5 @@
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <%= render_existing(@view_module, "scripts.js", assigns) %>
   </body>
 </html>
