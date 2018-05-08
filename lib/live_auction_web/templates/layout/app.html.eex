@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body>
+  <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>">
     <%= render("main_nav.html", conn: @conn) %>
 
     <main role="main" class="ui container">

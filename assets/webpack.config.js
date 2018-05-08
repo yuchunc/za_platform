@@ -37,6 +37,14 @@ const config_fn = (env) => {
     module: {
       rules: [
         {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015'],
+          },
+        },
+        {
           test: /\.(css|scss)$/,
           use: ExtractTextPlugin.extract({
             fallback: "sass-loader",
