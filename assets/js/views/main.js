@@ -1,4 +1,10 @@
 export default class MainView {
+  handleError(error) {
+    if (error) {
+      console.log(error);
+    }
+  }
+
   mount() {
     // This will be executed when the document loads...
     console.log('MainView mounted');

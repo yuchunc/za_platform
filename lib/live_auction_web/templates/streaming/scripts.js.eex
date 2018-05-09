@@ -1,39 +1,10 @@
 <script charset="utf-8">
 
-  const key = "<%= @opentok_params.key %>"
-  const session_id =  "<%= @opentok_params.session_id %>"
-  const token = "<%= @opentok_params.token %>"
-
-  function handleError(error) {
-    if (error) {
-      console.log(error);
-    }
+  window.streamConfig =
+  {
+    key: "<%= @opentok_params.key %>",
+    session_id: "<%= @opentok_params.session_id %>",
+    token: "<%= @opentok_params.token %>"
   }
 
-  function startStreaming() {
-    const session = OT.initSession(key, session_id);
-
-    // Create a publisher
-    const publisher = OT.initPublisher('publisher', {
-      insertMode: 'append',
-      width: '100%',
-      height: '100%'
-    }, handleError);
-
-    // Connect to the session
-    ot_session = session.connect(token, (error) => {
-      // If the connection is successful, publish to the session
-      if (error) {
-        handleError(error);
-      } else {
-        session.publish(publisher, handleError);
-      }
-    });
-  }
-
-  document.onreadystatechange = function () {
-    if (document.readyState == "interactive") {
-      startStreaming();
-    }
-  }
 </script>
