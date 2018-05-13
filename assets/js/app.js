@@ -28,8 +28,8 @@ import loadView from './views/loader';
 
 function handleDOMContentLoaded() {
   const viewName = document.getElementsByTagName('body')[0].dataset.jsViewPath;
-
   const view = loadView(viewName);
+
   view.mount();
 
   window.currentView = view;

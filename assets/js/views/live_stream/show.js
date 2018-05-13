@@ -1,29 +1,32 @@
-import MainView from '../main';
+import main from '../main';
 
-module.exports = class View extends MainView {
-  startSubscribing() {
-    const session = OT.initSession(apiKey, sessionId)
+const startSubscribing = () => {
+  const config = window.streamConfig;
+  const session = OT.initSession(config.key, config.sessionId)
 
-    session.on("streamCreated", function(event) {
-      console.log(event, "event");
-      bar = session.subscribe(event.stream, 'subscriber', {
-        insertMode: 'append',
-        width: '100%',
-        height: '100%'
-      }, handleError);
-    })
+  session.on("streamCreated", function(event) {
+    console.log(event, "event");
+    bar = session.subscribe(event.stream, 'subscriber', {
+      insertMode: 'append',
+      width: '100%',
+      height: '100%'
+    }, main.handleError);
+  })
 
-    session.connect(token, handleError)
-    session.subscribe
-  }
+  session.connect(config.token, main.handleError)
+  session.subscribe
+};
 
-  mount() {
-    console.log('LiveStream Show mounted');
-    console.log("subscribing");
-    startSubscribing();
-  }
+export default () => {
+  return Object.assign(main(), {
+    mount: () => {
+      console.log('LiveStream Show mounted');
+      console.log("subscribing");
+      startSubscribing();
+    },
 
-  unmount() {
-    console.log('LiveStream Show unmounted');
-  }
+    unmount: () => {
+      console.log('LiveStream Show unmounted');
+    }
+  });
 };

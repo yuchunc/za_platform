@@ -1,3 +1,14 @@
 <h1>Membership Streaming Page</h1>
 
 <div id="publisher" style="width:300px;height:300px;"></div>
+
+<script charset="utf-8">
+
+  window.streamConfig =
+    {
+      key: "<%= @opentok_params.key %>",
+      sessionId: "<%= @opentok_params.session_id %>",
+      token: "<%= @opentok_params.token %>"
+    }
+
+</script>

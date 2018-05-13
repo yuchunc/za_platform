@@ -1,16 +1,15 @@
 import MainView from './main';
 
-export default function loadView(viewPath) {
+export default (viewPath) => {
   let view;
 
   try {
-    const ViewClass = require('./' + viewPath);
-
-    view = new ViewClass();
-
-  } catch (e) {
-    view = new MainView();
-  }
+    const viewFactory = require('./' + viewPath);
+    console.log("ping", viewFactory.default());
+    view = viewFactory.default();
+  } catch(e) {
+    view = Object.create(MainView());
+  };
 
   return view;
 }
