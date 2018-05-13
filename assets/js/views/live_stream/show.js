@@ -1,8 +1,10 @@
+import channel from '../channel';
 import main from '../main';
 
 const startSubscribing = () => {
   const config = window.streamConfig;
   const session = OT.initSession(config.key, config.sessionId)
+
 
   session.on("streamCreated", function(event) {
     console.log(event, "event");
@@ -21,8 +23,7 @@ export default () => {
   return Object.assign(main(), {
     mount: () => {
       console.log('LiveStream Show mounted');
-      console.log("subscribing");
-      startSubscribing();
+      channel().joinChannel(startSubscribing);
     },
 
     unmount: () => {

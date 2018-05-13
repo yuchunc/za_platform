@@ -1,3 +1,4 @@
+import channel from '../channel';
 import main from '../main';
 
 const startStreaming = () => {
@@ -27,8 +28,7 @@ export default () => {
   return Object.assign(main(), {
     mount: () => {
       console.log('Streaming Show mounted');
-      console.log("Start Streaming");
-      startStreaming();
+      channel().joinChannel(startStreaming);
     },
 
     unmount: () => {

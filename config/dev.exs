@@ -18,7 +18,7 @@ config :live_auction, LiveAuctionWeb.Endpoint,
     certfile: "priv/keys/localhost.cert"
   ],
   debug_errors: true,
-  code_reloader: false,
+  code_reloader: true,
   check_origin: false,
   watchers: [
     node: [

@@ -5,7 +5,6 @@ export default (viewPath) => {
 
   try {
     const viewFactory = require('./' + viewPath);
-    console.log("ping", viewFactory.default());
     view = viewFactory.default();
   } catch(e) {
     view = Object.create(MainView());
