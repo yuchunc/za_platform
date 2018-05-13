@@ -22,6 +22,8 @@ defmodule LiveAuctionWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
 
+  def connect(%{"token" => ""}, socket), do: connect(%{}, socket)
+
   def connect(%{"token" => token}, socket) do
     case Guardian.Phoenix.Socket.authenticate(socket, LiveAuction.Auth.Guardian, token) do
       {:ok, authed_socket} ->

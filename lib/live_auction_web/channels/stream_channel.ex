@@ -2,20 +2,23 @@ defmodule LiveAuctionWeb.StreamChannel do
   use LiveAuctionWeb, :channel
 
   def join("stream:" <> streamer_id, _message, socket) do
-    send(self(), {:after_join, streamer_id})
-    {:ok, socket}
-  end
-
-  def handle_info({:after_join, streamer_id}, socket) do
     payload =
       case current_resource(socket) do
+        %User{} = user -> %{user_id: user.id}
         nil -> %{}
-        user -> %{user: user}
       end
 
     if Streaming.current_stream_for(streamer_id) do
-      broadcast(socket, "stream:joined", payload)
+      send(self(), {:after_join, payload})
+      {:ok, socket}
+    else
+      {:error, %{reason: "Stream does not exist"}}
     end
+  end
+
+  def handle_info({:after_join, payload}, socket) do
+    payload |> IO.inspect(label: "label")
+    broadcast(socket, "user:joined", payload)
 
     {:noreply, socket}
   end
@@ -29,7 +32,7 @@ defmodule LiveAuctionWeb.StreamChannel do
          {:ok, key, token} <-
            OpenTok.generate_token(stream.ot_session_id, :publisher, streamer.id) do
       opentok_params = %{session_id: stream.ot_session_id, token: token, key: key}
-      broadcast(socket, "stream:show_started", %{message: message})
+      broadcast(socket, "streamer:show_started", %{message: message})
       {:reply, {:ok, opentok_params}, socket}
     else
       _ ->
@@ -41,9 +44,9 @@ defmodule LiveAuctionWeb.StreamChannel do
     %{topic: "stream:" <> streamer_id} = socket
 
     case current_resource(socket) do
-      nil -> broadcast!(socket, "stream:viewer_left", %{})
-      %{id: uid} when uid == streamer_id -> broadcast!(socket, "stream:show_ended", %{})
-      user -> broadcast!(socket, "stream:viewer_left", %{user: user})
+      nil -> broadcast!(socket, "viewer:left", %{})
+      %{id: uid} when uid == streamer_id -> broadcast!(socket, "streamer:show_ended", %{})
+      user -> broadcast!(socket, "viewer:left", %{user: user})
     end
 
     :ok

@@ -15,7 +15,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
-      receiving_topic = "stream:joined"
+      receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, %{})
     end
 
@@ -28,7 +28,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
-      receiving_topic = "stream:joined"
+      receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, payload)
       assert payload.user.id == user.id
     end
@@ -51,7 +51,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
       params = %{message: "hello world"}
       ref = push(socket, "stream:show_start", params)
 
-      assert_broadcast("stream:show_started", %{message: _})
+      assert_broadcast("streamer:show_started", %{message: _})
       assert_reply(ref, :ok, %{token: "T1==" <> _})
     end
   end
@@ -69,7 +69,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       StreamChannel.terminate("", socket)
 
-      assert_broadcast("stream:viewer_left", %{})
+      assert_broadcast("viewer:left", %{})
     end
 
     test "broadcast stream:viewer_left when a user left", context do
@@ -81,7 +81,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       StreamChannel.terminate("", socket_1)
 
-      assert_broadcast("stream:viewer_left", payload)
+      assert_broadcast("viewer:left", payload)
       assert payload.user.id == viewer.id
     end
 
@@ -94,7 +94,7 @@ defmodule LiveAuctionWeb.StreamChannelTest do
 
       StreamChannel.terminate("", socket_1)
 
-      assert_broadcast("stream:show_ended", _payload)
+      assert_broadcast("streamer:show_ended", _payload)
     end
   end
 end

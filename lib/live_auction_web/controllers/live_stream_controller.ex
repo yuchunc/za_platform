@@ -14,7 +14,7 @@ defmodule LiveAuctionWeb.LiveStreamController do
          {:ok, key, token} <-
            OpenTok.generate_token(stream.ot_session_id, :subscriber, viewer[:id]),
          opentok_params <- %{session_id: stream.ot_session_id, token: token, key: key} do
-      render(conn, "show.html", stream_id: streamer_id, opentok_params: opentok_params)
+      render(conn, "show.html", streamer_id: streamer_id, opentok_params: opentok_params)
     end
   end
 end
