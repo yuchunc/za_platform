@@ -1,14 +1,12 @@
-defmodule ZaZaar.Streaming.Stream do
+defmodule ZaZaar.Streaming.Channel do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  schema "streams" do
+  schema "channels" do
     field(:ot_session_id, :string)
-
     field(:facebook_stream_key, :string)
-
     field(:streamer_id, Ecto.UUID)
 
     timestamps()

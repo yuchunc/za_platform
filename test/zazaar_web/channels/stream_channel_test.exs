@@ -30,11 +30,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
       receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, payload)
-      assert payload.user.id == user.id
+      assert payload.user_id == user.id
     end
   end
 
-  describe "stream:show_start" do
+  describe "streamer:show_start" do
     setup context do
       %{stream: stream} = context
       user = Repo.get(User, stream.streamer_id)
@@ -53,6 +53,18 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
       assert_broadcast("streamer:show_started", %{message: _})
       assert_reply(ref, :ok, %{token: "T1==" <> _})
+    end
+  end
+
+  describe "user:send_message" do
+    setup context do
+      %{stream: stream} = context
+      user = Repo.get(User, stream.streamer_id)
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, socket} = connect(UserSocket, %{token: jwt})
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+
+      {:ok, socket: socket_1}
     end
   end
 

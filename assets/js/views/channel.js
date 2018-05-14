@@ -15,6 +15,6 @@ const joinChannel = (otAction) => {
 
 export default () => {
   return {
-    joinChannel: joinChannel
+    joinChannel
   }
 }

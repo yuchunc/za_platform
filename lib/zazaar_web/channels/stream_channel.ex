@@ -17,7 +17,6 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_info({:after_join, payload}, socket) do
-    payload |> IO.inspect(label: "label")
     broadcast(socket, "user:joined", payload)
 
     {:noreply, socket}

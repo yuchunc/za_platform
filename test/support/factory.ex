@@ -12,7 +12,7 @@ defmodule ZaZaar.Factory do
   end
 
   def stream_factory do
-    %Streaming.Stream{
+    %Streaming.Channel{
       ot_session_id: sequence("some_ot_session_id"),
       streamer_id: insert(:streamer) |> Map.get(:id)
     }

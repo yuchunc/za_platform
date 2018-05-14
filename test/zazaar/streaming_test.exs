@@ -4,7 +4,7 @@ defmodule ZaZaar.StreamingTest do
   import Mox
 
   alias ZaZaar.Streaming
-  alias Streaming.Stream
+  alias Streaming.Channel
 
   setup :verify_on_exit!
 
@@ -14,7 +14,7 @@ defmodule ZaZaar.StreamingTest do
 
       result = Streaming.get_streams()
 
-      Enum.each(result, &assert(%Stream{} = &1))
+      Enum.each(result, &assert(%Channel{} = &1))
       assert Enum.count(result) == 10
 
       assert result |> Enum.map(& &1.id) |> Enum.sort() ==
@@ -26,7 +26,7 @@ defmodule ZaZaar.StreamingTest do
     test "gets the current stream" do
       stream = insert(:stream)
 
-      assert %Stream{} = Streaming.current_stream_for(stream.streamer_id)
+      assert %Channel{} = Streaming.current_stream_for(stream.streamer_id)
     end
   end
 
@@ -44,7 +44,7 @@ defmodule ZaZaar.StreamingTest do
 
       result = Streaming.new_session(user.id)
 
-      assert {:ok, %Stream{ot_session_id: ^session_id}} = result
+      assert {:ok, %Channel{ot_session_id: ^session_id}} = result
     end
 
     test "returns a previousely created stream", context do
