@@ -18,5 +18,6 @@ defmodule ZaZaar.Streaming.Stream do
     stream
     |> cast(attrs, [:facebook_stream_key, :archived_at])
     |> validate_required([])
+    |> check_constraint(:archived_at, name: :archived_stream, message: "Stream Archived")
   end
 end

@@ -10,6 +10,6 @@ defmodule ZaZaar.Repo.Migrations.CreateStreams do
       timestamps()
     end
 
-    create constraint(:streams, :unarchive_stream, check: "archived_at ISNULL")
+    create constraint(:streams, :archived_stream, check: "archived_at ISNULL")
   end
 end
