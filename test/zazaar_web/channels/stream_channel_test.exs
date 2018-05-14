@@ -4,29 +4,29 @@ defmodule ZaZaarWeb.StreamChannelTest do
   alias ZaZaarWeb.StreamChannel
 
   setup do
-    stream = insert(:stream)
+    channel = insert(:channel)
     {:ok, socket} = connect(UserSocket, %{})
-    {:ok, socket: socket, stream: stream}
+    {:ok, socket: socket, channel: channel}
   end
 
   describe "join a channel" do
     test "anybody can join a stream channel", context do
-      %{socket: socket, stream: stream} = context
+      %{socket: socket, channel: channel} = context
 
-      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, %{})
     end
 
     test "a signed in user can join a stream channel", context do
-      %{stream: stream} = context
+      %{channel: channel} = context
 
       user = insert(:user)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
 
-      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, payload)
@@ -36,11 +36,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   describe "streamer:show_start" do
     setup context do
-      %{stream: stream} = context
-      user = Repo.get(User, stream.streamer_id)
+      %{channel: channel} = context
+      user = Repo.get(User, channel.streamer_id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       {:ok, socket: socket_1}
     end
@@ -58,11 +58,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   describe "user:send_message" do
     setup context do
-      %{stream: stream} = context
-      user = Repo.get(User, stream.streamer_id)
+      %{channel: channel} = context
+      user = Repo.get(User, channel.streamer_id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       {:ok, socket: socket_1}
     end
@@ -70,8 +70,8 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   describe "terminate" do
     setup context do
-      %{socket: socket, stream: stream} = context
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      %{socket: socket, channel: channel} = context
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       {:ok, socket: socket_1}
     end
@@ -85,11 +85,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
 
     test "broadcast stream:viewer_left when a user left", context do
-      %{stream: stream} = context
+      %{channel: channel} = context
       viewer = insert(:user)
       {:ok, jwt, _} = Guardian.encode_and_sign(viewer)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       StreamChannel.terminate("", socket_1)
 
@@ -98,11 +98,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
 
     test "broadcast stream:show_ended when the streamer left", context do
-      %{stream: stream} = context
-      streamer = Repo.get(User, stream.streamer_id)
+      %{channel: channel} = context
+      streamer = Repo.get(User, channel.streamer_id)
       {:ok, jwt, _} = Guardian.encode_and_sign(streamer)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
       StreamChannel.terminate("", socket_1)
 

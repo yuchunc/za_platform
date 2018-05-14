@@ -4,12 +4,12 @@ defmodule ZaZaarWeb.LiveStreamController do
   action_fallback(FallbackController)
 
   def index(conn, _params) do
-    stream_list = Streaming.get_streams()
+    stream_list = Streaming.get_channels()
     render(conn, "index.html", streams: stream_list)
   end
 
   def show(conn, %{"id" => streamer_id}) do
-    with %Stream{} = stream <- Streaming.current_stream_for(streamer_id),
+    with %Stream{} = stream <- Streaming.current_channel_for(streamer_id),
          viewer <- current_resource(conn),
          {:ok, key, token} <-
            OpenTok.generate_token(stream.ot_session_id, :subscriber, viewer[:id]),

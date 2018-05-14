@@ -8,25 +8,25 @@ defmodule ZaZaar.StreamingTest do
 
   setup :verify_on_exit!
 
-  describe "get_streams/0" do
+  describe "get_channels/0" do
     test "gets a list of streams" do
-      stream_list = insert_list(10, :stream)
+      channel_list = insert_list(10, :channel)
 
-      result = Streaming.get_streams()
+      result = Streaming.get_channels()
 
       Enum.each(result, &assert(%Channel{} = &1))
       assert Enum.count(result) == 10
 
       assert result |> Enum.map(& &1.id) |> Enum.sort() ==
-               stream_list |> Enum.map(& &1.id) |> Enum.sort()
+               channel_list |> Enum.map(& &1.id) |> Enum.sort()
     end
   end
 
-  describe "current_stream_for/1" do
+  describe "current_channel_for/1" do
     test "gets the current stream" do
-      stream = insert(:stream)
+      channel = insert(:channel)
 
-      assert %Channel{} = Streaming.current_stream_for(stream.streamer_id)
+      assert %Channel{} = Streaming.current_channel_for(channel.streamer_id)
     end
   end
 
@@ -50,11 +50,27 @@ defmodule ZaZaar.StreamingTest do
     test "returns a previousely created stream", context do
       %{user: user, session_id: session_id} = context
 
-      stream = insert(:stream, streamer_id: user.id, ot_session_id: session_id)
+      stream = insert(:channel, streamer_id: user.id, ot_session_id: session_id)
 
       assert {:ok, result} = Streaming.new_session(user.id)
       assert result.id == stream.id
       assert result.ot_session_id == session_id
+    end
+  end
+
+  describe "append_comment/2" do
+    setup do
+      {:ok, user: insert(:user), stream: insert(:stream)}
+    end
+
+    test "append comment to a stream struct", context do
+      %{user: user, stream: stream} = context
+
+      params = %{user_id: user.id, content: "We don’t have the Tesseract. It was destroyed on Asgard."}
+
+      assert {:ok, stream} = Streaming.append_comment(stream, params)
+      assert Enum.count(stream.comments) == 1
+      assert stream.comments |> List.first |> Map.get(:user_id) == user.id
     end
   end
 end

@@ -11,10 +11,23 @@ defmodule ZaZaar.Factory do
     build(:user, tier: :viewer)
   end
 
-  def stream_factory do
+  def channel_factory do
     %Streaming.Channel{
       ot_session_id: sequence("some_ot_session_id"),
       streamer_id: insert(:streamer) |> Map.get(:id)
+    }
+  end
+
+  def stream_factory do
+    %Streaming.Stream{}
+  end
+
+  def comment_factory do
+    user = insert(:user)
+
+    %Streaming.Comment{
+      user_id: user.id,
+      content: Faker.Lorem.sentence
     }
   end
 

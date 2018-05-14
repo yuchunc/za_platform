@@ -8,7 +8,7 @@ defmodule ZaZaarWeb.StreamChannel do
         nil -> %{}
       end
 
-    if Streaming.current_stream_for(streamer_id) do
+    if Streaming.current_channel_for(streamer_id) do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else

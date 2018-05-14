@@ -12,7 +12,7 @@ defmodule ZaZaar.Streaming.Comment do
 
   def changeset(%__MODULE__{} = comment, attrs) do
     comment
-    |> cast(attrs, [:content])
+    |> cast(attrs, [:user_id, :content])
     |> validate_required([:user_id, :content])
   end
 end

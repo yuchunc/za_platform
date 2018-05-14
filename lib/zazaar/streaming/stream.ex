@@ -17,6 +17,7 @@ defmodule ZaZaar.Streaming.Stream do
   def changeset(%__MODULE__{} = stream, attrs) do
     stream
     |> cast(attrs, [:facebook_stream_key, :archived_at])
+    |> cast_embed(:comments)
     |> validate_required([])
     |> check_constraint(:archived_at, name: :archived_stream, message: "Stream Archived")
   end
