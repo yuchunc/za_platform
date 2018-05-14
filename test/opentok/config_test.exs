@@ -34,7 +34,7 @@ defmodule OpenTok.ConfigTest do
 
       assert with_config(stub_creds, fn ->
                response = Config.initialize()
-               app_config = Application.get_env(:live_auction, OpenTok) |> Map.new()
+               app_config = Application.get_env(:zazaar, OpenTok) |> Map.new()
                assert app_config == Map.merge(stub_creds, default_configuration())
                response
              end) == :ok

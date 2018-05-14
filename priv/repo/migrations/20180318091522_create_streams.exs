@@ -1,4 +1,4 @@
-defmodule LiveAuction.Repo.Migrations.CreateStreams do
+defmodule ZaZaar.Repo.Migrations.CreateStreams do
   use Ecto.Migration
 
   def change do

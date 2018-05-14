@@ -1,4 +1,4 @@
-defmodule LiveAuctionWeb.ChannelCase do
+defmodule ZaZaarWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,25 +20,25 @@ defmodule LiveAuctionWeb.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      import LiveAuction.Factory
+      import ZaZaar.Factory
 
-      require LiveAuctionWeb
+      require ZaZaarWeb
 
-      alias LiveAuctionWeb.UserSocket
-      alias LiveAuction.Repo
+      alias ZaZaarWeb.UserSocket
+      alias ZaZaar.Repo
 
       # The default endpoint for testing
-      @endpoint LiveAuctionWeb.Endpoint
+      @endpoint ZaZaarWeb.Endpoint
 
-      LiveAuctionWeb.context_schema_aliases()
+      ZaZaarWeb.context_schema_aliases()
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZaZaar.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(ZaZaar.Repo, {:shared, self()})
     end
 
     :ok

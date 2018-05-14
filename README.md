@@ -1,4 +1,4 @@
-# LiveAuction
+# ZaZaar
 
 To start your Phoenix server:
 

@@ -1,7 +1,7 @@
-defmodule LiveAuction.Factory do
-  use ExMachina.Ecto, repo: LiveAuction.Repo
+defmodule ZaZaar.Factory do
+  use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias LiveAuction.{Account, Streaming}
+  alias ZaZaar.{Account, Streaming}
 
   def streamer_factory do
     build(:user, tier: :streamer)

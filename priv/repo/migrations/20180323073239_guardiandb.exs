@@ -1,4 +1,4 @@
-defmodule LiveAuction.Repo.Migrations.Guardian.DB do
+defmodule ZaZaar.Repo.Migrations.Guardian.DB do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule LiveAuction.DataCase do
+defmodule ZaZaar.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,21 +16,21 @@ defmodule LiveAuction.DataCase do
 
   using do
     quote do
-      alias LiveAuction.Repo
+      alias ZaZaar.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import LiveAuction.DataCase
-      import LiveAuction.Factory
+      import ZaZaar.DataCase
+      import ZaZaar.Factory
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZaZaar.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(ZaZaar.Repo, {:shared, self()})
     end
 
     session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"

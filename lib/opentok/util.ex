@@ -27,7 +27,7 @@ defmodule OpenTok.Util do
 
   def get_config do
     case Config.initialize() do
-      :ok -> Application.get_env(:live_auction, OpenTok) |> Map.new()
+      :ok -> Application.get_env(:zazaar, OpenTok) |> Map.new()
       {:error, _} = e -> e
     end
   end

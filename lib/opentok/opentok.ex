@@ -8,7 +8,7 @@ defmodule OpenTok do
 
   @token_prefix "T1=="
   @config Util.get_config()
-  @ot_api Application.get_env(:live_auction, :ot_api)
+  @ot_api Application.get_env(:zazaar, :ot_api)
 
   @doc """
   Generates session_id from config
