@@ -6,7 +6,6 @@ defmodule ZaZaar.Streaming.Channel do
 
   schema "channels" do
     field(:ot_session_id, :string)
-    field(:facebook_stream_key, :string)
     field(:streamer_id, Ecto.UUID)
 
     timestamps()
