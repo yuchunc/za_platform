@@ -21,7 +21,6 @@ defmodule LiveAuctionWeb.Router do
     )
 
     plug(Guardian.Plug.VerifySession)
-    plug(Guardian.Plug.VerifyHeader)
     plug(Guardian.Plug.EnsureAuthenticated)
     plug(Guardian.Plug.LoadResource)
   end

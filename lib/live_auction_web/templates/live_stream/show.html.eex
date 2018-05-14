@@ -4,4 +4,15 @@
 
 </div>
 
-<%= render_existing(@view_module, "show.js", assigns) %>
+<script charset="utf-8">
+
+  window.streamConfig =
+    {
+      streamer_id: "<%= @streamer_id %>",
+      jwt: "<%= current_token(@conn) %>",
+      key: "<%= @opentok_params.key %>",
+      sessionId: "<%= @opentok_params.session_id %>",
+      token: "<%= @opentok_params.token %>"
+    }
+
+</script>

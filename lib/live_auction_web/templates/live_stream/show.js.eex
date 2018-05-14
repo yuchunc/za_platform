@@ -3,12 +3,6 @@
   const sessionId = "<%= @opentok_params[:session_id] %>";
   const token = "<%= @opentok_params[:token] %>";
 
-  function handleError(error) {
-    if (error) {
-      console.log(error);
-    }
-  }
-
   function startSubscribing() {
     const session = OT.initSession(apiKey, sessionId)
 
