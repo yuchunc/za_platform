@@ -28,9 +28,6 @@ config :guardian, Guardian.DB, repo: ZaZaar.Repo
 
 config :zazaar, :ot_api, OpenTok.Api
 
-config :zazaar, :generator,
-  app: "ZaZaar"
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
