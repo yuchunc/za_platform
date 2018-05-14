@@ -1,8 +1,8 @@
 import_if_available LiveAuction.Factory
 import_if_available Ecto.Query
 
-alias LiveAuction.Repo
+alias ZaZaar.Repo
 
-require LiveAuctionWeb
+require ZaZaarWeb
 
-LiveAuctionWeb.context_schema_aliases()
+ZaZaarWeb.context_schema_aliases()

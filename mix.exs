@@ -1,9 +1,9 @@
-defmodule LiveAuction.Mixfile do
+defmodule ZaZaar.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :live_auction,
+      app: :zazaar,
       version: "0.0.1",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule LiveAuction.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {LiveAuction.Application, []},
+      mod: {ZaZaar.Application, []},
       extra_applications: [:logger, :runtime_tools, :edeliver]
     ]
   end

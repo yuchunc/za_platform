@@ -1,4 +1,4 @@
-defmodule LiveAuctionWeb.ConnCase do
+defmodule ZaZaarWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -15,27 +15,27 @@ defmodule LiveAuctionWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
-  import LiveAuction.Factory
+  import ZaZaar.Factory
 
-  alias LiveAuction.Auth.Guardian
+  alias ZaZaar.Auth.Guardian
 
   using do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import LiveAuctionWeb.Router.Helpers
-      import LiveAuction.Factory
+      import ZaZaarWeb.Router.Helpers
+      import ZaZaar.Factory
 
       # The default endpoint for testing
-      @endpoint LiveAuctionWeb.Endpoint
+      @endpoint ZaZaarWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveAuction.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ZaZaar.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(LiveAuction.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(ZaZaar.Repo, {:shared, self()})
     end
 
     user = insert(:user)

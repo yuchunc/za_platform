@@ -9,11 +9,11 @@ use Mix.Config
 #
 # NOTE setup https locally from this
 # http://ohanhi.com/phoenix-ssl-localhost.html
-config :live_auction, LiveAuctionWeb.Endpoint,
+config :zazaar, ZaZaarWeb.Endpoint,
   http: [port: 4000],
   https: [
     port: 4443,
-    otp_app: :live_auction,
+    otp_app: :zazaar,
     keyfile: "priv/keys/localhost.key",
     certfile: "priv/keys/localhost.cert"
   ],
@@ -46,13 +46,13 @@ config :live_auction, LiveAuctionWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :live_auction, LiveAuctionWeb.Endpoint,
+config :zazaar, ZaZaarWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/live_auction_web/views/.*(ex)$},
-      ~r{lib/live_auction_web/templates/.*(eex)$}
+      ~r{lib/zazaar_web/views/.*(ex)$},
+      ~r{lib/zazaar_web/templates/.*(eex)$}
     ]
   ]
 
@@ -64,13 +64,13 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :live_auction, LiveAuction.Repo,
+config :zazaar, ZaZaar.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "live_auction_dev",
+  database: "zazaar_dev",
   hostname: "localhost",
   pool_size: 10
 
-config :live_auction, LiveAuction.Auth.Guardian,
+config :zazaar, ZaZaar.Auth.Guardian,
   secret_key: "TLzXhQ2+gSqRNaEMvuZrWwkfHiNkkcAARlrh4iavEYA/RrQ6A896FtrxnUxn5Qpp",
   ttl: {30, :days},
   verify_issuer: true

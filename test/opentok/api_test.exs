@@ -1,5 +1,5 @@
 defmodule OpenTok.ApiTest do
-  use LiveAuctionWeb.ConnCase, async: true
+  use ZaZaarWeb.ConnCase, async: true
 
   alias OpenTok.Util
 

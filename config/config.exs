@@ -6,27 +6,27 @@
 use Mix.Config
 
 # General application configuration
-config :live_auction, ecto_repos: [LiveAuction.Repo]
+config :zazaar, ecto_repos: [ZaZaar.Repo]
 
 # Configures the endpoint
-config :live_auction, LiveAuctionWeb.Endpoint,
+config :zazaar, ZaZaarWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "MOILzEC2RzH6h4ClnlxDe4tUNVuEH19jZeszWOpCDeWUX9BfNTGuaLYMDM4oswGh",
-  render_errors: [view: LiveAuctionWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: LiveAuction.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: ZaZaarWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: ZaZaar.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :live_auction, LiveAuction.Auth.Guardian,
-  issuer: "live_auction",
-  error_handler: LiveAuction.Auth.ErrorHandler
+config :zazaar, ZaZaar.Auth.Guardian,
+  issuer: "zazaar",
+  error_handler: ZaZaar.Auth.ErrorHandler
 
-config :guardian, Guardian.DB, repo: LiveAuction.Repo
+config :guardian, Guardian.DB, repo: ZaZaar.Repo
 
-config :live_auction, :ot_api, OpenTok.Api
+config :zazaar, :ot_api, OpenTok.Api
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

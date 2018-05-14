@@ -1,7 +1,7 @@
 require Logger
 
 if Mix.env == :dev do
-  import LiveAuction.Factory
+  import ZaZaar.Factory
 
   Logger.info("Adding stream")
 
