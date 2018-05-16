@@ -33,7 +33,7 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
-  def start_streaming(streamer_id) do
+  def start_stream(streamer_id) do
     case current_channel_for(streamer_id) do
       %Channel{} = channel ->
         %Stream{}
@@ -44,6 +44,16 @@ defmodule ZaZaar.Streaming do
         {:error, :cannot_start_stream}
     end
   end
+
+  def end_stream(stream_id) when is_binary(stream_id), do: Repo.get(Stream, stream_id) |> end_stream
+
+  def end_stream(%Stream{} = stream) do
+    stream
+    |> Stream.archive
+    |> Repo.update
+  end
+
+  def end_stream(_), do: {:error, :invalid_stream}
 
   def append_comment(%Stream{} = stream, comment_params) do
     stream

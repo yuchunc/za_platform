@@ -47,7 +47,7 @@ defmodule ZaZaar.StreamingTest do
     end
 
     test "user must be streamer", context do
-      %{user: user, session_id: session_id} = context
+      %{user: user} = context
 
       assert {:error, :invalid_user} = Streaming.create_channel(user.id)
     end
@@ -62,19 +62,43 @@ defmodule ZaZaar.StreamingTest do
     test "returns a stream", context do
       %{user: streamer} = context
 
-      assert {:ok, stream} = Streaming.start_streaming(streamer.id)
+      assert {:ok, stream} = Streaming.start_stream(streamer.id)
       assert stream.__struct__ == ZaZaar.Streaming.Stream
     end
 
     test "failed to find the streamer's channel" do
       streamer = insert(:streamer)
 
-      assert {:error, :cannot_start_stream} = Streaming.start_streaming(streamer.id)
+      assert {:error, :cannot_start_stream} = Streaming.start_stream(streamer.id)
     end
   end
 
   describe "end_stream/1" do
-    # TODO end stream functions here
+    setup context do
+      %{user: streamer} = context
+      channel = insert(:channel, streamer_id: streamer.id)
+      {:ok, stream: insert(:stream, channel: channel)}
+    end
+
+    test "sets the archived_at time on stream", context do
+      %{stream: stream} = context
+
+      assert {:ok, stream1} = Streaming.end_stream(stream.id)
+      assert stream1.archived_at
+    end
+
+    test "errors when invalid stream is used" do
+      assert {:error, :invalid_stream} = Streaming.end_stream(Ecto.UUID.generate())
+    end
+
+    test "archived stream cannot be touched", context do
+      %{user: streamer} = context
+      channel = insert(:channel, streamer_id: streamer.id)
+      stream = insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now)
+
+      assert {:error, changeset} = Streaming.end_stream(stream.id)
+      assert Keyword.get(changeset.errors, :archived_at) |> elem(0) == "Archived"
+    end
   end
 
   describe "append_comment/2" do
