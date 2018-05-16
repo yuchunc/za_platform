@@ -11,6 +11,30 @@ defmodule ZaZaar.Factory do
     build(:user, tier: :viewer)
   end
 
+  def user_factory do
+    password = "12345678"
+
+    %Account.User{
+      username: sequence(Faker.Internet.user_name()),
+      phone: Faker.Phone.EnUs.phone(),
+      email: Faker.Internet.email(),
+      password: password,
+      encrypted_password: Comeonin.Argon2.hashpwsalt(password)
+    }
+  end
+
+  def user_factory do
+    password = "12345678"
+
+    %Account.User{
+      username: sequence(Faker.Internet.user_name()),
+      phone: Faker.Phone.EnUs.phone(),
+      email: Faker.Internet.email(),
+      password: password,
+      encrypted_password: Comeonin.Argon2.hashpwsalt(password)
+    }
+  end
+
   def channel_factory do
     %Streaming.Channel{
       ot_session_id: sequence("some_ot_session_id"),
@@ -27,19 +51,7 @@ defmodule ZaZaar.Factory do
 
     %Streaming.Comment{
       user_id: user.id,
-      content: Faker.Lorem.sentence
-    }
-  end
-
-  def user_factory do
-    password = "12345678"
-
-    %Account.User{
-      username: sequence(Faker.Internet.user_name()),
-      phone: Faker.Phone.EnUs.phone(),
-      email: Faker.Internet.email(),
-      password: password,
-      encrypted_password: Comeonin.Argon2.hashpwsalt(password)
+      content: Faker.Lorem.sentence()
     }
   end
 end

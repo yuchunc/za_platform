@@ -5,10 +5,10 @@ defmodule ZaZaar.Streaming.Stream do
   alias ZaZaar.Streaming
 
   schema "streams" do
-    field :facebook_stream_key, :string
-    field :archived_at, :naive_datetime
+    field(:facebook_stream_key, :string)
+    field(:archived_at, :naive_datetime)
 
-    embeds_many :comments, Streaming.Comment
+    embeds_many(:comments, Streaming.Comment)
 
     timestamps()
   end

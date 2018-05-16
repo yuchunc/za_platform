@@ -66,6 +66,10 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
       {:ok, socket: socket_1}
     end
+
+    @tag :skip
+    test "all subscriber should receive user:message_sent with payload", context do
+    end
   end
 
   describe "terminate" do

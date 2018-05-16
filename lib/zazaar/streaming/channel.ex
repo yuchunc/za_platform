@@ -16,10 +16,9 @@ defmodule ZaZaar.Streaming.Channel do
   """
   def changeset(%__MODULE__{} = stream, attrs) do
     stream
-    |> cast(attrs, [:facebook_stream_key])
+    |> cast(attrs, [])
     |> validate_required([:ot_session_id])
     |> unique_constraint(:ot_session_id)
-    |> unique_constraint(:facebook_stream_key)
     |> foreign_key_constraint(:stream_id)
   end
 end

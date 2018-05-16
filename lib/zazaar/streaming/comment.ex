@@ -4,8 +4,8 @@ defmodule ZaZaar.Streaming.Comment do
   import Ecto.Changeset
 
   embedded_schema do
-    field :user_id, Ecto.UUID
-    field :content, :string
+    field(:user_id, Ecto.UUID)
+    field(:content, :string)
 
     timestamps(updated_at: false)
   end

@@ -5,6 +5,7 @@ defmodule ZaZaar.Streaming do
   import Ecto.Query
 
   alias ZaZaar.Repo
+  alias ZaZaar.Account
   alias ZaZaar.Streaming
   alias Streaming.{Channel, Stream}
 
@@ -21,22 +22,20 @@ defmodule ZaZaar.Streaming do
     Repo.one(query)
   end
 
-  def new_session(streamer_id) do
-    case Repo.get_by(Channel, streamer_id: streamer_id) do
-      nil ->
-        {:ok, session_id} = OpenTok.request_session_id()
+  def create_channel(%Account.User{id: streamer_id, tier: :streamer}) do
+    {:ok, session_id} = OpenTok.request_session_id()
 
-        %Channel{ot_session_id: session_id}
-        |> Repo.insert([])
+    %Channel{ot_session_id: session_id, streamer_id: streamer_id}
+    |> Repo.insert([])
+  end
 
-      stream ->
-        {:ok, stream}
-    end
+  def create_channel(_user) do
+    {:error, :invalid_user}
   end
 
   def append_comment(%Stream{} = stream, comment_params) do
     stream
     |> Stream.changeset(%{comments: stream.comments ++ [comment_params]})
-    |> Repo.update
+    |> Repo.update()
   end
 end
