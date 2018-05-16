@@ -4,9 +4,13 @@ defmodule ZaZaar.Streaming.Stream do
 
   alias ZaZaar.Streaming
 
+  @foreign_key_type Ecto.UUID
+
   schema "streams" do
     field(:facebook_stream_key, :string)
     field(:archived_at, :naive_datetime)
+
+    belongs_to(:channel, Streaming.Channel)
 
     embeds_many(:comments, Streaming.Comment)
 
@@ -16,9 +20,9 @@ defmodule ZaZaar.Streaming.Stream do
   @doc false
   def changeset(%__MODULE__{} = stream, attrs) do
     stream
-    |> cast(attrs, [:facebook_stream_key, :archived_at])
+    |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id])
     |> cast_embed(:comments)
-    |> validate_required([])
+    |> assoc_constraint(:channel)
     |> check_constraint(:archived_at, name: :archived_stream, message: "Stream Archived")
   end
 end

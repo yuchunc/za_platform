@@ -7,6 +7,8 @@ defmodule ZaZaar.Repo.Migrations.CreateStreams do
       add :archived_at, :naive_datetime
       add :comments, :jsonb
 
+      add :channel_id,  references(:channels, type: :uuid), null: false
+
       timestamps()
     end
 

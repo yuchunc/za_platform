@@ -42,7 +42,8 @@ defmodule ZaZaar.StreamingTest do
         {:ok, session_id}
       end)
 
-      assert {:ok, %Channel{ot_session_id: ^session_id}} = Streaming.create_channel(user)
+      assert {:ok, result} = Streaming.create_channel(user)
+      assert result.ot_session_id == session_id
     end
 
     test "user must be streamer", context do
@@ -52,18 +53,28 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "start_streaming/1" do
-    setup do
-      {:ok, channel: insert(:channel)}
+  describe "start_stream/1" do
+    setup context do
+      %{user: streamer} = context
+      {:ok, channel: insert(:channel, streamer_id: streamer.id)}
     end
 
-    test "returns a created stream", context do
-      %{user: user} = context
+    test "returns a stream", context do
+      %{user: streamer} = context
 
-      # assert {:ok, result} = Streaming.new_session(user.id)
-      # assert result.id == stream.id
-      # assert result.ot_session_id == session_id
+      assert {:ok, stream} = Streaming.start_streaming(streamer.id)
+      assert stream.__struct__ == ZaZaar.Streaming.Stream
     end
+
+    test "failed to find the streamer's channel" do
+      streamer = insert(:streamer)
+
+      assert {:error, :cannot_start_stream} = Streaming.start_streaming(streamer.id)
+    end
+  end
+
+  describe "end_stream/1" do
+    # TODO end stream functions here
   end
 
   describe "append_comment/2" do

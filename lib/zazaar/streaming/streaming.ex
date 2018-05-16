@@ -33,6 +33,18 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
+  def start_streaming(streamer_id) do
+    case current_channel_for(streamer_id) do
+      %Channel{} = channel ->
+        %Stream{}
+        |> Stream.changeset(%{channel_id: channel.id})
+        |> Repo.insert()
+
+      _ ->
+        {:error, :cannot_start_stream}
+    end
+  end
+
   def append_comment(%Stream{} = stream, comment_params) do
     stream
     |> Stream.changeset(%{comments: stream.comments ++ [comment_params]})
