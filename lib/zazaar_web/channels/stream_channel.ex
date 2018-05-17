@@ -17,6 +17,8 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_info({:after_join, payload}, socket) do
+    broadcast(socket, "user:joined", payload)
+
     {:noreply, socket}
   end
 
@@ -43,10 +45,15 @@ defmodule ZaZaarWeb.StreamChannel do
          viewer <- current_resource(socket),
          %Channel{} = channel <- Streaming.current_channel_for(streamer_id),
          {:ok, key, token} <-
-           OpenTok.generate_token(channel.ot_session_id, :publisher, viewer[:id]),
+           OpenTok.generate_token(channel.ot_session_id, :subscriber),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key}
     do
-      broadcast(socket, "viewer:joined", %{id: viewer[:id]})
+      if is_nil(viewer) do
+        broadcast(socket, "viewer:joined", %{})
+      else
+        broadcast(socket, "viewer:joined", %{id: viewer.id})
+      end
+
       {:reply, {:ok, opentok_params}, socket}
     end
 

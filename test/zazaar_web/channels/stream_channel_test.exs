@@ -52,7 +52,35 @@ defmodule ZaZaarWeb.StreamChannelTest do
       ref = push(socket, "streamer:show_start", params)
 
       assert_broadcast("streamer:show_started", %{message: _})
-      assert_reply(ref, :ok, %{token: "T1==" <> _})
+      assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
+    end
+  end
+
+  describe "viewer:joine" do
+    test "member viewer can join through this event", context do
+      %{channel: channel} = context
+      viewer = insert(:viewer)
+      {:ok, jwt, _} = Guardian.encode_and_sign(viewer)
+      {:ok, socket} = connect(UserSocket, %{token: jwt})
+
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+
+      ref = push(socket_1, "viewer:join", %{})
+
+      assert_broadcast("viewer:joined", payload)
+      assert payload == %{id: viewer.id}
+      assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
+    end
+
+    test "anonymous viewer can join through event", context do
+      %{socket: socket, channel: channel} = context
+
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+
+      ref = push(socket_1, "viewer:join", %{})
+
+      assert_broadcast("viewer:joined", %{})
+      assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
     end
   end
 
