@@ -22,7 +22,7 @@ defmodule ZaZaarWeb.StreamChannel do
     {:noreply, socket}
   end
 
-  def handle_in("stream:show_start", params, socket) do
+  def handle_in("streamer:show_start", params, socket) do
     with %{"message" => message} <- params,
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),

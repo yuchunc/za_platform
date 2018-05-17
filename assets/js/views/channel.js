@@ -1,20 +1,17 @@
 import socket from '../socket';
 
-const joinChannel = (otAction) => {
-  const streamer_id = window.streamConfig.streamer_id
+const createChannel = () => {
+  const streamer_id = window.streamConfig.streamer_id;
 
-  let channel = socket.channel("stream:" + streamer_id).join()
+  return socket.channel("stream:" + streamer_id);
+}
 
-  return channel.receive("ok", (msg) => {
-    console.log("ping");
-    otAction();
-  }).receive("error", (reason) => {
-    console.log("ws join failed", reason);
+const joinChannel = (channel) => {
+  return channel.join().receive("ok", (resp) => {
+    console.log("ws joined", resp);
+  }).receive("error", (msg) => {
+    console.log("ws failed", msg);
   });
 }
 
-export default () => {
-  return {
-    joinChannel
-  }
-}
+export {createChannel, joinChannel};

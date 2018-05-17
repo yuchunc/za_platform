@@ -20,8 +20,8 @@ defmodule ZaZaarWeb.StreamingControllerTest do
         |> get(membership_streaming_path(conn, :show))
         |> html_response(200)
 
-      assert Regex.scan(~r/sessionId: (\d_\w{15}-\w{51}-\w{2})/, result)
-      assert Regex.scan(~r/token:/, result)
+      assert Regex.scan(~r/jwt:/, result)
+      assert Regex.scan(~r/streamer_id:/, result)
     end
 
     # TODO move this to controller action where transition user to streamer

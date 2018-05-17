@@ -49,7 +49,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       %{socket: socket} = context
 
       params = %{message: "hello world"}
-      ref = push(socket, "stream:show_start", params)
+      ref = push(socket, "streamer:show_start", params)
 
       assert_broadcast("streamer:show_started", %{message: _})
       assert_reply(ref, :ok, %{token: "T1==" <> _})
