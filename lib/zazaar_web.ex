@@ -64,6 +64,8 @@ defmodule ZaZaarWeb do
       import ZaZaarWeb.Gettext
       import Phoenix.View
 
+      alias ZaZaarWeb.ErrorView
+
       ZaZaarWeb.context_schema_aliases()
 
       def current_resource(socket), do: Guardian.Phoenix.Socket.current_resource(socket)

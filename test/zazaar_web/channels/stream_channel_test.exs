@@ -9,6 +9,18 @@ defmodule ZaZaarWeb.StreamChannelTest do
     {:ok, socket: socket, channel: channel}
   end
 
+  def sign_socket(nil) do
+    {:ok, socket} = connect(UserSocket, %{})
+    socket
+  end
+
+  def sign_socket(%User{} = user) do
+    connect(UserSocket, %{})
+    {:ok, jwt, _} = Guardian.encode_and_sign(user)
+    {:ok, socket} = connect(UserSocket, %{token: jwt})
+    socket
+  end
+
   describe "join a channel" do
     test "anybody can join a stream channel", context do
       %{socket: socket, channel: channel} = context
@@ -87,16 +99,24 @@ defmodule ZaZaarWeb.StreamChannelTest do
   describe "user:send_message" do
     setup context do
       %{channel: channel} = context
-      user = Repo.get(User, channel.streamer_id)
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
-      {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      streamer = Repo.get(User, channel.streamer_id)
+      socket = sign_socket(streamer)
+      |> subscribe_and_join!(StreamChannel, "stream:" <> channel.streamer_id)
 
-      {:ok, socket: socket_1}
+      {:ok, socket: socket}
     end
 
-    @tag :skip
-    test "all subscriber should receive user:message_sent with payload" do
+    test "receive user:message_sent with message in payload if a stream is active", context do
+      %{socket: socket_signed, channel: channel} = context
+
+      message = "Ga Ga Woo Lala ah~"
+
+      push(socket_signed, "user:send_message", %{message: message})
+
+      assert_broadcast("user:message_sent", payload)
+      assert payload.user_id == channel.streamer_id
+      assert payload.message == message
+      assert payload.send_at
     end
   end
 

@@ -34,9 +34,6 @@ defmodule ZaZaarWeb.StreamChannel do
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
       {:reply, {:ok, opentok_params}, socket}
-    else
-      _ ->
-        render(ErrorView, "404.html", %{})
     end
   end
 
@@ -56,7 +53,18 @@ defmodule ZaZaarWeb.StreamChannel do
 
       {:reply, {:ok, opentok_params}, socket}
     end
+  end
 
+  def handle_in("user:send_message", params, socket) do
+    with %{"message" => message} <- params ,
+         viewer <- current_resource(socket),
+         current_time <- NaiveDateTime.utc_now(),
+         payload <- %{user_id: viewer.id, message: message, send_at: current_time}
+    do
+      broadcast(socket, "user:message_sent", payload)
+
+      {:noreply, socket}
+    end
   end
 
   def terminate(_reason, socket) do
