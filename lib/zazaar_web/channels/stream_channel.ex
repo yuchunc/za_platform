@@ -27,10 +27,11 @@ defmodule ZaZaarWeb.StreamChannel do
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
-         {:ok, stream} <- Streaming.new_session(streamer.id),
+         %Channel{} = channel <- Streaming.current_channel_for(streamer.id),
+         {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
-           OpenTok.generate_token(stream.ot_session_id, :publisher, streamer.id) do
-      opentok_params = %{session_id: stream.ot_session_id, token: token, key: key}
+           OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
       {:reply, {:ok, opentok_params}, socket}
     else

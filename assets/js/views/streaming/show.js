@@ -1,6 +1,8 @@
 import channel from '../channel';
 import main from '../main';
 
+// TODO Need to Accept params here
+// the configs should come from WS
 const startStreaming = () => {
   const config = window.streamConfig;
   const session = OT.initSession(config.key, config.sessionId);
