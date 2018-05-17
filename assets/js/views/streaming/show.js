@@ -1,9 +1,10 @@
-import channel from '../channel';
+import socket from '../../socket';
 import main from '../main';
 
-const startStreaming = () => {
-  const config = window.streamConfig;
-  const session = OT.initSession(config.key, config.sessionId);
+const streamer_id = window.streamConfig.streamer_id;
+
+const startStreaming = (ot_config) => {
+  const session = OT.initSession(ot_config.key, ot_config.session_id);
 
   // Create a publisher
   const publisher = OT.initPublisher('publisher', {
@@ -13,7 +14,7 @@ const startStreaming = () => {
   }, main.handleError);
 
   // Connect to the session
-  session.connect(config.token, (error) => {
+  session.connect(ot_config.token, (error) => {
     // If the connection is successful, publish to the session
     if (error) {
       main.handleError(error);
@@ -28,7 +29,15 @@ export default () => {
   return Object.assign(main(), {
     mount: () => {
       console.log('Streaming Show mounted');
-      channel().joinChannel(startStreaming);
+
+      let channel = socket.channel("stream:" + streamer_id);
+      channel.join();
+
+      channel
+        .push("streamer:show_start", {message: ""})
+        .receive("ok", (resp) => {
+          startStreaming(resp)
+        });
     },
 
     unmount: () => {

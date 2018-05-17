@@ -64,6 +64,8 @@ defmodule ZaZaarWeb do
       import ZaZaarWeb.Gettext
       import Phoenix.View
 
+      alias ZaZaarWeb.ErrorView
+
       ZaZaarWeb.context_schema_aliases()
 
       def current_resource(socket), do: Guardian.Phoenix.Socket.current_resource(socket)
@@ -88,8 +90,9 @@ defmodule ZaZaarWeb do
 
       alias ZaZaar.Account
       alias Account.User
+
       alias ZaZaar.Streaming
-      alias Streaming.{Stream, View}
+      alias Streaming.{Stream, Channel, Comment}
     end
   end
 end

@@ -8,7 +8,7 @@ defmodule ZaZaarWeb.StreamChannel do
         nil -> %{}
       end
 
-    if Streaming.current_stream_for(streamer_id) do
+    if Streaming.current_channel_for(streamer_id) do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
@@ -17,26 +17,50 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_info({:after_join, payload}, socket) do
-    payload |> IO.inspect(label: "label")
     broadcast(socket, "user:joined", payload)
 
     {:noreply, socket}
   end
 
-  def handle_in("stream:show_start", params, socket) do
+  def handle_in("streamer:show_start", params, socket) do
     with %{"message" => message} <- params,
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
-         {:ok, stream} <- Streaming.new_session(streamer.id),
+         %Channel{} = channel <- Streaming.current_channel_for(streamer.id),
+         {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
-           OpenTok.generate_token(stream.ot_session_id, :publisher, streamer.id) do
-      opentok_params = %{session_id: stream.ot_session_id, token: token, key: key}
+           OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
       {:reply, {:ok, opentok_params}, socket}
-    else
-      _ ->
-        render(ErrorView, "404.html", %{})
+    end
+  end
+
+  def handle_in("viewer:join", _params, socket) do
+    with %{topic: "stream:" <> streamer_id} <- socket,
+         viewer <- current_resource(socket),
+         %Channel{} = channel <- Streaming.current_channel_for(streamer_id),
+         {:ok, key, token} <- OpenTok.generate_token(channel.ot_session_id, :subscriber),
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+      if is_nil(viewer) do
+        broadcast(socket, "viewer:joined", %{})
+      else
+        broadcast(socket, "viewer:joined", %{id: viewer.id})
+      end
+
+      {:reply, {:ok, opentok_params}, socket}
+    end
+  end
+
+  def handle_in("user:send_message", params, socket) do
+    with %{"message" => message} <- params,
+         viewer <- current_resource(socket),
+         current_time <- NaiveDateTime.utc_now(),
+         payload <- %{user_id: viewer.id, message: message, send_at: current_time} do
+      broadcast(socket, "user:message_sent", payload)
+
+      {:noreply, socket}
     end
   end
 

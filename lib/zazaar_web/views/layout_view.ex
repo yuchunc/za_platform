@@ -15,7 +15,7 @@ defmodule ZaZaarWeb.LayoutView do
   defp view_name(conn) do
     conn
     |> view_module
-    |> Phoenix.Naming.resource_name
+    |> Phoenix.Naming.resource_name()
     |> String.replace("_view", "")
   end
 

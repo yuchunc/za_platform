@@ -28,6 +28,14 @@ defmodule ZaZaarWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint ZaZaarWeb.Endpoint
+
+      def gen_signed_in_user(context) do
+        user = insert(:user)
+
+        new_conn = Phoenix.ConnTest.build_conn() |> Guardian.Plug.sign_in(user)
+
+        Map.merge(context, %{conn: new_conn, user: user})
+      end
     end
   end
 
@@ -38,12 +46,8 @@ defmodule ZaZaarWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(ZaZaar.Repo, {:shared, self()})
     end
 
-    user = insert(:user)
+    conn = Phoenix.ConnTest.build_conn()
 
-    conn =
-      Phoenix.ConnTest.build_conn()
-      |> Guardian.Plug.sign_in(user)
-
-    {:ok, conn: conn, user: user}
+    {:ok, conn: conn}
   end
 end

@@ -3,7 +3,6 @@
     <a class="item" href="/"> ZaZaar </a>
 
     <div class="right menu" id="navItems">
-      <% current_token(@conn) |> IO.inspect(label: "conn") %>
       <%= if current_token(@conn) do %>
         <a class="item" href= <%= membership_path(@conn, :show) %>>Member Dash</a>
         <%= link("Sign Out", to: session_path(@conn, :delete), method: :delete, class: "item") %>

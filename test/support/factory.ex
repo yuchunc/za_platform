@@ -11,13 +11,6 @@ defmodule ZaZaar.Factory do
     build(:user, tier: :viewer)
   end
 
-  def stream_factory do
-    %Streaming.Stream{
-      ot_session_id: sequence("some_ot_session_id"),
-      streamer_id: insert(:streamer) |> Map.get(:id)
-    }
-  end
-
   def user_factory do
     password = "12345678"
 
@@ -27,6 +20,28 @@ defmodule ZaZaar.Factory do
       email: Faker.Internet.email(),
       password: password,
       encrypted_password: Comeonin.Argon2.hashpwsalt(password)
+    }
+  end
+
+  def channel_factory do
+    %Streaming.Channel{
+      ot_session_id: sequence("some_ot_session_id"),
+      streamer_id: insert(:streamer) |> Map.get(:id)
+    }
+  end
+
+  def stream_factory do
+    %Streaming.Stream{
+      channel: build(:channel)
+    }
+  end
+
+  def comment_factory do
+    user = insert(:user)
+
+    %Streaming.Comment{
+      user_id: user.id,
+      content: Faker.Lorem.sentence()
     }
   end
 end
