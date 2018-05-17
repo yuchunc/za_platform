@@ -94,7 +94,7 @@ defmodule ZaZaar.StreamingTest do
     test "archived stream cannot be touched", context do
       %{user: streamer} = context
       channel = insert(:channel, streamer_id: streamer.id)
-      stream = insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now)
+      stream = insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
 
       assert {:error, changeset} = Streaming.end_stream(stream.id)
       assert Keyword.get(changeset.errors, :archived_at) |> elem(0) == "Archived"

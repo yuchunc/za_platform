@@ -33,24 +33,26 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
-  def start_stream(streamer_id) do
-    case current_channel_for(streamer_id) do
-      %Channel{} = channel ->
-        %Stream{}
-        |> Stream.changeset(%{channel_id: channel.id})
-        |> Repo.insert()
-
-      _ ->
-        {:error, :cannot_start_stream}
-    end
+  def start_stream(streamer_id) when is_binary(streamer_id) do
+    current_channel_for(streamer_id)
+    |> start_stream
   end
 
-  def end_stream(stream_id) when is_binary(stream_id), do: Repo.get(Stream, stream_id) |> end_stream
+  def start_stream(%Channel{} = channel) do
+    %Stream{}
+    |> Stream.changeset(%{channel_id: channel.id})
+    |> Repo.insert()
+  end
+
+  def start_stream(_), do: {:error, :cannot_start_stream}
+
+  def end_stream(stream_id) when is_binary(stream_id),
+    do: Repo.get(Stream, stream_id) |> end_stream
 
   def end_stream(%Stream{} = stream) do
     stream
-    |> Stream.archive
-    |> Repo.update
+    |> Stream.archive()
+    |> Repo.update()
   end
 
   def end_stream(_), do: {:error, :invalid_stream}

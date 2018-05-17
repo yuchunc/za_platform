@@ -29,7 +29,7 @@ defmodule ZaZaar.Streaming.Stream do
 
   def archive(%__MODULE__{} = stream) do
     stream
-    |> changeset(%{archived_at: NaiveDateTime.utc_now})
+    |> changeset(%{archived_at: NaiveDateTime.utc_now()})
     |> validate_required([:archived_at])
   end
 
