@@ -1,5 +1,7 @@
-import {createChannel, joinChannel} from '../channel';
+import socket from '../../socket';
 import main from '../main';
+
+const streamer_id = window.streamConfig.streamer_id;
 
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
@@ -28,8 +30,8 @@ export default () => {
     mount: () => {
       console.log('Streaming Show mounted');
 
-      let channel = createChannel();
-      joinChannel(channel);
+      let channel = socket.channel("stream:" + streamer_id);
+      channel.join();
 
       channel
         .push("streamer:show_start", {message: ""})

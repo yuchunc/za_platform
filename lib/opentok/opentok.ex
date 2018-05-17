@@ -66,4 +66,8 @@ defmodule OpenTok do
 
     @ot_api.get_session_state(session_id, headers)
   end
+
+  def config do
+    @config
+  end
 end

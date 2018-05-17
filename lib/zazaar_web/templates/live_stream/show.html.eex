@@ -9,10 +9,7 @@
   window.streamConfig =
     {
       streamer_id: "<%= @streamer_id %>",
-      jwt: "<%= current_token(@conn) %>",
-      key: "<%= @opentok_params.key %>",
-      sessionId: "<%= @opentok_params.session_id %>",
-      token: "<%= @opentok_params.token %>"
+      jwt: "<%= current_token(@conn) %>"
     }
 
 </script>

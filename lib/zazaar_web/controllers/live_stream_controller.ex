@@ -9,12 +9,6 @@ defmodule ZaZaarWeb.LiveStreamController do
   end
 
   def show(conn, %{"id" => streamer_id}) do
-    with %Stream{} = stream <- Streaming.current_channel_for(streamer_id),
-         viewer <- current_resource(conn),
-         {:ok, key, token} <-
-           OpenTok.generate_token(stream.ot_session_id, :subscriber, viewer[:id]),
-         opentok_params <- %{session_id: stream.ot_session_id, token: token, key: key} do
-      render(conn, "show.html", streamer_id: streamer_id, opentok_params: opentok_params)
-    end
+    render(conn, "show.html", streamer_id: streamer_id)
   end
 end
