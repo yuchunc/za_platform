@@ -35,7 +35,7 @@ defmodule ZaZaar.Mixfile do
   defp deps do
     [
       # phoenix
-      {:phoenix, "~> 1.3.0"},
+      {:phoenix, "~> 1.3.2"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:cowboy, "~> 1.0"},
