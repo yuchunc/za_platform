@@ -29,5 +29,22 @@ defmodule ZaZaar.Following do
     end
   end
 
-  def start_following(_, _), do: {:error, :no_id_to_record}
+  def start_following(_, _), do: {:error, :no_id_on_record}
+
+  def stop_following(%{id: fan_id}, %{id: target_id}) when is_followable(fan_id, target_id) do
+    if Repo.get_by(Follow, follower_id: fan_id, followee_id: target_id) do
+      :ok
+    else
+      result = %Follow{follower_id: fan_id, followee_id: target_id}
+               |> Follow.changeset(%{})
+               |> Repo.insert
+
+      if {:ok, _} = result do
+        :ok
+      else
+        result
+      end
+    end
+  end
+  def stop_following(_, _), do: {:error, :no_id_on_record}
 end

@@ -43,12 +43,19 @@ defmodule ZaZaar.FollowingTest do
     end
   end
 
-  @tag :skip
   describe "stop_following/2" do
-    test "user can stop following a user" do
+    setup do
+      {:ok, follow: insert(:follow)}
+    end
+
+    test "user can stop following a user", context do
+      %{follow: follow} = context
+
+      assert Following.stop_following(%{id: follow.follower_id}, %{id: follow.followee_id}) == :ok
     end
 
     test "if user is not following, it is fine" do
+      assert Following.stop_following(insert(:viewer), insert(:streamer)) == :ok
     end
   end
 end
