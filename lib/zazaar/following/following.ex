@@ -9,7 +9,8 @@ defmodule ZaZaar.Following do
   alias ZaZaar.Following
   alias Following.Follow
 
-  defguardp is_followable(follower_id, followee_id) when is_binary(follower_id) and is_binary(followee_id)
+  defguardp is_followable(follower_id, followee_id)
+            when is_binary(follower_id) and is_binary(followee_id)
 
   def start_following(%{id: some_id}, %{id: some_id}), do: {:error, :cannot_follow_self}
 
@@ -17,9 +18,10 @@ defmodule ZaZaar.Following do
     if Repo.get_by(Follow, follower_id: fan_id, followee_id: target_id) do
       :ok
     else
-      result = %Follow{follower_id: fan_id, followee_id: target_id}
-               |> Follow.changeset(%{})
-               |> Repo.insert
+      result =
+        %Follow{follower_id: fan_id, followee_id: target_id}
+        |> Follow.changeset(%{})
+        |> Repo.insert()
 
       if {:ok, _} = result do
         :ok
@@ -38,16 +40,17 @@ defmodule ZaZaar.Following do
   defp get_follows([{field, value}]) do
     Follow
     |> where([f], field(f, ^field) == ^value)
-    |> Repo.all
+    |> Repo.all()
   end
 
   def stop_following(%{id: fan_id}, %{id: target_id}) when is_followable(fan_id, target_id) do
     if Repo.get_by(Follow, follower_id: fan_id, followee_id: target_id) do
       :ok
     else
-      result = %Follow{follower_id: fan_id, followee_id: target_id}
-               |> Follow.changeset(%{})
-               |> Repo.insert
+      result =
+        %Follow{follower_id: fan_id, followee_id: target_id}
+        |> Follow.changeset(%{})
+        |> Repo.insert()
 
       if {:ok, _} = result do
         :ok
@@ -56,5 +59,6 @@ defmodule ZaZaar.Following do
       end
     end
   end
+
   def stop_following(_, _), do: {:error, :no_id_on_record}
 end

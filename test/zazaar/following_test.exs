@@ -38,7 +38,8 @@ defmodule ZaZaar.FollowingTest do
 
       result = Following.get_following(follower)
 
-      assert result |> Enum.map(&(&1.id)) |> Enum.sort == follows |> Enum.map(&(&1.id)) |> Enum.sort
+      assert result |> Enum.map(& &1.id) |> Enum.sort() ==
+               follows |> Enum.map(& &1.id) |> Enum.sort()
     end
   end
 
@@ -49,7 +50,8 @@ defmodule ZaZaar.FollowingTest do
 
       result = Following.get_follower(followee)
 
-      assert result |> Enum.map(&(&1.id)) |> Enum.sort == follows |> Enum.map(&(&1.id)) |> Enum.sort
+      assert result |> Enum.map(& &1.id) |> Enum.sort() ==
+               follows |> Enum.map(& &1.id) |> Enum.sort()
     end
   end
 

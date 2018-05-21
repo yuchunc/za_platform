@@ -2,10 +2,9 @@ defmodule ZaZaar.Following.Follow do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "follows" do
-    field :followee_id, Ecto.UUID
-    field :follower_id, Ecto.UUID
+    field(:followee_id, Ecto.UUID)
+    field(:follower_id, Ecto.UUID)
 
     timestamps()
   end
