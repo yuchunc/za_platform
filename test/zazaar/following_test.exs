@@ -31,15 +31,25 @@ defmodule ZaZaar.FollowingTest do
     end
   end
 
-  @tag :skip
   describe "get_following/1" do
     test "gets a list of currently following user ids for a user" do
+      follower = insert(:viewer)
+      follows = insert_pair(:follow, follower_id: follower.id)
+
+      result = Following.get_following(follower)
+
+      assert result |> Enum.map(&(&1.id)) |> Enum.sort == follows |> Enum.map(&(&1.id)) |> Enum.sort
     end
   end
 
-  @tag :skip
   describe "get_follower/1" do
     test "gets a list of followers for a user" do
+      followee = insert(:streamer)
+      follows = insert_pair(:follow, followee_id: followee.id)
+
+      result = Following.get_follower(followee)
+
+      assert result |> Enum.map(&(&1.id)) |> Enum.sort == follows |> Enum.map(&(&1.id)) |> Enum.sort
     end
   end
 
