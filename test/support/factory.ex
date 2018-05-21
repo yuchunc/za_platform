@@ -1,7 +1,7 @@
 defmodule ZaZaar.Factory do
   use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias ZaZaar.{Account, Streaming}
+  alias ZaZaar.{Account, Streaming, Following}
 
   def streamer_factory do
     build(:user, tier: :streamer)
@@ -42,6 +42,16 @@ defmodule ZaZaar.Factory do
     %Streaming.Comment{
       user_id: user.id,
       content: Faker.Lorem.sentence()
+    }
+  end
+
+  def follow_factory do
+    follower = insert(:viewer)
+    followee = insert(:streamer)
+
+    %Following.Follow{
+      follower_id: follower.id,
+      followee_id: followee.id
     }
   end
 end

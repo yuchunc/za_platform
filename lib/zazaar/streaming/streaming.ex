@@ -5,7 +5,7 @@ defmodule ZaZaar.Streaming do
   import Ecto.Query
 
   alias ZaZaar.Repo
-  alias ZaZaar.Account
+
   alias ZaZaar.Streaming
   alias Streaming.{Channel, Stream}
 
@@ -22,7 +22,7 @@ defmodule ZaZaar.Streaming do
     Repo.one(query)
   end
 
-  def create_channel(%Account.User{id: streamer_id, tier: :streamer}) do
+  def create_channel(%{id: streamer_id, tier: :streamer}) do
     {:ok, session_id} = OpenTok.request_session_id()
 
     %Channel{ot_session_id: session_id, streamer_id: streamer_id}
