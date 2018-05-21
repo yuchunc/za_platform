@@ -24,6 +24,11 @@ const startStreaming = (ot_config) => {
   });
 }
 
+const uploadSnapshot = (publisher) => {
+  const imgData = publisher.getImgData();
+
+  // sends imgData to server
+};
 
 export default () => {
   return Object.assign(main(), {
@@ -37,6 +42,8 @@ export default () => {
         .push("streamer:show_start", {message: ""})
         .receive("ok", (resp) => {
           startStreaming(resp)
+
+          // setInterval(uploadSnapshot, 1000 * 60 * 20);
         });
     },
 
