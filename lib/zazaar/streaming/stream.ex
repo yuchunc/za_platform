@@ -10,6 +10,8 @@ defmodule ZaZaar.Streaming.Stream do
   schema "streams" do
     field(:facebook_stream_key, :string)
     field(:archived_at, :naive_datetime)
+    field(:upload_key, :string)
+    field(:video_snapshot, :string)
 
     belongs_to(:channel, Streaming.Channel)
 

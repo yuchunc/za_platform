@@ -14,6 +14,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
     socket
   end
 
+  def random_string(length) do
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64 |> binary_part(0, length)
+  end
+
+
   def sign_socket(%User{} = user) do
     connect(UserSocket, %{})
     {:ok, jwt, _} = Guardian.encode_and_sign(user)
@@ -68,12 +73,27 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
   end
 
-  describe "viewer:joine" do
+  describe "streamer:upload_snapshot" do
+    test "streamer can upload a video snapshot with provided secret", context do
+      %{channel: channel} = context
+      streamer = Repo.get(User, channel.streamer_id)
+      socket = sign_socket(streamer)
+      stream = insert(:stream, channel: channel, upload_key: random_string(32))
+      rand_binary = :crypto.strong_rand_bytes(32)
+
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> streamer.id)
+
+      ref = push(socket_1, "streamer:upload_snapshot", %{upload_key: rand_binary})
+
+      assert_reply(ref, :ok, %{})
+    end
+  end
+
+  describe "viewer:join" do
     test "member viewer can join through this event", context do
       %{channel: channel} = context
       viewer = insert(:viewer)
-      {:ok, jwt, _} = Guardian.encode_and_sign(viewer)
-      {:ok, socket} = connect(UserSocket, %{token: jwt})
+      socket = sign_socket(viewer)
 
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 

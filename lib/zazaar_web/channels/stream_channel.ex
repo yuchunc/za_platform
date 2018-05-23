@@ -8,7 +8,7 @@ defmodule ZaZaarWeb.StreamChannel do
         nil -> %{}
       end
 
-    if Streaming.current_channel_for(streamer_id) do
+    if Streaming.get_channel(streamer_id) do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
@@ -27,7 +27,7 @@ defmodule ZaZaarWeb.StreamChannel do
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
-         %Channel{} = channel <- Streaming.current_channel_for(streamer.id),
+         %Channel{} = channel <- Streaming.get_channel(streamer.id),
          {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
@@ -37,10 +37,14 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
+  def handle_in("streamer:upload_snapshot", params, socket) do
+    with %{"upload_key" => key} <- params,
+  end
+
   def handle_in("viewer:join", _params, socket) do
     with %{topic: "stream:" <> streamer_id} <- socket,
          viewer <- current_resource(socket),
-         %Channel{} = channel <- Streaming.current_channel_for(streamer_id),
+         %Channel{} = channel <- Streaming.get_channel(streamer_id),
          {:ok, key, token} <- OpenTok.generate_token(channel.ot_session_id, :subscriber),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       if is_nil(viewer) do

@@ -11,12 +11,12 @@ defmodule ZaZaar.Streaming do
 
   def get_channels do
     query = from(s in Channel, order_by: s.updated_at)
-    # TODO add active_at and sort on that
+    # TODO add active_at and sort on it
 
     Repo.all(query)
   end
 
-  def current_channel_for(streamer_id) do
+  def get_channel(streamer_id) do
     query = from(s in Channel, where: s.streamer_id == ^streamer_id)
 
     Repo.one(query)
@@ -34,13 +34,13 @@ defmodule ZaZaar.Streaming do
   end
 
   def start_stream(streamer_id) when is_binary(streamer_id) do
-    current_channel_for(streamer_id)
+    get_channel(streamer_id)
     |> start_stream
   end
 
   def start_stream(%Channel{} = channel) do
-    %Stream{}
-    |> Stream.changeset(%{channel_id: channel.id})
+    %Stream{channel_id: channel.id}
+    |> Stream.changeset(%{})
     |> Repo.insert()
   end
 

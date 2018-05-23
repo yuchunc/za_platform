@@ -26,11 +26,11 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "current_channel_for/1" do
+  describe "get_channel/1" do
     test "gets the current stream" do
       channel = insert(:channel)
 
-      assert %Channel{} = Streaming.current_channel_for(channel.streamer_id)
+      assert %Channel{} = Streaming.get_channel(channel.streamer_id)
     end
   end
 
