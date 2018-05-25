@@ -25,6 +25,7 @@ defmodule ZaZaar.Factory do
 
   def channel_factory do
     streamer = insert(:streamer)
+
     %Streaming.Channel{
       ot_session_id: sequence("some_ot_session_id"),
       streamer_id: streamer.id

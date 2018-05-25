@@ -37,9 +37,12 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def handle_in("streamer:upload_snapshot", params, socket) do
-    with %{"upload_key" => key} <- params,
-  end
+  # def handle_in("streamer:upload_snapshot", params, socket) do
+  #   # with %{"upload_key" => key} <- params,
+  #   #      %User{} = streamer <- current_resource(socket),
+  #   #      channel <- Streaming.get_channel(streamer.id),
+
+  # end
 
   def handle_in("viewer:join", _params, socket) do
     with %{topic: "stream:" <> streamer_id} <- socket,

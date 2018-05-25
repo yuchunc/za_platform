@@ -53,6 +53,52 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
+  describe "gen_snapshot_key/1" do
+    setup do
+      {:ok, stream: insert(:stream)}
+    end
+
+    test "generates a upload key for uploading snapshot to an active stream", context do
+      %{stream: stream} = context
+
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.channel)
+    end
+
+    test "error when no stream is found" do
+      stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
+
+      assert {:error, :not_found} = Streaming.gen_snapshot_key(stream.channel)
+    end
+  end
+
+  describe "update_snapshot/3" do
+    setup do
+      {:ok, stream: insert(:stream, upload_key: "foobar")}
+    end
+
+    test "find active stream with matching upload key, and store the data in to it", context do
+      %{stream: stream} = context
+
+      assert :ok =
+               Streaming.update_snapshot(
+                 stream.channel,
+                 "foobar",
+                 :crypto.strong_rand_bytes(12) |> Base.encode64()
+               )
+    end
+
+    test "error if no valid stream is found" do
+      stream = insert(:stream, upload_key: nil)
+
+      assert {:error, :not_found} =
+               Streaming.update_snapshot(
+                 stream.channel,
+                 "somethingelse",
+                 :crypto.strong_rand_bytes(12) |> Base.encode64()
+               )
+    end
+  end
+
   describe "start_stream/1" do
     setup context do
       %{user: streamer} = context

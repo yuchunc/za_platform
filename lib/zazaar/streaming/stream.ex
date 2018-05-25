@@ -23,7 +23,7 @@ defmodule ZaZaar.Streaming.Stream do
   @doc false
   def changeset(%__MODULE__{} = stream, attrs) do
     stream
-    |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id])
+    |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id, :upload_key, :video_snapshot])
     |> cast_embed(:comments)
     |> assoc_constraint(:channel)
     |> validate_not_archived

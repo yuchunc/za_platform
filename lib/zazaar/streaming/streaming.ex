@@ -33,6 +33,50 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
+  def gen_snapshot_key(%Channel{} = channel) do
+    stream =
+      channel.id
+      |> active_stream_query
+      |> Repo.one()
+
+    case stream do
+      %Stream{} ->
+        random_string = :crypto.strong_rand_bytes(Enum.random(8..12)) |> Base.url_encode64()
+        result = Stream.changeset(stream, %{upload_key: random_string}) |> Repo.update()
+
+        case result do
+          {:ok, _} -> {:ok, random_string}
+          _ -> result
+        end
+
+      _ ->
+        {:error, :not_found}
+    end
+  end
+
+  def update_snapshot(channel, key, data) do
+    stream =
+      channel.id
+      |> active_stream_query
+      |> where([s], not is_nil(s.upload_key))
+      |> where(upload_key: ^key)
+      |> Repo.one()
+
+    case stream do
+      %Stream{} ->
+        result =
+          Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update()
+
+        case result do
+          {:ok, _} -> :ok
+          _ -> result
+        end
+
+      _ ->
+        {:error, :not_found}
+    end
+  end
+
   def start_stream(streamer_id) when is_binary(streamer_id) do
     get_channel(streamer_id)
     |> start_stream
@@ -61,5 +105,11 @@ defmodule ZaZaar.Streaming do
     stream
     |> Stream.changeset(%{comments: stream.comments ++ [comment_params]})
     |> Repo.update()
+  end
+
+  defp active_stream_query(channel_id) do
+    Stream
+    |> where(channel_id: ^channel_id)
+    |> where([s], is_nil(s.archived_at))
   end
 end
