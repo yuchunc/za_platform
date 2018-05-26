@@ -129,21 +129,20 @@ defmodule ZaZaar.StreamingTest do
     test "sets the archived_at time on stream", context do
       %{stream: stream} = context
 
-      assert {:ok, stream1} = Streaming.end_stream(stream.id)
+      assert {:ok, stream1} = Streaming.end_stream(stream.channel.streamer_id)
       assert stream1.archived_at
     end
 
     test "errors when invalid stream is used" do
-      assert {:error, :invalid_stream} = Streaming.end_stream(Ecto.UUID.generate())
+      assert {:error, :invalid_channel} = Streaming.end_stream(Ecto.UUID.generate())
     end
 
-    test "archived stream cannot be touched", context do
-      %{user: streamer} = context
+    test "archived stream cannot be touched" do
+      streamer = insert(:streamer)
       channel = insert(:channel, streamer_id: streamer.id)
-      stream = insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
+      insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
 
-      assert {:error, changeset} = Streaming.end_stream(stream.id)
-      assert Keyword.get(changeset.errors, :archived_at) |> elem(0) == "Archived"
+      assert {:error, :invalid_channel} = Streaming.end_stream(streamer.id)
     end
   end
 

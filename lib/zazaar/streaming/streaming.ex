@@ -106,11 +106,13 @@ defmodule ZaZaar.Streaming do
   end
 
   def end_stream(%Channel{} = channel) do
-    channel.id
-    |> active_stream_query()
-    |> Repo.one()
-    |> Stream.archive()
-    |> Repo.update()
+    if stream = active_stream_query(channel.id) |> Repo.one() do
+      stream
+      |> Stream.archive()
+      |> Repo.update()
+    else
+      end_stream(nil)
+    end
   end
 
   def end_stream(_), do: {:error, :invalid_channel}
