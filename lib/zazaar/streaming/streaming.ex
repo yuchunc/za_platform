@@ -33,6 +33,11 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
+  def gen_snapshot_key(streamer_id) when is_binary(streamer_id) do
+    get_channel(streamer_id)
+    |> gen_snapshot_key
+  end
+
   def gen_snapshot_key(%Channel{} = channel) do
     stream =
       channel.id
@@ -52,6 +57,11 @@ defmodule ZaZaar.Streaming do
       _ ->
         {:error, :not_found}
     end
+  end
+
+  def update_snapshot(streamer_id, key, data) when is_binary(streamer_id) do
+    get_channel(streamer_id)
+    |> update_snapshot(key, data)
   end
 
   def update_snapshot(channel, key, data) do
@@ -90,16 +100,20 @@ defmodule ZaZaar.Streaming do
 
   def start_stream(_), do: {:error, :cannot_start_stream}
 
-  def end_stream(stream_id) when is_binary(stream_id),
-    do: Repo.get(Stream, stream_id) |> end_stream
+  def end_stream(streamer_id) when is_binary(streamer_id) do
+    get_channel(streamer_id)
+    |> end_stream
+  end
 
-  def end_stream(%Stream{} = stream) do
-    stream
+  def end_stream(%Channel{} = channel) do
+    channel.id
+    |> active_stream_query()
+    |> Repo.one()
     |> Stream.archive()
     |> Repo.update()
   end
 
-  def end_stream(_), do: {:error, :invalid_stream}
+  def end_stream(_), do: {:error, :invalid_channel}
 
   def append_comment(%Stream{} = stream, comment_params) do
     stream
