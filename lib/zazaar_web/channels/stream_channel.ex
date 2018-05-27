@@ -94,13 +94,11 @@ defmodule ZaZaarWeb.StreamChannel do
 
     Logger.debug("> leave #{inspect(reason)}")
 
-    user = current_resource(socket)
-
     case current_resource(socket) do
       nil ->
         broadcast!(socket, "viewer:left", %{})
 
-      %{id: streamer_id} ->
+      %{id: ^streamer_id} ->
         broadcast!(socket, "streamer:show_ended", %{})
 
       user ->
