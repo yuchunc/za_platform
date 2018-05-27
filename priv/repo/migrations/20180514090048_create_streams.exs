@@ -12,5 +12,7 @@ defmodule ZaZaar.Repo.Migrations.CreateStreams do
 
       timestamps()
     end
+
+    create index(:streams, [:channel_id, :archived_at], unique: true)
   end
 end

@@ -26,11 +26,11 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "current_channel_for/1" do
+  describe "get_channel/1" do
     test "gets the current stream" do
       channel = insert(:channel)
 
-      assert %Channel{} = Streaming.current_channel_for(channel.streamer_id)
+      assert %Channel{} = Streaming.get_channel(channel.streamer_id)
     end
   end
 
@@ -50,6 +50,52 @@ defmodule ZaZaar.StreamingTest do
       %{user: user} = context
 
       assert {:error, :invalid_user} = Streaming.create_channel(user.id)
+    end
+  end
+
+  describe "gen_snapshot_key/1" do
+    setup do
+      {:ok, stream: insert(:stream)}
+    end
+
+    test "generates a upload key for uploading snapshot to an active stream", context do
+      %{stream: stream} = context
+
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.channel)
+    end
+
+    test "error when no stream is found" do
+      stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
+
+      assert {:error, :not_found} = Streaming.gen_snapshot_key(stream.channel)
+    end
+  end
+
+  describe "update_snapshot/3" do
+    setup do
+      {:ok, stream: insert(:stream, upload_key: "foobar")}
+    end
+
+    test "find active stream with matching upload key, and store the data in to it", context do
+      %{stream: stream} = context
+
+      assert :ok =
+               Streaming.update_snapshot(
+                 stream.channel,
+                 "foobar",
+                 :crypto.strong_rand_bytes(12) |> Base.encode64()
+               )
+    end
+
+    test "error if no valid stream is found" do
+      stream = insert(:stream, upload_key: nil)
+
+      assert {:error, :not_found} =
+               Streaming.update_snapshot(
+                 stream.channel,
+                 "somethingelse",
+                 :crypto.strong_rand_bytes(12) |> Base.encode64()
+               )
     end
   end
 
@@ -83,21 +129,20 @@ defmodule ZaZaar.StreamingTest do
     test "sets the archived_at time on stream", context do
       %{stream: stream} = context
 
-      assert {:ok, stream1} = Streaming.end_stream(stream.id)
+      assert {:ok, stream1} = Streaming.end_stream(stream.channel.streamer_id)
       assert stream1.archived_at
     end
 
     test "errors when invalid stream is used" do
-      assert {:error, :invalid_stream} = Streaming.end_stream(Ecto.UUID.generate())
+      assert {:error, :invalid_channel} = Streaming.end_stream(Ecto.UUID.generate())
     end
 
-    test "archived stream cannot be touched", context do
-      %{user: streamer} = context
+    test "archived stream cannot be touched" do
+      streamer = insert(:streamer)
       channel = insert(:channel, streamer_id: streamer.id)
-      stream = insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
+      insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
 
-      assert {:error, changeset} = Streaming.end_stream(stream.id)
-      assert Keyword.get(changeset.errors, :archived_at) |> elem(0) == "Archived"
+      assert {:error, :invalid_channel} = Streaming.end_stream(streamer.id)
     end
   end
 

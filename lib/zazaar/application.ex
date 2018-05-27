@@ -12,9 +12,8 @@ defmodule ZaZaar.Application do
       supervisor(ZaZaar.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ZaZaarWeb.Endpoint, []),
-      worker(Guardian.DB.Token.SweeperServer, [])
-      # Start your own worker by calling: ZaZaar.Worker.start_link(arg1, arg2, arg3)
-      # worker(ZaZaar.Worker, [arg1, arg2, arg3]),
+      worker(Guardian.DB.Token.SweeperServer, []),
+      worker(ZaZaarWeb.StreamWatcher, [:channels])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
