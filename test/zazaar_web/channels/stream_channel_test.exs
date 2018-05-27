@@ -84,7 +84,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
       push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
 
-      Process.sleep(5)
+      Process.sleep(10)
 
       refute Repo.get(Stream, stream.id) |> Map.get(:video_snapshot) |> is_nil
     end

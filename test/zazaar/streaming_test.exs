@@ -13,7 +13,7 @@ defmodule ZaZaar.StreamingTest do
   end
 
   describe "get_channels/0" do
-    test "gets a list of streams" do
+    test "gets a list of channels" do
       channel_list = insert_list(10, :channel)
 
       result = Streaming.get_channels()
@@ -26,8 +26,23 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
+  describe "get_channels/1" do
+    test "gets list of channels with the last active snapshot with snapshot: true" do
+      insert_pair(:channel)
+      |> Enum.map(fn c ->
+        insert(:stream, channel: c, video_snapshot: "jibberish")
+      end)
+
+      result = Streaming.get_channels(snapshot: true)
+
+      assert Enum.map(result, & &1.video_snapshot)
+             |> Enum.reject(&is_nil/1)
+             |> Enum.count() == 2
+    end
+  end
+
   describe "get_channel/1" do
-    test "gets the current stream" do
+    test "gets the current channel" do
       channel = insert(:channel)
 
       assert %Channel{} = Streaming.get_channel(channel.streamer_id)

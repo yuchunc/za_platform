@@ -1,3 +1,3 @@
 <div class="ui celled grid">
-  <%= render_many @streams, __MODULE__, "_stream.html", as: :stream, conn: @conn %>
+  <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
 </div>

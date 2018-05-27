@@ -29,7 +29,6 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_info({:take_snapshot, streamer}, socket) do
     {:ok, key} = Streaming.gen_snapshot_key(streamer.id)
     broadcast(socket, "streamer:take_snapshot", %{upload_key: key})
-    #Process.send_after(self(), {:take_snapshot, streamer}, 1_800_000)
     Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 60 * 10)
     {:noreply, socket}
   end

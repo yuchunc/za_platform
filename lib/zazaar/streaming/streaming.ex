@@ -9,9 +9,19 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Streaming
   alias Streaming.{Channel, Stream}
 
-  def get_channels do
-    query = from(s in Channel, order_by: s.updated_at)
+  def get_channels(opts \\ []) do
+    with_snapshot = Keyword.get(opts, :snapshot, false)
+    query = from(c in Channel, order_by: c.updated_at)
     # TODO add active_at and sort on it
+
+    query =
+      if with_snapshot do
+        query
+        |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
+        |> select([c, s], %{c | video_snapshot: s.video_snapshot})
+      else
+        query
+      end
 
     Repo.all(query)
   end

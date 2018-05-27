@@ -4,8 +4,8 @@ defmodule ZaZaarWeb.LiveStreamController do
   action_fallback(FallbackController)
 
   def index(conn, _params) do
-    stream_list = Streaming.get_channels()
-    render(conn, "index.html", streams: stream_list)
+    channels = Streaming.get_channels(snapshot: true)
+    render(conn, "index.html", channels: channels)
   end
 
   def show(conn, %{"id" => streamer_id}) do

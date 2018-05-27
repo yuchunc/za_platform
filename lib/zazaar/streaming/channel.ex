@@ -7,6 +7,7 @@ defmodule ZaZaar.Streaming.Channel do
   schema "channels" do
     field(:ot_session_id, :string)
     field(:streamer_id, Ecto.UUID)
+    field(:video_snapshot, :string, virtual: true)
 
     timestamps()
   end
