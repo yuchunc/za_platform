@@ -29,7 +29,8 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_info({:take_snapshot, streamer}, socket) do
     {:ok, key} = Streaming.gen_snapshot_key(streamer.id)
     broadcast(socket, "streamer:take_snapshot", %{upload_key: key})
-    Process.send_after(self(), {:take_snapshot, streamer}, 1_800_000)
+    #Process.send_after(self(), {:take_snapshot, streamer}, 1_800_000)
+    Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 60 * 10)
     {:noreply, socket}
   end
 
@@ -48,7 +49,7 @@ defmodule ZaZaarWeb.StreamChannel do
            StreamWatcher.monitor(:channels, self(), {__MODULE__, :streamer_left, [streamer_id]}),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
-      send(self(), {:take_snapshot, streamer})
+      Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
       {:reply, {:ok, opentok_params}, socket}
     end
   end
@@ -58,7 +59,7 @@ defmodule ZaZaarWeb.StreamChannel do
          %User{} = streamer <- current_resource(socket),
          channel <- Streaming.get_channel(streamer.id),
          :ok <- Streaming.update_snapshot(channel, key, snapshot) do
-      {:reply, :ok, socket}
+      {:noreply, socket}
     end
   end
 

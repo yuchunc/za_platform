@@ -78,14 +78,15 @@ defmodule ZaZaarWeb.StreamChannelTest do
       streamer = Repo.get(User, channel.streamer_id)
       socket = sign_socket(streamer)
       key = random_string(32)
-      insert(:stream, channel: channel, upload_key: key)
+      stream = insert(:stream, channel: channel, upload_key: key)
 
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> streamer.id)
 
-      ref =
-        push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
+      push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
 
-      assert_reply(ref, :ok, %{})
+      Process.sleep(5)
+
+      refute Repo.get(Stream, stream.id) |> Map.get(:video_snapshot) |> is_nil
     end
   end
 

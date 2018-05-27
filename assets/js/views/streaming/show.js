@@ -3,6 +3,7 @@ import main from '../main';
 
 const streamer_id = window.streamConfig.streamer_id;
 
+
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
 
@@ -22,12 +23,15 @@ const startStreaming = (ot_config) => {
       session.publish(publisher, main.handleError);
     }
   });
+
+  return publisher;
 }
 
-const uploadSnapshot = (publisher) => {
+const uploadSnapshot = (publisher, channel, key) => {
   const imgData = publisher.getImgData();
+  const payload = {upload_key: key, snapshot: imgData};
 
-  // sends imgData to server
+  channel.push("streamer:upload_snapshot", payload);
 };
 
 export default () => {
@@ -36,15 +40,22 @@ export default () => {
       console.log('Streaming Show mounted');
 
       let channel = socket.channel("stream:" + streamer_id);
+      let publisher;
+
+      channel = socket.channel("stream:" + streamer_id);
       channel.join();
 
       channel
         .push("streamer:show_start", {message: ""})
         .receive("ok", (resp) => {
-          startStreaming(resp)
+          publisher = startStreaming(resp)
 
-          // setInterval(uploadSnapshot, 1000 * 60 * 20);
-        });
+          channel.on("streamer:take_snapshot", (resp) => {
+            console.log("ping ping");
+            console.log(publisher);
+            uploadSnapshot(publisher, channel, resp.upload_key);
+          });
+        })
     },
 
     unmount: () => {
