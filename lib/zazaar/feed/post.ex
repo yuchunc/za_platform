@@ -1,4 +1,4 @@
-defmodule Zazaar.Feed.Post do
+defmodule ZaZaar.Feed.Post do
   use Ecto.Schema
   import Ecto.Changeset
 

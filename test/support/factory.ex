@@ -1,8 +1,9 @@
 defmodule ZaZaar.Factory do
   use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias ZaZaar.{Account, Streaming, Following}
+  alias ZaZaar.{Account, Streaming, Following, Feed}
 
+#====== Account =========
   def streamer_factory do
     build(:user, tier: :streamer)
   end
@@ -22,6 +23,7 @@ defmodule ZaZaar.Factory do
       encrypted_password: Comeonin.Argon2.hashpwsalt(password)
     }
   end
+#====== Streaming =========
 
   def channel_factory do
     streamer = insert(:streamer)
@@ -47,6 +49,7 @@ defmodule ZaZaar.Factory do
     }
   end
 
+#====== Follow =========
   def follow_factory do
     follower = insert(:viewer)
     followee = insert(:streamer)
@@ -54,6 +57,15 @@ defmodule ZaZaar.Factory do
     %Following.Follow{
       follower_id: follower.id,
       followee_id: followee.id
+    }
+  end
+
+#====== Feed =========
+  def post_factory do
+    user = insert(:viewer)
+    %Feed.Post{
+      user_id: user.id,
+      body: Faker.Lorem.sentence()
     }
   end
 end
