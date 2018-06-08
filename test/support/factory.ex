@@ -3,7 +3,7 @@ defmodule ZaZaar.Factory do
 
   alias ZaZaar.{Account, Streaming, Following, Feed}
 
-#====== Account =========
+  # ====== Account =========
   def streamer_factory do
     build(:user, tier: :streamer)
   end
@@ -23,7 +23,8 @@ defmodule ZaZaar.Factory do
       encrypted_password: Comeonin.Argon2.hashpwsalt(password)
     }
   end
-#====== Streaming =========
+
+  # ====== Streaming =========
 
   def channel_factory do
     streamer = insert(:streamer)
@@ -49,7 +50,7 @@ defmodule ZaZaar.Factory do
     }
   end
 
-#====== Follow =========
+  # ====== Follow =========
   def follow_factory do
     follower = insert(:viewer)
     followee = insert(:streamer)
@@ -60,9 +61,10 @@ defmodule ZaZaar.Factory do
     }
   end
 
-#====== Feed =========
+  # ====== Feed =========
   def post_factory do
     user = insert(:viewer)
+
     %Feed.Post{
       user_id: user.id,
       body: Faker.Lorem.sentence()

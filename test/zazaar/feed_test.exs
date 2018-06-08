@@ -2,6 +2,7 @@ defmodule ZaZaar.FeedTest do
   use ZaZaar.DataCase
 
   alias ZaZaar.Feed
+  alias Feed.Post
 
   setup do
     {:ok, user: insert(:streamer)}
@@ -17,8 +18,17 @@ defmodule ZaZaar.FeedTest do
 
       assert Enum.count(result) == count
       Enum.each(result, fn p -> assert p.user_id == user.id end)
-      assert (result |> List.first |> Map.get(:inserted_at))
-        > (result |> List.last |> Map.get(:inserted_at))
+
+      assert result |> List.first() |> Map.get(:inserted_at) >
+               result |> List.last() |> Map.get(:inserted_at)
+    end
+  end
+
+  describe "add_post/2" do
+    test "adds a post of the feed", context do
+      %{user: user} = context
+
+      assert {:ok, %Post{}} = Feed.add_post(user.id, "Founding is fucking hard")
     end
   end
 end

@@ -1,5 +1,4 @@
 defmodule ZaZaar.Feed do
-
   import Ecto.Query
 
   alias ZaZaar.Repo
@@ -13,7 +12,16 @@ defmodule ZaZaar.Feed do
   def get_feed(user_id) do
     Post
     |> where(user_id: ^user_id)
-    |> order_by([desc: :inserted_at])
-    |> Repo.all
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  @doc """
+  adds a post of the user feed
+  """
+  def add_post(user_id, content) do
+    %Post{user_id: user_id}
+    |> Post.changeset(%{body: content})
+    |> Repo.insert()
   end
 end
