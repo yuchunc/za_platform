@@ -13,18 +13,6 @@ defmodule ZaZaarWeb.StreamChannelTest do
     :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length)
   end
 
-  def sign_socket(nil) do
-    {:ok, socket} = connect(UserSocket, %{})
-    socket
-  end
-
-  def sign_socket(%User{} = user) do
-    connect(UserSocket, %{})
-    {:ok, jwt, _} = Guardian.encode_and_sign(user)
-    {:ok, socket} = connect(UserSocket, %{token: jwt})
-    socket
-  end
-
   describe "join a channel" do
     test "anybody can join a stream channel", context do
       %{socket: socket, channel: channel} = context
