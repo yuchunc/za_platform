@@ -1,4 +1,4 @@
-defmodule Zazaar.Repo.Migrations.CreatePosts do
+defmodule ZaZaar.Repo.Migrations.CreatePosts do
   use Ecto.Migration
 
   def change do
