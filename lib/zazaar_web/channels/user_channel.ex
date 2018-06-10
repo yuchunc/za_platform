@@ -18,4 +18,16 @@ defmodule ZaZaarWeb.UserChannel do
 
     {:noreply, socket}
   end
+
+  def handle_in("add_post", params, socket) do
+    with user <- current_resource(socket),
+         %{"content" => content} <- params,
+         {:ok, post} <- Feed.add_post(user.id, content) do
+      broadcast(socket, "post_added", %{post: post})
+
+      {:noreply, socket}
+    else
+      _ -> {:error, :add_post_failed}
+    end
+  end
 end

@@ -23,6 +23,7 @@ defmodule ZaZaarWeb.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      import Ecto.Query, except: [join: 2, join: 3, join: 4]
       import ZaZaar.Factory
       import ZaZaarWeb.ChannelCase
 

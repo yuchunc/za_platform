@@ -4,6 +4,7 @@ defmodule ZaZaarWeb.UserSocket do
   require Logger
 
   ## Channels
+  channel("user:*", ZaZaarWeb.UserChannel)
   channel("stream:*", ZaZaarWeb.StreamChannel)
 
   ## Transports
