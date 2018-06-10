@@ -32,7 +32,7 @@ defmodule ZaZaarWeb.StreamWatcher do
       :error ->
         {:reply, :ok, state}
 
-      {:ok, {mod, func, args}} ->
+      {:ok, {_mod, _func, _args}} ->
         Process.unlink(pid)
         {:reply, :ok, drop_channel(state, pid)}
     end

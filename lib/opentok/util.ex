@@ -25,6 +25,14 @@ defmodule OpenTok.Util do
     ]
   end
 
+  def build_facebook_rtmp(channel) do
+    %{
+      id: "facebook:" <> channel.streamer_id,
+      serverUrl: "rtmp://live-api.facebook.com:80/rtmp/",
+      streamName: channel.facebook_key
+    }
+  end
+
   def get_config do
     case Config.initialize() do
       :ok -> Application.get_env(:zazaar, OpenTok) |> Map.new()

@@ -3,7 +3,7 @@ defmodule OpenTok.OpenTokTest do
   Tests the OpenTok Module
   """
 
-  use ExUnit.Case, async: true
+  use ZaZaar.DataCase, async: true
 
   import Mox
 
@@ -29,6 +29,7 @@ defmodule OpenTok.OpenTokTest do
     test "generates an valid token" do
       {:ok, session_id} = OpenTok.request_session_id()
       config = Application.get_env(:zazaar, OpenTok)
+               |> Map.new
 
       assert {:ok, key, token} = OpenTok.generate_token(session_id, :publisher, "foobar")
       assert key == config.key
@@ -65,6 +66,18 @@ defmodule OpenTok.OpenTokTest do
       {:ok, session_id} = OpenTok.request_session_id()
 
       assert {:ok, :inactive} = OpenTok.session_state(session_id)
+    end
+  end
+
+  describe "stream_to_facebook/1" do
+    setup do
+      {:ok, channel: insert(:channel)}
+    end
+
+    test "successfully stream to Facebook", context do
+      stream_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
+      session_id = context.channel.ot_session_id
+      assert OpenTok.stream_to_facebook(session_id, stream_key) == :ok
     end
   end
 end

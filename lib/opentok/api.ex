@@ -50,4 +50,10 @@ defmodule OpenTok.Api do
         {:error, "Failed to get stream info. Reponse code: #{sc}"}
     end
   end
+
+  @doc """
+  Start Broadcasting
+  """
+  def broadcast_externally(session_id, rtmp) do
+  end
 end

@@ -67,7 +67,9 @@ defmodule OpenTok do
     @ot_api.get_session_state(session_id, headers)
   end
 
-  def config do
-    @config
+  @doc """
+  Broadcast to Facebook
+  """
+  def stream_to_facebook(session_key, facebook_key) do
   end
 end
