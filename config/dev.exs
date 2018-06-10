@@ -75,4 +75,4 @@ config :zazaar, ZaZaar.Auth.Guardian,
   ttl: {30, :days},
   verify_issuer: true
 
-import_config "test.secret.exs"
+import_config "dev.secret.exs"
