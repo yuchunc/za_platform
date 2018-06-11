@@ -55,15 +55,16 @@ defmodule OpenTok.Api do
   Start Broadcasting
   """
   def external_broadcast(session_id, headers, rtmp_list) do
-    {:ok, payload} = %{
-      sessionId: session_id,
-      maxDuration: 36000,
-      layout: %{type: "bestFit"},
-      outputs: %{
-        rtmp: rtmp_list
+    {:ok, payload} =
+      %{
+        sessionId: session_id,
+        maxDuration: 36000,
+        layout: %{type: "bestFit"},
+        outputs: %{
+          rtmp: rtmp_list
+        }
       }
-    }
-    |> Poison.encode
+      |> Poison.encode()
 
     {:ok, response} =
       HTTPoison.post(
@@ -75,8 +76,10 @@ defmodule OpenTok.Api do
     case response.status_code do
       404 ->
         {:error, :noclient}
+
       sc when sc in 200..300 ->
         :ok
+
       sc ->
         {:error, "Failed to broadcast. Reponse code: #{sc}"}
     end

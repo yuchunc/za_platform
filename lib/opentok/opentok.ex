@@ -73,8 +73,8 @@ defmodule OpenTok do
   end
 
   defp generate_headers do
-      @config
-      |> Util.generate_jwt()
-      |> Util.wrap_request_headers()
+    @config
+    |> Util.generate_jwt()
+    |> Util.wrap_request_headers()
   end
 end

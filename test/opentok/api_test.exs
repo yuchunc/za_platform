@@ -49,9 +49,13 @@ defmodule OpenTok.ApiTest do
 
       {:ok, session_id} = OpenTok.Api.request_session_id(headers)
       facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
-      channel = insert(:channel,
-                       facebook_key: facebook_key,
-                       ot_session_id: session_id)
+
+      channel =
+        insert(
+          :channel,
+          facebook_key: facebook_key,
+          ot_session_id: session_id
+        )
 
       {:ok, headers: headers, channel: channel}
     end
