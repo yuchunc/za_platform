@@ -12,6 +12,7 @@ defmodule OpenTok.Util do
       # This authentication jwt expires in 3 mins
       exp: current_utc_seconds + 180
     }
+    |> IO.inspect(label: "jwt")
 
     JOSE.JWT.sign(secret_jwk, %{"alg" => "HS256"}, payload)
     |> JOSE.JWS.compact()
@@ -27,9 +28,9 @@ defmodule OpenTok.Util do
 
   def build_facebook_rtmp(channel) do
     %{
-      id: "facebook:" <> channel.streamer_id,
-      serverUrl: "rtmp://live-api.facebook.com:80/rtmp/",
-      streamName: channel.facebook_key
+      id: channel.facebook_key,
+      streamName: "facebook:" <> channel.streamer_id,
+      serverUrl: "rtmp://live-api.facebook.com:80/rtmp/"
     }
   end
 
