@@ -133,6 +133,10 @@ defmodule ZaZaar.Streaming do
     |> Repo.update()
   end
 
+  def stream_to_facebook(channel) do
+    OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
+  end
+
   defp active_stream_query(channel_id) do
     Stream
     |> where(channel_id: ^channel_id)
