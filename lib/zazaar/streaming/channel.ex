@@ -7,6 +7,7 @@ defmodule ZaZaar.Streaming.Channel do
   schema "channels" do
     field(:ot_session_id, :string)
     field(:streamer_id, Ecto.UUID)
+    field(:facebook_key, :string)
     field(:video_snapshot, :string, virtual: true)
 
     timestamps()
@@ -17,9 +18,10 @@ defmodule ZaZaar.Streaming.Channel do
   """
   def changeset(%__MODULE__{} = stream, attrs) do
     stream
-    |> cast(attrs, [])
+    |> cast(attrs, [:facebook_key])
     |> validate_required([:ot_session_id])
     |> unique_constraint(:ot_session_id)
+    |> unique_constraint(:facebook_key)
     |> foreign_key_constraint(:stream_id)
   end
 end

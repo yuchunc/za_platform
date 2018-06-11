@@ -179,4 +179,20 @@ defmodule ZaZaar.StreamingTest do
       assert stream.comments |> List.first() |> Map.get(:user_id) == user.id
     end
   end
+
+  describe "stream_to_facebook" do
+    setup do
+      facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
+      channel = insert(:channel, facebook_key: facebook_key)
+      {:ok, channel: channel}
+    end
+
+    test "activates a rtmp stream on Facebook", context do
+      expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
+        :ok
+      end)
+
+      assert Streaming.stream_to_facebook(context.channel) == :ok
+    end
+  end
 end

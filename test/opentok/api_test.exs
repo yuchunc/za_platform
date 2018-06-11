@@ -1,5 +1,5 @@
 defmodule OpenTok.ApiTest do
-  use ZaZaarWeb.ConnCase, async: true
+  use ZaZaar.DataCase, async: true
 
   alias OpenTok.Util
 
@@ -42,6 +42,31 @@ defmodule OpenTok.ApiTest do
       {:ok, %{"count" => _, "items" => _}} = OpenTok.Api.get_session_state(session_id, headers)
     end
   end
+
+  describe "external_broadcast/2" do
+    setup do
+      headers = create_session_headers(@ot_config)
+
+      {:ok, session_id} = OpenTok.Api.request_session_id(headers)
+      facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
+      channel = insert(:channel,
+                       facebook_key: facebook_key,
+                       ot_session_id: session_id)
+
+      {:ok, headers: headers, channel: channel}
+    end
+
+    test "broadcasts to external services", context do
+      %{headers: headers, channel: channel} = context
+
+      session_id = channel.ot_session_id
+      rtmp_list = [Util.build_facebook_rtmp(channel)]
+
+      assert OpenTok.Api.external_broadcast(session_id, headers, rtmp_list) == {:error, :noclient}
+    end
+  end
+
+  # TODO stop broadcasting
 
   defp create_session_headers(config) do
     config

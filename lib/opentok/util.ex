@@ -21,8 +21,17 @@ defmodule OpenTok.Util do
   def wrap_request_headers(jwt) do
     [
       {"X-OPENTOK-AUTH", jwt},
-      {"Accept", "application/json"}
+      {"Accept", "application/json"},
+      {"Content-Type", "application/json"}
     ]
+  end
+
+  def build_facebook_rtmp(streamer_id, facebook_key) do
+    %{
+      id: facebook_key,
+      streamName: "facebook:" <> streamer_id,
+      serverUrl: "rtmp://live-api.facebook.com:80/rtmp/"
+    }
   end
 
   def get_config do
