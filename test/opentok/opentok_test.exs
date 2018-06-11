@@ -69,15 +69,17 @@ defmodule OpenTok.OpenTokTest do
     end
   end
 
-  describe "stream_to_facebook/1" do
-    setup do
-      {:ok, channel: insert(:channel)}
-    end
+  describe "stream_to_facebook/3" do
+    test "successfully stream to Facebook" do
+      expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
+        :ok
+      end)
 
-    test "successfully stream to Facebook", context do
+      {:ok, session_id} = OpenTok.request_session_id()
+      streamer = insert(:streamer)
       stream_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
-      session_id = context.channel.ot_session_id
-      assert OpenTok.stream_to_facebook(session_id, stream_key) == :ok
+
+      assert OpenTok.stream_to_facebook(session_id, streamer.id, stream_key) == :ok
     end
   end
 end

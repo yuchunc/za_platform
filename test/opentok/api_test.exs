@@ -48,15 +48,12 @@ defmodule OpenTok.ApiTest do
       headers = create_session_headers(@ot_config)
 
       {:ok, session_id} = OpenTok.Api.request_session_id(headers)
-      #facebook_key = "2066829100252427?s_ps=1&s_vt=api&a=ATg43wd4cRNDZutW"
       facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
       channel = insert(:channel,
                        facebook_key: facebook_key,
                        ot_session_id: session_id)
 
-      new_headers = [{"Content-Type", "application/json"} | headers]
-
-      {:ok, headers: new_headers, channel: channel}
+      {:ok, headers: headers, channel: channel}
     end
 
     test "broadcasts to external services", context do
