@@ -65,7 +65,7 @@ defmodule OpenTok.ApiTest do
       session_id = channel.ot_session_id
       rtmp_list = [Util.build_facebook_rtmp(channel)]
 
-      assert OpenTok.Api.external_broadcast(session_id, headers, rtmp_list) == :ok
+      assert OpenTok.Api.external_broadcast(session_id, headers, rtmp_list) == {:error, :noclient}
     end
   end
 

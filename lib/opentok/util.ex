@@ -12,7 +12,6 @@ defmodule OpenTok.Util do
       # This authentication jwt expires in 3 mins
       exp: current_utc_seconds + 180
     }
-    |> IO.inspect(label: "jwt")
 
     JOSE.JWT.sign(secret_jwk, %{"alg" => "HS256"}, payload)
     |> JOSE.JWS.compact()

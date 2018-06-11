@@ -8,5 +8,5 @@ defmodule OpenTok.Behaviour do
 
   @callback get_session_state(String.t(), headers) :: ot_state_response
 
-  @callback external_broadcast(String.t(), headers, [map]) :: :ok | {:error, String.t}
+  @callback external_broadcast(String.t(), headers, [map]) :: :ok | {:error, :noclient} | {:error, String.t}
 end
