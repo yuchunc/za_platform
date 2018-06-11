@@ -28,8 +28,10 @@ defmodule OpenTok.OpenTokTest do
   describe "generate_token/4" do
     test "generates an valid token" do
       {:ok, session_id} = OpenTok.request_session_id()
-      config = Application.get_env(:zazaar, OpenTok)
-               |> Map.new
+
+      config =
+        Application.get_env(:zazaar, OpenTok)
+        |> Map.new()
 
       assert {:ok, key, token} = OpenTok.generate_token(session_id, :publisher, "foobar")
       assert key == config.key
