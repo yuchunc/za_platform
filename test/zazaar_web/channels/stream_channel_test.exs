@@ -57,6 +57,8 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
       assert_broadcast("streamer:show_started", %{message: _})
       assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
+
+      leave(socket)
     end
   end
 
