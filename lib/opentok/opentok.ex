@@ -59,14 +59,14 @@ defmodule OpenTok do
   Get the current session state
   """
   def session_state(session_id) do
-    @ot_api.get_session_state(session_id, generate_headers)
+    @ot_api.get_session_state(session_id, generate_headers())
   end
 
   @doc """
   Broadcast to Facebook
   """
   def stream_to_facebook(session_id, streamer_id, facebook_key) do
-    headers = generate_headers
+    headers = generate_headers()
     rtmp_list = [Util.build_facebook_rtmp(streamer_id, facebook_key)]
 
     @ot_api.external_broadcast(session_id, headers, rtmp_list)
