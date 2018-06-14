@@ -1,7 +1,7 @@
 defmodule ZaZaar.Factory do
   use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias ZaZaar.{Account, Streaming, Following, Feed}
+  alias ZaZaar.{Account, Streaming, Following, Feed, Message}
 
   # ====== Account =========
   def streamer_factory do
@@ -68,6 +68,26 @@ defmodule ZaZaar.Factory do
     %Feed.Post{
       user_id: user.id,
       body: Faker.Lorem.sentence()
+    }
+  end
+
+  # ====== Message =========
+  def history_factory do
+    streamer = insert(:streamer)
+    viewer = insert(:viewer)
+    user_ids = [streamer.id, viewer.id]
+
+    %Message.History{
+      user_ids: user_ids,
+      messages: [build(:note, user_id: Enum.random(user_ids))]
+    }
+  end
+
+  def note_factory do
+    user = insert(:viewer)
+    %Message.Note{
+      user_id: user.id,
+      body: Faker.Lorem.paragraph()
     }
   end
 end

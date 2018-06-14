@@ -2,7 +2,8 @@ defmodule ZaZaar.Message.Note do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key nil
+  @foreign_key_type :uuid
+  @primary_key {:id, :binary_id, autogenerate: true}
 
   embedded_schema do
     field :user_id, Ecto.UUID
@@ -12,7 +13,7 @@ defmodule ZaZaar.Message.Note do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = note, attrs) do
+  def changeset(%__MODULE__{} = note, attrs \\ %{}) do
     note
     |> cast(attrs, [:user_id, :body])
     |> validate_required([:user_id, :body])
