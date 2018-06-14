@@ -55,12 +55,14 @@ defmodule ZaZaarWeb.StreamChannelTest do
       %{socket: socket} = context
 
       params = %{message: "hello world"}
-      capture_log(fn ->
-        ref = push(socket, "streamer:show_start", params)
-            |> IO.inspect(label: "label")
 
-      assert_broadcast("streamer:show_started", %{message: _})
-      assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
+      capture_log(fn ->
+        ref =
+          push(socket, "streamer:show_start", params)
+          |> IO.inspect(label: "label")
+
+        assert_broadcast("streamer:show_started", %{message: _})
+        assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
       end)
     end
   end

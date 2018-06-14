@@ -9,8 +9,8 @@ defmodule ZaZaar.Message.History do
 
   schema "message_histories" do
     # FIXME this should be {:array, :uuid}, but is causing problem
-    field :user_ids, {:array, :string}
-    embeds_many :messages, Message.Note
+    field(:user_ids, {:array, :string})
+    embeds_many(:messages, Message.Note)
 
     timestamps()
   end

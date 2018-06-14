@@ -1,5 +1,4 @@
 defmodule OpenTok.ApiMock do
-
   @behaviour OpenTok.Behaviour
 
   def request_session_id(_), do: {:ok, "fake"}

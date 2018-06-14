@@ -85,6 +85,7 @@ defmodule ZaZaar.Factory do
 
   def note_factory do
     user = insert(:viewer)
+
     %Message.Note{
       user_id: user.id,
       body: Faker.Lorem.paragraph()

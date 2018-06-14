@@ -6,8 +6,8 @@ defmodule ZaZaar.Message.Note do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   embedded_schema do
-    field :user_id, Ecto.UUID
-    field :body, :string
+    field(:user_id, Ecto.UUID)
+    field(:body, :string)
 
     timestamps(update_at: false)
   end
