@@ -61,25 +61,32 @@ defmodule ZaZaar.ChatLogTest do
     end
   end
 
-  describe "get_chat_log/1" do
+  describe "get_history/1" do
     setup do
-      {:ok, history: insert(:history)}
+      user_ids = [Ecto.UUID.generate(), Ecto.UUID.generate()]
+      messages = build_list(50, :message, user_id: Enum.random(user_ids))
+      {:ok, history: insert(:history, messages: messages, user_ids: user_ids)}
     end
 
-    test "gets chat history between 2 people", context do
+    test "gets chat history between 2 people, defualt to 30 messages", context do
+      %{history: history} = context
 
+      result = ChatLog.get_history(history.user_ids)
+
+      assert Enum.count(result) == 30
     end
 
-    @tag :skip
-    test "default to 30" do
+    test "can paginate", context do
+      %{history: history} = context
+
+      result = ChatLog.get_history(history.user_ids)
+      result_1 = ChatLog.get_history(history.user_ids, page: 2)
+
+      refute result_1 == result
     end
 
-    @tag :skip
-    test "can paginate" do
-    end
-
-    @tag :skip
     test "error when chat history is not found" do
+      assert {:error, :log_not_found} = ChatLog.get_history(["fake", "boobs"])
     end
   end
 end

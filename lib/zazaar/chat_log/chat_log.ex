@@ -1,10 +1,14 @@
 defmodule ZaZaar.ChatLog do
   import Ecto.Changeset
+  import Ecto.Query
 
   alias ZaZaar.Repo
 
   alias ZaZaar.ChatLog
   alias ChatLog.{History, Message}
+
+  @limit 30
+  @page 1
 
   def append_message([user_id, user_id], _) do
     {:error, :converse_with_self}
@@ -17,7 +21,7 @@ defmodule ZaZaar.ChatLog do
 
   def append_message(user_ids, attrs) do
     history =
-      case Repo.get_by(History, user_ids: user_ids) do
+      case do_get_history(user_ids) do
         nil -> %History{user_ids: user_ids}
         history -> history
       end
@@ -28,5 +32,29 @@ defmodule ZaZaar.ChatLog do
     |> History.changeset()
     |> put_embed(:messages, history.messages ++ [msg])
     |> Repo.insert_or_update()
+  end
+
+  def get_history(user_ids, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @limit)
+    page = Keyword.get(opts, :page, @page)
+
+    if history = do_get_history(user_ids) do
+      {result, _} =
+        history
+        |> Map.get(:messages)
+        |> Enum.reverse()
+        |> Enum.chunk_every(limit)
+        |> List.pop_at(page - 1)
+
+      result
+    else
+      {:error, :log_not_found}
+    end
+  end
+
+  defp do_get_history(user_ids) do
+    History
+    |> where(fragment("user_ids @> ?", ^user_ids))
+    |> Repo.one()
   end
 end

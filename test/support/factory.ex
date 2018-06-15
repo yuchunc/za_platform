@@ -79,11 +79,11 @@ defmodule ZaZaar.Factory do
 
     %ChatLog.History{
       user_ids: user_ids,
-      messages: [build(:note, user_id: Enum.random(user_ids))]
+      messages: []
     }
   end
 
-  def note_factory do
+  def message_factory do
     user = insert(:viewer)
 
     %ChatLog.Message{
