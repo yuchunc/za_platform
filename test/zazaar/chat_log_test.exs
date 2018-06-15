@@ -1,7 +1,7 @@
-defmodule ZaZaar.MessageTest do
+defmodule ZaZaar.ChatLogTest do
   use ZaZaar.DataCase
 
-  alias ZaZaar.Message
+  alias ZaZaar.ChatLog
 
   describe "append_message/2" do
     test "accepts a list of user_ids, and the message, when history doesn't exist" do
@@ -12,7 +12,7 @@ defmodule ZaZaar.MessageTest do
         body: "You will never catch me, you will never catch me, lalalalla"
       }
 
-      assert {:ok, history} = Message.append_message(user_ids, msg)
+      assert {:ok, history} = ChatLog.append_message(user_ids, msg)
 
       message = List.last(history.messages)
 
@@ -29,7 +29,7 @@ defmodule ZaZaar.MessageTest do
         body: "You will never catch me, you will never catch me, lalalalla"
       }
 
-      assert {:ok, history} = Message.append_message(history.user_ids, msg)
+      assert {:ok, history} = ChatLog.append_message(history.user_ids, msg)
 
       message = List.last(history.messages)
 
@@ -46,7 +46,7 @@ defmodule ZaZaar.MessageTest do
         body: "You will never catch me, you will never catch me, lalalalla"
       }
 
-      assert {:error, :converse_with_self} = Message.append_message(user_ids, msg)
+      assert {:error, :converse_with_self} = ChatLog.append_message(user_ids, msg)
     end
 
     test "errors when message user_id is not in user_ids list" do
@@ -57,21 +57,28 @@ defmodule ZaZaar.MessageTest do
         body: "You will never catch me, you will never catch me, lalalalla"
       }
 
-      assert {:error, :sender_not_in_chat} = Message.append_message(user_ids, msg)
+      assert {:error, :sender_not_in_chat} = ChatLog.append_message(user_ids, msg)
     end
   end
 
-  @tag :skip
-  describe "retrieve_history/1" do
-    test "gets chat history between 2 people" do
+  describe "get_chat_log/1" do
+    setup do
+      {:ok, history: insert(:history)}
     end
 
+    test "gets chat history between 2 people", context do
+
+    end
+
+    @tag :skip
     test "default to 30" do
     end
 
+    @tag :skip
     test "can paginate" do
     end
 
+    @tag :skip
     test "error when chat history is not found" do
     end
   end

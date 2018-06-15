@@ -1,10 +1,10 @@
-defmodule ZaZaar.Message do
+defmodule ZaZaar.ChatLog do
   import Ecto.Changeset
 
   alias ZaZaar.Repo
 
-  alias ZaZaar.Message
-  alias Message.{History, Note}
+  alias ZaZaar.ChatLog
+  alias ChatLog.{History, Message}
 
   def append_message([user_id, user_id], _) do
     {:error, :converse_with_self}
@@ -22,7 +22,7 @@ defmodule ZaZaar.Message do
         history -> history
       end
 
-    msg = struct(Note, attrs)
+    msg = struct(Message, attrs)
 
     history
     |> History.changeset()

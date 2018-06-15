@@ -1,4 +1,4 @@
-defmodule ZaZaar.Message.Note do
+defmodule ZaZaar.ChatLog.Message do
   use Ecto.Schema
   import Ecto.Changeset
 

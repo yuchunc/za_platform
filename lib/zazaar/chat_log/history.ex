@@ -1,8 +1,8 @@
-defmodule ZaZaar.Message.History do
+defmodule ZaZaar.ChatLog.History do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias ZaZaar.Message
+  alias ZaZaar.ChatLog
 
   @foreign_key_type :uuid
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -10,7 +10,7 @@ defmodule ZaZaar.Message.History do
   schema "message_histories" do
     # FIXME this should be {:array, :uuid}, but is causing problem
     field(:user_ids, {:array, :string})
-    embeds_many(:messages, Message.Note)
+    embeds_many(:messages, ChatLog.Message)
 
     timestamps()
   end
