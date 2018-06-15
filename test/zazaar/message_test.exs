@@ -22,13 +22,19 @@ defmodule ZaZaar.MessageTest do
 
     test "accepts a list of user_ids, and the message, and appends to history" do
       history = insert(:history)
+      user_id = List.last(history.user_ids)
 
       msg = %{
-        user_id: List.last(history.user_ids),
+        user_id: user_id,
         body: "You will never catch me, you will never catch me, lalalalla"
       }
 
-      assert {:ok, message} = Message.append_message(history.user_ids, msg)
+      assert {:ok, history} = Message.append_message(history.user_ids, msg)
+
+      message = List.last(history.messages)
+
+      assert message.user_id == user_id
+      assert message.body == msg.body
     end
 
     test "errors when engaging conversation with self" do
