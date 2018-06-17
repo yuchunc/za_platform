@@ -96,6 +96,9 @@ defmodule ZaZaarWeb do
 
       alias ZaZaar.Feed
       alias Feed.Post
+
+      alias ZaZaar.ChatLog
+      alias ChatLog.{History, Message}
     end
   end
 end

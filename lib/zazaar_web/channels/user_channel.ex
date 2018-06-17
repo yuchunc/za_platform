@@ -30,4 +30,34 @@ defmodule ZaZaarWeb.UserChannel do
       _ -> {:error, :add_post_failed}
     end
   end
+
+  def handle_in("chat:history", params, socket) do
+    with user <- current_resource(socket),
+         %{"user_id" => user1_id} <- params,
+         page <- Map.get(params, "page", 1),
+         chats <- ChatLog.get_history([user.id, user1_id], page: page) do
+      {:reply, {:ok, %{chats: chats}}, socket}
+    else
+      _ -> {:stop, :cannot_get_chat_log, socket}
+    end
+  end
+
+  def handle_in("chat:send_message", params, socket) do
+    with %{"to_id" => to_id, "body" => body} <- params,
+         user <- current_resource(socket),
+         msg <- %{user_id: user.id, body: body},
+         payload <- Map.put_new(params, "from_id", user.id) do
+      ZaZaarWeb.Endpoint.broadcast("user:" <> to_id, "chat:receive_message", payload)
+      ChatLog.append_message([to_id, user.id], msg)
+
+      {:reply, :ok, socket}
+    else
+      _ -> {:stop, :cannot_send_message, socket}
+    end
+  end
+
+  def handle_in("chat:receive_message", params, socket) do
+    %{"from_id" => from_id, "body" => body} = params
+    broadcast(socket, "chat:received_message", %{from_id: from_id, body: body})
+  end
 end

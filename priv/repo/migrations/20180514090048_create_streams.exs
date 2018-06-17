@@ -6,7 +6,7 @@ defmodule ZaZaar.Repo.Migrations.CreateStreams do
       add :id, :uuid, primary_key: true
       add :facebook_stream_key, :string
       add :archived_at, :naive_datetime
-      add :comments, :jsonb
+      add :comments, {:array, :map}
 
       add :channel_id,  references(:channels, type: :uuid), null: false
 
