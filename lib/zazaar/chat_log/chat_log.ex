@@ -46,7 +46,10 @@ defmodule ZaZaar.ChatLog do
         |> Enum.chunk_every(limit)
         |> List.pop_at(page - 1)
 
-      result
+        case result do
+          nil -> []
+          _ -> result
+        end
     else
       {:error, :log_not_found}
     end

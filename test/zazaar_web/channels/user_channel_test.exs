@@ -51,4 +51,66 @@ defmodule ZaZaarWeb.UserChannelTest do
       assert db_post.body == random_string
     end
   end
+
+  describe "chat:history event" do
+    setup context do
+      %{user: user} = context
+      user_1 = insert(:user)
+      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
+      messages = build_list(40, :message, user_id: Enum.random([user.id, user_1.id]))
+      history = insert(:history, user_ids: [user.id, user_1.id], messages: messages)
+      {:ok, socket: socket, user_1: user_1, history: history}
+    end
+
+    test "gets a list of latest chat", context do
+      %{socket: socket, user: main, user_1: target} = context
+      ref = push(socket, "chat:history", %{user_id: target.id})
+
+      assert_reply(ref, :ok, %{chats: chats})
+      Enum.each(chats, fn c ->
+        assert c.user_id in [main.id, target.id]
+      end)
+    end
+
+    test "gets a the next list of chats", context do
+      %{socket: socket, user_1: target} = context
+      ref = push(socket, "chat:history", %{user_id: target.id})
+      assert_reply(ref, :ok, %{chats: chats})
+
+      ref_1 = push(socket, "chat:history", %{user_id: target.id, page: 2})
+      assert_reply(ref_1, :ok, %{chats: chats_1})
+
+      refute chats == chats_1
+    end
+  end
+
+  describe "chat:send_message event" do
+    setup context do
+      %{user: user} = context
+      user1 = insert(:user)
+      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
+      socket1 = subscribe_and_join!(sign_socket(user1), UserChannel, "user:" <> user1.id)
+
+      {:ok, socket: socket, user1: user1, socket1: socket1}
+    end
+
+    test "replys :ok", context do
+      %{socket: socket, user1: user1} = context
+      content = Faker.Lorem.sentence(2)
+
+      ref = push(socket, "chat:send_message", %{to_id: user1.id, body: content})
+
+      assert_reply(ref , :ok, %{})
+    end
+
+    test "the other person receives chat:received_message event with message", context do
+      %{user: user, socket: socket} = context
+      content = Faker.Lorem.sentence(2)
+
+      push(socket, "chat:receive_message", %{from_id: user.id, body: content})
+
+      valid_payload = %{from_id: user.id, body: content}
+      assert_broadcast("chat:received_message", ^valid_payload)
+    end
+  end
 end
