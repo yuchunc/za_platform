@@ -12,7 +12,7 @@ defmodule ZaZaar.NotificationTest do
       %{user: user, user1: user1} = context
 
       assert {:ok, notice} =
-               Notification.append_notice(:new_follower, user.id, %{from_id: user1.id})
+               Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
 
       assert notice.user_id == user.id
       assert notice.schema.from_id == user1.id
@@ -22,7 +22,7 @@ defmodule ZaZaar.NotificationTest do
       %{user: user, user1: user1} = context
 
       assert {:ok, notice} =
-               Notification.append_notice(:followee_is_live, user.id, %{from_id: user1.id})
+               Notification.append_notice(user.id, %{from_id: user1.id, type: :followee_is_live})
 
       assert notice.user_id == user.id
       assert notice.schema.from_id == user1.id
@@ -33,9 +33,10 @@ defmodule ZaZaar.NotificationTest do
       content = Faker.Lorem.sentence()
 
       assert {:ok, notice} =
-               Notification.append_notice(:new_message, user.id, %{
+               Notification.append_notice(user.id, %{
                  from_id: user1.id,
-                 content: content
+                 content: content,
+                 type: :new_message
                })
 
       assert notice.user_id == user.id
@@ -48,9 +49,10 @@ defmodule ZaZaar.NotificationTest do
       content = Faker.Lorem.sentence()
 
       assert {:ok, notice} =
-               Notification.append_notice(:new_post, user.id, %{
+               Notification.append_notice(user.id, %{
                  from_id: user1.id,
-                 content: content
+                 content: content,
+                 type: :new_post
                })
 
       assert notice.user_id == user.id
