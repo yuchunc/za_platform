@@ -8,9 +8,9 @@ defmodule ZaZaar.Notification do
   @limit 10
   @page 1
 
-  def append_notice(action, user_id, schema) do
+  def append_notice(user_id, schema) do
     %Notice{user_id: user_id}
-    |> Notice.changeset(%{schema: Map.put(schema, :type, action)})
+    |> Notice.changeset(%{schema: schema})
     |> Repo.insert()
   end
 

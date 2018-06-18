@@ -19,6 +19,10 @@ defmodule ZaZaarWeb.UserChannel do
     {:noreply, socket}
   end
 
+  # TODO Event to follow another User
+  # Cannot follow self
+  # broadcast to notify the other person you got a subscriber
+
   def handle_in("add_post", params, socket) do
     with user <- current_resource(socket),
          %{"content" => content} <- params,
@@ -64,6 +68,8 @@ defmodule ZaZaarWeb.UserChannel do
 
   def handle_in("notify:new_notice", params, socket) do
     {type, payload} = Map.pop(params, "type")
+    user = current_resource(socket)
+    Notification.append_notice(user.id, params)
     broadcast(socket, "notify:" <> Atom.to_string(type), payload)
     {:noreply, socket}
   end

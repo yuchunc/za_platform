@@ -16,7 +16,7 @@ defmodule ZaZaarWeb.StreamChannel do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
-      {:error, %{reason: "Stream does not exist"}}
+      {:error, %{reason: "stream does not exist"}}
     end
   end
 
@@ -40,7 +40,7 @@ defmodule ZaZaarWeb.StreamChannel do
          true <- streamer_id == streamer.id,
          %Channel{} = channel <- Streaming.get_channel(streamer.id),
          # TODO need to better handle starting a stream,
-         # there is possible to start 2 unarchived stream
+         # it is possible to start 2 unarchived stream
          {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),

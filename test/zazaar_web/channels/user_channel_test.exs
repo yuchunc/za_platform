@@ -123,11 +123,12 @@ defmodule ZaZaarWeb.UserChannelTest do
       {:ok, socket: socket}
     end
 
-    test "when other service part pushes notice to this, it broadcast to the client, and write to db", context do
+    test "when other service part pushes notice to this, it broadcast to the client, and write to db",
+         context do
       %{socket: socket} = context
-      user1_id = Ecto.UUID.generate
+      user1_id = Ecto.UUID.generate()
 
-      push socket, "notify:new_notice", %{type: :new_follower, from_id: user1_id}
+      push(socket, "notify:new_notice", %{type: :new_follower, from_id: user1_id})
 
       valid_payload = %{"from_id" => user1_id}
       assert_broadcast("notify:new_follower", ^valid_payload)
