@@ -70,6 +70,9 @@ defmodule ZaZaar.NotificationTest do
 
   describe "last_checked/1" do
     test "get the last open timestamp" do
+      user = insert(:viewer)
+
+      assert %NaiveDateTime{} = Notification.last_checked(user.id)
     end
   end
 

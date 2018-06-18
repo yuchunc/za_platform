@@ -22,4 +22,11 @@ defmodule ZaZaar.Notification do
 
     {:ok, check.updated_at}
   end
+
+  def last_checked(user_id) do
+    case Repo.get_by(Check, user_id: user_id) do
+      nil -> NaiveDateTime.utc_now()
+      %Check{} = check -> check.updated_at
+    end
+  end
 end
