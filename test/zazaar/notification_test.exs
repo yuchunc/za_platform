@@ -64,18 +64,22 @@ defmodule ZaZaar.NotificationTest do
       %{user: user} = context
       {:ok, notices: insert_list(15, :notice, user: user)}
     end
+
     test "gets a list of notices", context do
       %{user: user} = context
 
       result = Notification.get_notices(user.id)
 
       assert Enum.count(result) == 10
+
       assert Enum.reduce(result, fn
-        n, nil -> n
-        n, acc ->
-          assert n.inserted_at < acc.inserted_at
-          n
-      end)
+               n, nil ->
+                 n
+
+               n, acc ->
+                 assert n.inserted_at < acc.inserted_at
+                 n
+             end)
     end
 
     test "can paginate", context do
@@ -85,7 +89,9 @@ defmodule ZaZaar.NotificationTest do
       result1 = Notification.get_notices(user.id, page: 2)
 
       refute result1 == result
-      assert List.first(result1) |> Map.get(:inserted_at) < List.last(result) |> Map.get(:inserted_at)
+
+      assert List.first(result1) |> Map.get(:inserted_at) <
+               List.last(result) |> Map.get(:inserted_at)
     end
   end
 

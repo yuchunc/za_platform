@@ -30,7 +30,7 @@ defmodule ZaZaar.Notification do
 
   def last_checked(user_id) do
     case Repo.get_by(Check, user_id: user_id) do
-      nil -> NaiveDateTime.utc_now
+      nil -> NaiveDateTime.utc_now()
       %Check{} = check -> check.updated_at
     end
   end
@@ -43,6 +43,6 @@ defmodule ZaZaar.Notification do
     |> order_by(desc: :inserted_at)
     |> limit(^@limit)
     |> offset(^((page - 1) * @limit))
-    |> Repo.all
+    |> Repo.all()
   end
 end

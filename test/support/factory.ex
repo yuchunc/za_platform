@@ -94,8 +94,10 @@ defmodule ZaZaar.Factory do
 
   # ====== ChatLog =========
   def notice_factory do
-    schema = NoticeSchemaEnum.__enum_map__
-             |> Enum.random()
+    schema =
+      NoticeSchemaEnum.__enum_map__()
+      |> Enum.random()
+
     %Notification.Notice{
       user: build(:viewer),
       schema: build(schema)
@@ -120,7 +122,7 @@ defmodule ZaZaar.Factory do
     %{
       type: :new_message,
       from_id: Ecto.UUID.generate(),
-      content: Faker.Lorem.sentence
+      content: Faker.Lorem.sentence()
     }
   end
 
@@ -128,7 +130,7 @@ defmodule ZaZaar.Factory do
     %{
       type: :new_post,
       from_id: Ecto.UUID.generate(),
-      content: Faker.Lorem.sentence
+      content: Faker.Lorem.sentence()
     }
   end
 end
