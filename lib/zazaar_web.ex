@@ -99,6 +99,9 @@ defmodule ZaZaarWeb do
 
       alias ZaZaar.ChatLog
       alias ChatLog.{History, Message}
+
+      alias ZaZaar.Notification
+      alias Notification.{Check, Notice}
     end
   end
 end

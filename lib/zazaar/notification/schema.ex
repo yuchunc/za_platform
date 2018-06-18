@@ -3,9 +3,9 @@ defmodule ZaZaar.Notification.Schema do
   import Ecto.Changeset
 
   embedded_schema do
-    field :type, NoticeSchemaEnum
-    field :from_id, Ecto.UUID
-    field :content, :string
+    field(:type, NoticeSchemaEnum)
+    field(:from_id, Ecto.UUID)
+    field(:content, :string)
   end
 
   def changeset(%__MODULE__{} = schema, attrs \\ %{}) do

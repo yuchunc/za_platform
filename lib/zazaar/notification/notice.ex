@@ -9,7 +9,7 @@ defmodule ZaZaar.Notification.Notice do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "notices" do
-    belongs_to :user, Account.User
+    belongs_to(:user, Account.User)
     embeds_one(:schema, Notification.Schema)
 
     timestamps(updated_at: false)

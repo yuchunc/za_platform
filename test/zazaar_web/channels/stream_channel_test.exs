@@ -57,8 +57,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       params = %{message: "hello world"}
 
       capture_log(fn ->
-        ref =
-          push(socket, "streamer:show_start", params)
+        ref = push(socket, "streamer:show_start", params)
 
         assert_broadcast("streamer:show_started", %{message: _})
         assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
