@@ -59,5 +59,12 @@ defmodule ZaZaarWeb.UserChannel do
   def handle_in("chat:receive_message", params, socket) do
     %{"from_id" => from_id, "body" => body} = params
     broadcast(socket, "chat:received_message", %{from_id: from_id, body: body})
+    {:noreply, socket}
+  end
+
+  def handle_in("notify:new_notice", params, socket) do
+    {type, payload} = Map.pop(params, "type")
+    broadcast(socket, "notify:" <> Atom.to_string(type), payload)
+    {:noreply, socket}
   end
 end
