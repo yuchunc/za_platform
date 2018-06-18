@@ -7,9 +7,9 @@ defmodule ZaZaar.Repo.Migrations.CreateNotices do
       add :user_id, references(:users, on_delete: :nothing, type: :uuid), null: false
       add :schema, :map, null: false
 
-      timestamps()
+      timestamps(updated_at: false)
     end
 
-    create index(:notification_queues, [:user_id])
+    create index(:notices, [:user_id])
   end
 end

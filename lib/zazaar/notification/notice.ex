@@ -11,11 +11,14 @@ defmodule ZaZaar.Notification.Notice do
   schema "notices" do
     belongs_to :user, Account.User
     embeds_one(:schema, Notification.Schema)
+
+    timestamps(updated_at: false)
   end
 
   def changeset(%__MODULE__{} = struct, params \\ %{}) do
     struct
-    |> cast(params, [])
+    |> cast(params, [:user_id])
     |> cast_embed(:schema)
+    |> validate_required(:user_id)
   end
 end
