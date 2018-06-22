@@ -33,9 +33,9 @@ defmodule ZaZaar.Following do
 
   def start_following(_, _), do: {:error, :no_id_on_record}
 
-  def get_following(%{id: follower_id}), do: get_follows(follower_id: follower_id)
+  def get_followings(%{id: follower_id}), do: get_follows(follower_id: follower_id)
 
-  def get_follower(%{id: followee_id}), do: get_follows(followee_id: followee_id)
+  def get_followers(%{id: followee_id}), do: get_follows(followee_id: followee_id)
 
   defp get_follows([{field, value}]) do
     Follow

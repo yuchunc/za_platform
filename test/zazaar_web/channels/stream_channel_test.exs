@@ -44,6 +44,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
     setup context do
       %{channel: channel} = context
       user = Repo.get(User, channel.streamer_id)
+      insert(:follow, followee_id: user.id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)

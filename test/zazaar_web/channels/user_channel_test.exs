@@ -123,8 +123,7 @@ defmodule ZaZaarWeb.UserChannelTest do
       {:ok, socket: socket}
     end
 
-    test "when other service part pushes notice to this, it broadcast to the client, and write to db",
-         context do
+    test "when other service part pushes notice to this, it broadcast to the client", context do
       %{socket: socket} = context
       user1_id = Ecto.UUID.generate()
 
@@ -132,6 +131,14 @@ defmodule ZaZaarWeb.UserChannelTest do
 
       valid_payload = %{"from_id" => user1_id}
       assert_broadcast("notify:new_follower", ^valid_payload)
+    end
+
+    test "send_notification/2 sends the message to the respective user channels", context do
+      %{user: user} = context
+      user1_id = Ecto.UUID.generate()
+      UserChannel.send_notification(user.id, %{type: :new_follower, from_id: user1_id})
+
+      assert_broadcast("notify:new_notice", _)
     end
   end
 end

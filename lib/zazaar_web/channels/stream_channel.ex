@@ -48,6 +48,15 @@ defmodule ZaZaarWeb.StreamChannel do
            StreamWatcher.monitor(:channels, self(), {__MODULE__, :streamer_left, [streamer_id]}),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
+
+      streamer
+      |> Following.get_followers()
+      |> Enum.map(&Map.get(&1, :follower_id))
+      |> ZaZaarWeb.UserChannel.send_notification(%{
+        type: :followee_is_live,
+        followee_id: streamer.id
+      })
+
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
       {:reply, {:ok, opentok_params}, socket}
     end

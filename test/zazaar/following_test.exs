@@ -36,7 +36,7 @@ defmodule ZaZaar.FollowingTest do
       follower = insert(:viewer)
       follows = insert_pair(:follow, follower_id: follower.id)
 
-      result = Following.get_following(follower)
+      result = Following.get_followings(follower)
 
       assert result |> Enum.map(& &1.id) |> Enum.sort() ==
                follows |> Enum.map(& &1.id) |> Enum.sort()
@@ -48,7 +48,7 @@ defmodule ZaZaar.FollowingTest do
       followee = insert(:streamer)
       follows = insert_pair(:follow, followee_id: followee.id)
 
-      result = Following.get_follower(followee)
+      result = Following.get_followers(followee)
 
       assert result |> Enum.map(& &1.id) |> Enum.sort() ==
                follows |> Enum.map(& &1.id) |> Enum.sort()

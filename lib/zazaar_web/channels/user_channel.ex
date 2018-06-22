@@ -73,4 +73,15 @@ defmodule ZaZaarWeb.UserChannel do
     broadcast(socket, "notify:" <> Atom.to_string(type), payload)
     {:noreply, socket}
   end
+
+  def send_notification(follower_ids, message) when is_list(follower_ids) do
+    Enum.each(follower_ids, fn follower_id -> send_notification(follower_id, message) end)
+  end
+
+  def send_notification(follower_id, message) when is_binary(follower_id) do
+    Task.start(fn ->
+      ZaZaarWeb.Endpoint.broadcast("user:" <> follower_id, "notify:new_notice", message)
+      # ZaZaarWeb.Endpoint.broadcast("user:" <> Ecto.UUID.generate, "notify:new_notice", message)
+    end)
+  end
 end
