@@ -1,7 +1,7 @@
 defmodule ZaZaar.Factory do
   use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias ZaZaar.{Account, Streaming, Following, Feed, ChatLog}
+  alias ZaZaar.{Account, Streaming, Following, Feed, ChatLog, Notification}
 
   # ====== Account =========
   def streamer_factory do
@@ -89,6 +89,48 @@ defmodule ZaZaar.Factory do
     %ChatLog.Message{
       user_id: user.id,
       body: Faker.Lorem.paragraph()
+    }
+  end
+
+  # ====== ChatLog =========
+  def notice_factory do
+    schema =
+      NoticeSchemaEnum.__enum_map__()
+      |> Enum.random()
+
+    %Notification.Notice{
+      user: build(:viewer),
+      schema: build(schema)
+    }
+  end
+
+  def new_follower_factory do
+    %{
+      type: :new_follower,
+      from_id: Ecto.UUID.generate()
+    }
+  end
+
+  def followee_is_live_factory do
+    %{
+      type: :followee_is_live,
+      from_id: Ecto.UUID.generate()
+    }
+  end
+
+  def new_message_factory do
+    %{
+      type: :new_message,
+      from_id: Ecto.UUID.generate(),
+      content: Faker.Lorem.sentence()
+    }
+  end
+
+  def new_post_factory do
+    %{
+      type: :new_post,
+      from_id: Ecto.UUID.generate(),
+      content: Faker.Lorem.sentence()
     }
   end
 end

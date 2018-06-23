@@ -21,7 +21,7 @@ defmodule ZaZaar.Streaming.Stream do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = stream, attrs) do
+  def changeset(%__MODULE__{} = stream, attrs \\ %{}) do
     stream
     |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id, :upload_key, :video_snapshot])
     |> cast_embed(:comments)

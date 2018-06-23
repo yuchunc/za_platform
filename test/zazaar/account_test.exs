@@ -1,5 +1,5 @@
 defmodule ZaZaar.AccountTest do
-  use ZaZaar.DataCase, async: true
+  use ZaZaar.DataCase
 
   alias ZaZaar.Account
 

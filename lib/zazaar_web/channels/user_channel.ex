@@ -19,6 +19,10 @@ defmodule ZaZaarWeb.UserChannel do
     {:noreply, socket}
   end
 
+  # TODO Event to follow another User
+  # Cannot follow self
+  # broadcast to notify the other person you got a subscriber
+
   def handle_in("add_post", params, socket) do
     with user <- current_resource(socket),
          %{"content" => content} <- params,
@@ -59,5 +63,25 @@ defmodule ZaZaarWeb.UserChannel do
   def handle_in("chat:receive_message", params, socket) do
     %{"from_id" => from_id, "body" => body} = params
     broadcast(socket, "chat:received_message", %{from_id: from_id, body: body})
+    {:noreply, socket}
+  end
+
+  def handle_in("notify:new_notice", params, socket) do
+    {type, payload} = Map.pop(params, "type")
+    user = current_resource(socket)
+    Notification.append_notice(user.id, params)
+    broadcast(socket, "notify:" <> Atom.to_string(type), payload)
+    {:noreply, socket}
+  end
+
+  def send_notification(follower_ids, message) when is_list(follower_ids) do
+    Enum.each(follower_ids, fn follower_id -> send_notification(follower_id, message) end)
+  end
+
+  def send_notification(follower_id, message) when is_binary(follower_id) do
+    Task.start(fn ->
+      ZaZaarWeb.Endpoint.broadcast("user:" <> follower_id, "notify:new_notice", message)
+      # ZaZaarWeb.Endpoint.broadcast("user:" <> Ecto.UUID.generate, "notify:new_notice", message)
+    end)
   end
 end

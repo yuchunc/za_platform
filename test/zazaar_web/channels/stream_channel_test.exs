@@ -44,6 +44,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
     setup context do
       %{channel: channel} = context
       user = Repo.get(User, channel.streamer_id)
+      insert(:follow, followee_id: user.id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
@@ -57,9 +58,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       params = %{message: "hello world"}
 
       capture_log(fn ->
-        ref =
-          push(socket, "streamer:show_start", params)
-          |> IO.inspect(label: "label")
+        ref = push(socket, "streamer:show_start", params)
 
         assert_broadcast("streamer:show_started", %{message: _})
         assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})

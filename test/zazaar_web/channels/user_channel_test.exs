@@ -114,4 +114,31 @@ defmodule ZaZaarWeb.UserChannelTest do
       assert_broadcast("chat:received_message", ^valid_payload)
     end
   end
+
+  describe "[INTERNAL] notify:new_notice" do
+    setup context do
+      %{user: user} = context
+      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
+
+      {:ok, socket: socket}
+    end
+
+    test "when other service part pushes notice to this, it broadcast to the client", context do
+      %{socket: socket} = context
+      user1_id = Ecto.UUID.generate()
+
+      push(socket, "notify:new_notice", %{type: :new_follower, from_id: user1_id})
+
+      valid_payload = %{"from_id" => user1_id}
+      assert_broadcast("notify:new_follower", ^valid_payload)
+    end
+
+    test "send_notification/2 sends the message to the respective user channels", context do
+      %{user: user} = context
+      user1_id = Ecto.UUID.generate()
+      UserChannel.send_notification(user.id, %{type: :new_follower, from_id: user1_id})
+
+      assert_broadcast("notify:new_notice", _)
+    end
+  end
 end
