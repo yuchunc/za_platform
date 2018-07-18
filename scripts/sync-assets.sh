@@ -3,9 +3,9 @@
 # Sync static assets to CDN
 
 export MIX_ENV=prod
-export AWS_PROFILE=deploy-template-prod
+export AWS_PROFILE=zazaar-prod
 
-STATIC_ASSETS_BUCKET=cogini-deploy-template-assets
+STATIC_ASSETS_BUCKET=zazaar-assets
 
 # Exit on errors
 set -e

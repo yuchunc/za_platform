@@ -1,7 +1,7 @@
-deploy_template.Elixir.DeployTemplateWeb.Endpoint.secret_key_base = "{{ secret_key_base }}"
+zazaar.Elixir.ZaZaarWeb.Endpoint.secret_key_base = "{{ secret_key_base }}"
 
-deploy_template.Elixir.DeployTemplate.Repo.adapter = Elixir.Ecto.Adapters.Postgres
-deploy_template.Elixir.DeployTemplate.Repo.username = "{{ elixir_release_name_code }}"
-deploy_template.Elixir.DeployTemplate.Repo.password = "{{ db_pass }}"
-deploy_template.Elixir.DeployTemplate.Repo.database = "{{ elixir_release_name_code }}_prod"
-deploy_template.Elixir.DeployTemplate.Repo.hostname = "{{ db_host }}"
+zazaar.Elixir.ZaZaar.Repo.adapter = Elixir.Ecto.Adapters.Postgres
+zazaar.Elixir.ZaZaar.Repo.username = "{{ elixir_release_name_code }}"
+zazaar.Elixir.ZaZaar.Repo.password = "{{ db_pass }}"
+zazaar.Elixir.ZaZaar.Repo.database = "{{ elixir_release_name_code }}_prod"
+zazaar.Elixir.ZaZaar.Repo.hostname = "{{ db_host }}"

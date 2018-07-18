@@ -5,9 +5,9 @@ users_deploy_user: "{{ elixir_release_deploy_user }}"
 users_deploy_group: "{{ elixir_release_deploy_user }}"
 
 # App git repo
-app_repo: https://github.com/cogini/elixir-deploy-template
+app_repo: https://github.com/yuchunc/zazaar
 # App Version, can be branch name, SHA-1, tag name, default to HEAD
-# app_version: HEAD
+app_git_version: ansible
 
 # Users who can ssh into the deploy account
 # This is needed to run the build and deploy scripts
