@@ -86,3 +86,5 @@
         repo: "{{ app_repo }}"
         dest: "{{ build_dir }}"
         version: "{{ app_git_version | default('HEAD') }}"
+        accept_hostkey: yes
+        force: true

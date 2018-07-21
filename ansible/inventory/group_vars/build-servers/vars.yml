@@ -5,7 +5,7 @@ users_deploy_user: "{{ elixir_release_deploy_user }}"
 users_deploy_group: "{{ elixir_release_deploy_user }}"
 
 # App git repo
-app_repo: https://github.com/yuchunc/zazaar
+app_repo: "git@github.com:yuchunc/ZaZaar.git"
 # App Version, can be branch name, SHA-1, tag name, default to HEAD
 app_git_version: ansible
 
