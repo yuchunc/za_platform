@@ -1,7 +1,6 @@
 {
   "repository": {},
-  "license": "MIT",
-  "scripts": {
+  "license": "MIT", "scripts": {
     "start": "npm run watch",
     "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000",
     "deploy": "MIX_ENV=prod webpack -p"

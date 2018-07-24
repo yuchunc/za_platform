@@ -1,6 +1,6 @@
 ---
 # Build system setup
-# ansible-playbook -u $USER -v -l build-server playbooks/setup-build.yml -D
+# ansible-playbook -u $USER -v -l elixir-deploy-template playbooks/setup-build.yml -D
 
 # - name: Bootstrap Python 2
 #   hosts: debian-servers
@@ -35,6 +35,17 @@
     - tools-other
     - iptables
 
+#- name: Install postgresql
+  #hosts: '*'
+  #become: true
+  #pre_tasks:
+    #- name: Set db_pass
+      #set_fact:
+        #db_pass: "{{ lookup('password', '/tmp/db_pass.txt length=16') }}"
+      #when: db_pass is not defined
+  #roles:
+    #- ANXS.postgresql
+
 - name: Install asdf
   hosts: '*'
   become: true
@@ -68,23 +79,22 @@
       environment:
         GNUPGHOME: "{{ asdf_nodejs_keyring }}"
 
-- name: Set up app
+- name: Prepare Directory app
   hosts: '*'
   become: true
   become_user: "{{ users_deploy_user }}"
   tasks:
-    - name: Set vars
-      set_fact:
-        build_base_dir: "{{ asdf_user_home }}/build"
-        build_dir: "{{ asdf_user_home }}/build/{{ elixir_release_name }}"
-
     - name: Create build dir
-      file: path="{{ build_base_dir }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
+      file: path="{{ asdf_user_home }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
 
+- name: Setup app
+  hosts: '*'
+  become_user: "{{ users_deploy_user }}"
+  tasks:
     - name: Check out project from git
       git:
         repo: "{{ app_repo }}"
-        dest: "{{ build_dir }}"
+        dest: "{{ asdf_user_home }}/build/{{ elixir_release_name }}"
         version: "{{ app_git_version | default('HEAD') }}"
+        force: yes
         accept_hostkey: yes
-        force: true
