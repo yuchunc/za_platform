@@ -86,15 +86,3 @@
   tasks:
     - name: Create build dir
       file: path="{{ asdf_user_home }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
-
-- name: Setup app
-  hosts: '*'
-  become_user: "{{ users_deploy_user }}"
-  tasks:
-    - name: Check out project from git
-      git:
-        repo: "{{ app_repo }}"
-        dest: "{{ asdf_user_home }}/build/{{ elixir_release_name }}"
-        version: "{{ app_git_version | default('HEAD') }}"
-        force: yes
-        accept_hostkey: yes

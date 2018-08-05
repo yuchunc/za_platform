@@ -1,0 +1,12 @@
+---
+- name: Setup app
+  hosts: '*'
+  gather_facts: true
+  tasks:
+    - name: Check out project from git
+      git:
+        repo: "{{ app_repo }}"
+        dest: "/home/{{ users_deploy_user }}/build/{{ elixir_release_name }}"
+        version: "{{ app_git_version | default('HEAD') }}"
+        force: yes
+
