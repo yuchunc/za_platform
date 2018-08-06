@@ -79,7 +79,31 @@
       environment:
         GNUPGHOME: "{{ asdf_nodejs_keyring }}"
 
-- name: Prepare Directory app
+- name: install yarn
+  hosts: '*'
+  become: true
+  #gather_facts: true
+  tasks:
+    - name: Install YARN YUM repo.
+      yum_repository:
+        name: yarn
+        description: Yarn Repository
+        baseurl: "{{ yarn_rhel_repo_url }}"
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: "{{ yarn_rhel_repo_gpg_key_url }}"
+        state: present
+
+    #- name: Install NodeJS package for yarn dependency
+      #package:
+        #name: nodejs
+        #state: latest
+
+    - name: Install YARN package manager
+      package: name=yarn state=latest
+
+
+- name: prepare build directory
   hosts: '*'
   become: true
   become_user: "{{ users_deploy_user }}"

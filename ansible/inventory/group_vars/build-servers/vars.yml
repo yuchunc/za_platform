@@ -14,3 +14,6 @@ app_git_version: ansible
 users_deploy_users: "{{ users_global_admin_users }}"
 # users_deploy_users:
 #   - jake
+
+yarn_rhel_repo_url: "https://dl.yarnpkg.com/rpm/"
+yarn_rhel_repo_gpg_key_url: "https://dl.yarnpkg.com/rpm/pubkey.gpg"
