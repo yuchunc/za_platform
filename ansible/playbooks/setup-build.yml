@@ -82,7 +82,6 @@
 - name: install yarn
   hosts: '*'
   become: true
-  #gather_facts: true
   tasks:
     - name: Install YARN YUM repo.
       yum_repository:
