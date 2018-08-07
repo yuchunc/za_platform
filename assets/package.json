@@ -1,9 +1,10 @@
 {
   "repository": {},
-  "license": "MIT", "scripts": {
+  "license": "MIT",
+  "scripts": {
     "start": "npm run watch",
-    "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000",
-    "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js -p"
+    "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000 --config webpack.dev.js",
+    "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js --config webpack.prod.js"
   },
   "dependencies": {
     "@opentok/client": "^2.13.2",
@@ -31,6 +32,7 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.9",
-    "webpack-dev-server": "^3.1.0"
+    "webpack-dev-server": "^3.1.0",
+    "webpack-merge": "^4.1.4"
   }
 }
