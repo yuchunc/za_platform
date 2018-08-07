@@ -3,7 +3,7 @@
   "license": "MIT", "scripts": {
     "start": "npm run watch",
     "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000",
-    "deploy": "MIX_ENV=prod webpack -p"
+    "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js -p"
   },
   "dependencies": {
     "@opentok/client": "^2.13.2",
