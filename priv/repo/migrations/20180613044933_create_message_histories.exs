@@ -10,7 +10,6 @@ defmodule ZaZaar.Repo.Migrations.CreateMessageHistories do
       timestamps()
     end
 
-    create index(:message_histories, ["user_ids"], using: "GIN")
-
+    create index(:message_histories, ["user_ids"])
   end
 end
