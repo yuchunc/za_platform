@@ -21,7 +21,7 @@ postgresql_default_auth_method: "md5"
 
 postgresql_pg_hba_default:
   # Allow OS postgres user to manage databases without a password
-  - { type: local, database: all, user: "{{ postgresql_admin_user }}", address: "", method: "peer", comment: "" }
+  - { type: local, database: all, user: "{{ elixir_release_name_code }}", address: "", method: "peer", comment: "" }
   # Same for other users, as long as OS user matches PG user
   # - { type: local, database: all, user: all, address: "", method: "peer", comment: '"local" is for Unix domain socket connections only' }
   - { type: local, database: all, user: all, address: "", method: "{{ postgresql_default_auth_method }}", comment: '"local" is for Unix domain socket connections only' }
