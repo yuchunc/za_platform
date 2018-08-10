@@ -1,6 +1,9 @@
 [web-servers]
 zaar
 
+[db-servers]
+zaar
+
 [build-servers]
 zaar
 
