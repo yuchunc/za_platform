@@ -37,7 +37,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"q;B}XMg<KK_EisEAb_a?KophT_%bM}N<jk_kF~^hy[r!),nGZk$T1e:2<moN6/SW"
-  set output_dir: "rel/zazaar"
+  #set output_dir: "rel/zazaar"
 end
 
 # You may define one or more releases in this file.
