@@ -1,6 +1,8 @@
 # Vars for web-servers group
 postgresql_version: 10
 
+postgresql_cluster_reset: true
+
 postgresql_users:
   - name: "{{ elixir_release_name_code }}"
     pass: "{{ db_pass }}"
