@@ -1,7 +1,6 @@
 # Vars for web-servers group
 postgresql_version: 10
 
-postgresql_cluster_reset: true
 
 postgresql_users:
   - name: "{{ elixir_release_name_code }}"
@@ -17,7 +16,7 @@ postgresql_user_privileges:
     db: "{{ elixir_release_name_code }}_prod"
     priv: 'ALL'
     #role_attr_flags: 'LOGIN,NOSUPERUSER,NOCREATEDB'
-    role_attr_flags: 'LOGIN,NOSUPERUSER'
+    role_attr_flags: 'LOGIN,NOSUPERUSER,CREATEDB'
 
 # Require password to access db
 postgresql_default_auth_method: "md5"
