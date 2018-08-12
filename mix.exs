@@ -10,6 +10,7 @@ defmodule ZaZaar.Mixfile do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      deploy_dir: "/opt/zazaar/zazaar/",
       deps: deps()
     ]
   end
