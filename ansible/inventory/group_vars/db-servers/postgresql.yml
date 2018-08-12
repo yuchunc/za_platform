@@ -16,7 +16,8 @@ postgresql_user_privileges:
   - name: "{{ elixir_release_name_code }}"
     db: "{{ elixir_release_name_code }}_prod"
     priv: 'ALL'
-    role_attr_flags: 'LOGIN,NOSUPERUSER,NOCREATEDB'
+    #role_attr_flags: 'LOGIN,NOSUPERUSER,NOCREATEDB'
+    role_attr_flags: 'LOGIN,NOSUPERUSER'
 
 # Require password to access db
 postgresql_default_auth_method: "md5"
