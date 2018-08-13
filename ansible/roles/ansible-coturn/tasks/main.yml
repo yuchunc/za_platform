@@ -1,0 +1,38 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Install coturn build dependencies
+  package:
+    name: "{{ item }}"
+  with_items: "{{ packages }}"
+  become: true
+
+- name: Install compile packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ compile_packages }}"
+  become: true
+
+- name: Download the tarball
+  get_url:
+    url: "{{ coturn_pkg_url }}"
+    dest: "{{ coturn_pkg_compressed_path }}"
+
+- name: Unarchive the downloaded tarball
+  unarchive:
+    src: "{{ coturn_pkg_compressed_path }}"
+    dest: "{{ ansible_env.HOME }}"
+    remote_src: yes
+
+- name: Compile coturn package
+  command: "{{ item.cmd }}"
+  args:
+    chdir: "{{ coturn_pkg_path }}"
+  become: "{{ item.become | default(false) }}"
+  with_items:
+    - cmd: ./configure
+    - cmd: make
+    - cmd: make install
+      become: true

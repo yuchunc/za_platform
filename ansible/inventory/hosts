@@ -4,6 +4,9 @@ zaar
 [db-servers]
 zaar
 
+[coturn-servers]
+zaar-coturn
+
 [build-servers]
 zaar
 
