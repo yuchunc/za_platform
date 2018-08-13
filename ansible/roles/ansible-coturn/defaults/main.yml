@@ -1,0 +1,12 @@
+---
+coturn_version: 4.5.0.6
+coturn_pkg_name: "coturn-{{ coturn_version }}"
+coturn_pkg_url: "https://github.com/coturn/coturn/archive/{{ coturn_version }}.tar.gz"
+coturn_pkg_path: "{{ ansible_env.HOME }}/{{ coturn_pkg_name }}"
+coturn_pkg_compressed_path: "{{ coturn_pkg_path }}.tar.gz"
+
+compile_packages:
+  - make
+  - gcc
+  - wget
+  - git

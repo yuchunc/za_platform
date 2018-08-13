@@ -1,0 +1,13 @@
+---
+packages:
+  - openssl-devel
+  - sqlite
+  - sqlite-devel
+  - libevent
+  - libevent-devel
+  - postgresql-devel
+  - postgresql-server
+  #- mysql-devel
+  #- mysql-server
+  - hiredis
+  - hiredis-devel

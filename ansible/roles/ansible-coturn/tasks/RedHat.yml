@@ -1,0 +1,7 @@
+---
+- name: Install EPEL repo and update cache
+  package:
+    name: epel-release
+    state: latest
+    update_cache: yes
+  become: true

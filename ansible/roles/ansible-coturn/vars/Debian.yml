@@ -1,0 +1,10 @@
+---
+packages:
+  - libssl-dev
+  - sqlite3
+  - libsqlite3-dev
+  - libevent-dev
+  - libpq-dev
+  - mysql-client
+  - libmysqlclient-dev
+  - libhiredis-dev
