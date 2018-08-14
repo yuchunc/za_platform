@@ -34,6 +34,8 @@ defmodule ZaZaarWeb.Router do
     resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
 
     resources("/s", LiveStreamController, only: [:show])
+
+    get("/test", SigController, :index)
   end
 
   scope "/m", ZaZaarWeb do
