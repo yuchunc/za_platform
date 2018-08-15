@@ -5,7 +5,8 @@ defmodule ZaZaarWeb.SigChannel do
     {:ok, socket}
   end
 
-  def handle_in("message", %{"body" => body}, socket) do
+  def handle_in("message", payload, socket) do
+    broadcast_from socket, "message", payload
     {:noreply, socket}
   end
 end

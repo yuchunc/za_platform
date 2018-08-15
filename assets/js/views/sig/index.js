@@ -23,7 +23,7 @@ hangupButton.onclick = hangup;
 
 function connect() {
   console.log("Requesting local stream");
-  navigator.getUserMedia({audio: true, video: true}, gotStream, error => {
+  navigator.getUserMedia({audio: false, video: true}, gotStream, error => {
     console.log("getUserMedia error : ", error);
   })
 }
@@ -43,7 +43,7 @@ function setupPeerConnection() {
 
   let servers = {
     "iceServers": [{
-      // "url": "stun:stun.l.google.com:19302"
+      //"url": "stun:stun.l.google.com:19302"
       "url": "stun:13.229.116.138:3478"
     }]
   };
@@ -79,7 +79,7 @@ function gotRemoteDescription(description) {
 }
 
 function gotRemoteStream(event) {
-  removeVideo.src = URL.createObjectURL(event.stream);
+  remoteVideo.src = URL.createObjectURL(event.stream);
   console.log("Received remote stream");
 }
 
@@ -94,6 +94,7 @@ function gotLocalIceCandidate(event) {
 
 function gotRemoteIceCandidate(event) {
   callButton.disabled = true;
+  console.log("remote ice event", event);
   if (event.candidate) {
     peerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
     console.log("Remote ICE candidate: \n"+ event.candidate.candidate);
@@ -101,9 +102,9 @@ function gotRemoteIceCandidate(event) {
 }
 
 channel.on("message", payload => {
-  let message = JSON.parse(payload.body);
+  const message = JSON.parse(payload.body);
   if (message.sdp) {
-    gotRemoteDescription(message);
+    gotRemoteDescription(message.sdp);
   } else {
     gotRemoteIceCandidate(message);
   }
@@ -119,13 +120,17 @@ function hangup() {
   callButton.disabled = true;
 }
 
+function handleError(error) {
+  console.log(error.name + ": " + error.message);
+}
+
 export default () => {
   return Object.assign(main(), {
     mount: () => {
-      console.log("ping");
+      console.log("Sig Index mounted");
     },
     unmount: () => {
-      console.log("pong");
+      console.log("Sig Index unmounted");
     }
-  });
+  })
 };
