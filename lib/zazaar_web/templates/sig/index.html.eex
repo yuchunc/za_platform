@@ -3,4 +3,14 @@
 <div id="videos">
   <video id="localVideo" autoplay muted playsinline></video>
   <video id="remoteVideo" autoplay playsinline></video>
+
+  <button id="connect">Connect</button>
+  <button id="call">Call</button>
+  <button id="hangup">Hangup</button>
 </div>
+
+<script charset="utf-8">
+  window.streamConfig = {
+    jwt: "",
+  }
+</script>

@@ -7,6 +7,8 @@ defmodule ZaZaarWeb.UserSocket do
   channel("user:*", ZaZaarWeb.UserChannel)
   channel("stream:*", ZaZaarWeb.StreamChannel)
 
+  channel("call", ZaZaarWeb.SigChannel)
+
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)
   transport(:longpoll, Phoenix.Transports.LongPoll)

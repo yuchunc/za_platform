@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run watch",
-    "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000 --config webpack.dev.js",
+    "watch": "MIX_ENV=dev node_modules/webpack/bin/webpack.js --watch --colors --config webpack.dev.js",
     "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js --config webpack.prod.js"
   },
   "dependencies": {
