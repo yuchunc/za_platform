@@ -1,0 +1,5 @@
+---
+packages:
+  - https://get.pkgs.cloud/release.rpm
+  - epel-release
+  - kurento-release

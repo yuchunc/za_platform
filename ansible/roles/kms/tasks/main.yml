@@ -1,0 +1,27 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install KMS build dependencies
+  become: true
+  package:
+    name: "{{ item }}"
+  with_items: "{{ packages }}"
+
+- name: Install KMS
+  become: true
+  package:
+    name: "kms"
+
+- name: Configure firewall
+  become: true
+  firewalld:
+    state: enabled
+    zone: public
+    permanent: true
+    port: 49152-65535/udp
+
+- name: Restart firewall
+  become: true
+  systemd:
+    state: reloaded
+    name: firewalld

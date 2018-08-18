@@ -1,0 +1,6 @@
+---
+- name: Install KMS
+  hosts: "*"
+  roles:
+    - kms
+
