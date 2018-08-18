@@ -7,6 +7,9 @@ zaar
 [coturn-servers]
 zaar-coturn
 
+[kms-servers]
+zaar-kms
+
 [build-servers]
 zaar
 
