@@ -25,3 +25,10 @@
   systemd:
     state: reloaded
     name: firewalld
+
+- name: Start KMS
+  become: true
+  systemd:
+    #state: started
+    state: stopped
+    name: kms
