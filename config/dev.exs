@@ -21,10 +21,9 @@ config :zazaar, ZaZaarWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/.bin/webpack",
-      "--watch",
-      "--colors",
+    yarn: [
+      "run",
+      "watch",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]

@@ -1,6 +1,8 @@
 <header class="ui large top fixed menu transition visible">
   <div class="ui container">
-    <a class="item" href="/"> ZaZaar </a>
+    <a class="item" href="/">
+      <img src=" <%= static_path(@conn, "/images/zazaar_logo.png") %>" alt=""/>
+    </a>
 
     <div class="right menu" id="navItems">
       <%= if current_token(@conn) do %>
