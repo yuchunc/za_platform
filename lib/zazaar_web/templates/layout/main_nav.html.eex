@@ -1,11 +1,25 @@
-<section class="section main-nav">
-  <div class="container">
-    <nav class="navbar">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <img src=" <%= static_path(@conn, "/images/zazaar_logo.png") %>" alt="zazaar_logo" id="logo"/>
-        </a>
-      </div>
-    </nav>
-  </div>
-</header>
+<section role="nav" class="section main-nav">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/" id="logo-item">
+        <img src="<%= static_path(@conn, "/images/zazaar_logo.svg") %>" alt="logo" id="logo"/>
+      </a>
+
+      <a href="#" class="navbar-item">
+        <i class="fas fa-search"></i>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
+</section>
+
+<div class="navbar-menu" id="nav-menu">
+  <a href="#" target="_blank">Anchor Text</a>
+  <a href="#" target="_blank">Anchor Text</a>
+  <a href="#" target="_blank">Anchor Text</a>
+</div>
