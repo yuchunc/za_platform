@@ -17,4 +17,3 @@
         dest: "/home/{{ users_deploy_user }}/build/{{ elixir_release_name }}"
         version: "{{ app_git_version | default('HEAD') }}"
         force: yes
-

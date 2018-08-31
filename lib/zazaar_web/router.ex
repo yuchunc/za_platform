@@ -26,14 +26,6 @@ defmodule ZaZaarWeb.Router do
   end
 
   scope "/", ZaZaarWeb do
-    pipe_through([:browser, :auth])
-
-    resources "/m", MembershipController, singleton: true, only: [:show] do
-      resources("/streaming", StreamingController, singleton: true, only: [:show])
-    end
-  end
-
-  scope "/", ZaZaarWeb do
     # Use the default browser stack
     pipe_through(:browser)
 
@@ -42,5 +34,13 @@ defmodule ZaZaarWeb.Router do
     resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
 
     resources("/s", LiveStreamController, only: [:show])
+  end
+
+  scope "/m", ZaZaarWeb do
+    pipe_through([:auth])
+
+    resources "/", MembershipController, singleton: true, only: [:show] do
+      resources("/streaming", StreamingController, singleton: true, only: [:show])
+    end
   end
 end
