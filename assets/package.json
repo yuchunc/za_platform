@@ -7,6 +7,7 @@
     "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js --config webpack.prod.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "@opentok/client": "^2.13.2",
     "bulma": "^0.7.1",
     "octicons": "^7.1.0",
