@@ -15,7 +15,8 @@ import "phoenix_html";
 import "popper.js";
 
 import "@opentok/client";
-import "@fortawesome/fontawesome-free/js/all.js";
+//import "@fortawesome/fontawesome-free/js/all.js";
+import "../fontawesome-pro-5.2.0-web/js/all.js";
 
 // Import local files
 //

@@ -1,0 +1,36 @@
+.main-nav {
+  padding: 0;
+
+  .navbar-brand {
+    background-color: $bright-orange;
+    padding: 0 0.6em;
+  }
+
+  #logo-item{
+    padding: 0;
+    margin-right: auto;
+
+    #logo {
+      height: 1.5em;
+    }
+  }
+
+  .navbar-burger{
+    margin-left: 0;
+
+    span {
+      height: 0.1em;
+      color: white;
+      font-size: 0.5em;
+      width: 3.1em;
+    }
+  }
+
+  .fa-search {
+    color: white;
+  }
+}
+
+.nav-menu {
+  box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30)
+}
