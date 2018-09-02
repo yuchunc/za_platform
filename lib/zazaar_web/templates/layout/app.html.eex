@@ -12,7 +12,13 @@
   </head>
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>">
-    <%= render("main_nav.html", conn: @conn) %>
+    <section role="nav" class="section main-nav is-paddingless">
+      <%= render("main_nav.html", conn: @conn) %>
+    </section>
+
+    <section role="following" class="section following is-paddingless">
+      <%= render("following.html", conn: @conn) %>
+    </section>
 
     <section role="main" class="section">
       <%= render @view_module, @view_template, assigns %>

@@ -1,51 +1,42 @@
-<section role="nav" class="section main-nav is-paddingless">
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item is-paddingless" href="/" id="logo-item">
-        <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
-      </a>
+<div class="navbar-brand">
+  <a class="navbar-item is-paddingless" href="/" id="logo-item">
+    <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
+  </a>
 
-      <div class="navbar-item is-right">
-        <a href="#" class="navbar-end">
-          <i class="fal fa-search fa-lg"></i>
-        </a>
-      </div>
-
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-  </nav>
-
-  <div class="navbar-menu" id="nav-menu">
-    <div class="container level is-mobile">
-      <div class="level-item">
-        <a href="#">
-          <i class="fas fa-comments fa-2x"></i>
-        </a>
-      </div>
-      <div class="level-item">
-        <a href="#">
-          <i class="fas fa-bell fa-2x"></i>
-        </a>
-      </div>
-      <div class="level-item">
-        <a class="button">
-          <i class="far fa-bullseye"></i>
-
-          開始直播
-        </a>
-      </div>
-
-      <div class="level-item">
-        <a href="#" class="is-right">
-          <figure class="image is-32x32">
-            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-          </figure>
-        </a>
-      </div>
-    </div>
+  <div class="navbar-item is-right">
+    <a href="#" class="navbar-end">
+      <i class="fal fa-search fa-lg"></i>
+    </a>
   </div>
+
+  <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+</div>
+</nav>
+
+<div class="navbar-menu" id="nav-menu">
+  <div class="container level is-mobile">
+    <a href="#" class="level-item">
+      <i class="fas fa-comments fa-2x"></i>
+    </a>
+    <a href="#">
+      <i class="fas fa-bell fa-2x"></i>
+    </a>
+    <div class="level-item">
+      <a class="button">
+        <i class="far fa-bullseye"></i>
+        開始直播
+      </a>
+    </div>
+
+    <a href="#" class="level-item">
+      <figure class="image is-32x32">
+        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+      </figure>
+    </a>
+  </div>
+</div>
 </section>
