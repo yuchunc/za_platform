@@ -4,7 +4,7 @@
   </a>
 
   <div class="navbar-item is-right">
-    <a href="#" class="navbar-end">
+    <a href="#" class="navbar-end icon">
       <i class="fal fa-search fa-lg"></i>
     </a>
   </div>
@@ -19,10 +19,10 @@
 
 <div class="navbar-menu" id="nav-menu">
   <div class="container level is-mobile">
-    <a href="#" class="level-item">
+    <a href="#" class="level-item icon">
       <i class="fas fa-comments fa-2x"></i>
     </a>
-    <a href="#">
+    <a href="#" class="level-item icon">
       <i class="fas fa-bell fa-2x"></i>
     </a>
     <div class="level-item">

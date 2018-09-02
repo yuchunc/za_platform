@@ -1,3 +1,3 @@
-<div class="ui celled grid">
+<div class="container is-paddingless">
   <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
 </div>

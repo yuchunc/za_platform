@@ -5,7 +5,8 @@ defmodule ZaZaarWeb.LiveStreamController do
 
   def index(conn, _params) do
     channels = Streaming.get_channels(snapshot: true)
-    render(conn, "index.html", channels: channels)
+    #render(conn, "index.html", channels: channels)
+    render(conn, "index.html", channels: [%{}, %{}])
   end
 
   def show(conn, %{"id" => streamer_id}) do
