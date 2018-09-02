@@ -1,36 +1,55 @@
 .main-nav {
-  padding: 0;
-
   .navbar-brand {
     background-color: $bright-orange;
-    padding: 0 0.6em;
+    padding: 0 10px;
   }
 
   #logo-item{
-    padding: 0;
     margin-right: auto;
 
     #logo {
-      height: 1.5em;
+      height: 82px;
     }
   }
 
   .navbar-burger{
     margin-left: 0;
+    font-size: 0.5em;
 
     span {
       height: 0.1em;
-      color: white;
-      font-size: 0.5em;
-      width: 3.1em;
+      color: $white;
+      width: 20px;
     }
   }
 
   .fa-search {
-    color: white;
+    color: $white;
   }
-}
 
-.nav-menu {
-  box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30)
+  .navbar-menu {
+    box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
+
+    .container {
+      padding: 5px 20px;
+    }
+
+    .fa-bullseye {
+      color: $bright-orange;
+      padding-right: 2px;
+    }
+
+    .fa-comments {
+      color: $orange;
+    }
+
+    .fa-bell {
+      color: $orange;
+    }
+
+    .button {
+      background-color: $dark;
+      color: $white;
+    }
+  }
 }
