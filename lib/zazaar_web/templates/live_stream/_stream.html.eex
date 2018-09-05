@@ -10,7 +10,26 @@
     <% end %>
   <% end %>
 
-  <%= link to: "#" do %>
-    <img src="http://via.placeholder.com/300x190" class="ui rounded image" />
-  <% end %>
+  <%#<img src="http://via.placeholder.com/300x190" class="ui rounded image" />%>
+
+  <div class="hero" style="background-image:url(http://via.placeholder.com/300x190)">
+    <div class="hero-header">
+      <i class="far fa-bullseye"></i>
+      xxx
+    </div>
+    <div class="hero-body"> </div>
+    <div class="hero-footer">
+      <div class="columns is-mobile">
+        <div class="column is-one-fifth">
+          <figure class="image is-32x32">
+            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+          </figure>
+        </div>
+
+        <div class="column">
+          ping
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
