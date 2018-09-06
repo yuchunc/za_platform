@@ -1,3 +1,6 @@
-@import "../semantic/dist/semantic.min.css";
+@import "./node_modules/bulma/bulma.sass";
+@import "./fontawesome-pro-5.2.0-web/scss/fontawesome.scss";
+
+@import "color";
 
 @import "layout";

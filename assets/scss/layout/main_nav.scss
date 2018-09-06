@@ -1,0 +1,55 @@
+.main-nav {
+  .navbar-brand {
+    background-color: $bright-orange;
+    padding: 0 10px;
+  }
+
+  #logo-item{
+    margin-right: auto;
+
+    #logo {
+      height: 82px;
+    }
+  }
+
+  .navbar-burger{
+    margin-left: 0;
+    font-size: 0.5em;
+
+    span {
+      height: 0.1em;
+      color: $white;
+      width: 20px;
+    }
+  }
+
+  .fa-search {
+    color: $white;
+  }
+
+  .navbar-menu {
+    box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
+
+    .container {
+      padding: 5px 20px;
+    }
+
+    .fa-bullseye {
+      color: $bright-orange;
+      padding-right: 2px;
+    }
+
+    .fa-comments {
+      color: $orange;
+    }
+
+    .fa-bell {
+      color: $orange;
+    }
+
+    .button {
+      background-color: $dark;
+      color: $white;
+    }
+  }
+}

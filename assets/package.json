@@ -3,11 +3,12 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run watch",
-    "watch": "MIX_ENV=dev webpack-dev-server --inline --hot --stdin --colors --public localhost:4000 --config webpack.dev.js",
-    "deploy": "MIX_ENV=prod node_modules/webpack/bin/webpack.js --config webpack.prod.js"
+    "watch": "webpack --colors --mode development --watch --config webpack.dev.js",
+    "deploy": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "@opentok/client": "^2.13.2",
+    "bulma": "^0.7.1",
     "octicons": "^7.1.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
