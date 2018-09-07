@@ -1,17 +1,17 @@
 defmodule ZaZaar.Notification do
   import Ecto.Query
 
-  alias ZaZaar.Repo
   alias ZaZaar.Notification
-  alias Notification.{Notice, Check}
+  alias Notification.{Notice, Schema}
 
   @limit 10
   @page 1
 
   def append_notice(user_id, schema) do
-    %Notice{user_id: user_id}
-    |> Notice.changeset(%{schema: schema})
-    |> Repo.insert()
+    case Schema.validate(schema) do
+      %{valid?: true, changes: payload} -> Notice.append(user_id, payload)
+      %{valid?: false} -> {:error, :bad_schema}
+    end
   end
 
   def get_notices(user_id, opts \\ []) do
@@ -22,6 +22,5 @@ defmodule ZaZaar.Notification do
     |> order_by(desc: :inserted_at)
     |> limit(^@limit)
     |> offset(^((page - 1) * @limit))
-    |> Repo.all()
   end
 end

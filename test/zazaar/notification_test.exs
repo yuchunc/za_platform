@@ -11,53 +11,38 @@ defmodule ZaZaar.NotificationTest do
     test "adds a new_follower notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert {:ok, notice} =
-               Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
+      assert :ok = Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
     end
 
     test "adds a followee_is_live notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{from_id: user1.id, type: :followee_is_live})
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
     end
 
     test "adds a new_message notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
       content = Faker.Lorem.sentence()
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{
                  from_id: user1.id,
                  content: content,
                  type: :new_message
                })
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
-      assert notice.schema.content == content
     end
 
     test "adds a new_post notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
       content = Faker.Lorem.sentence()
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{
                  from_id: user1.id,
                  content: content,
                  type: :new_post
                })
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
-      assert notice.schema.content == content
     end
   end
 

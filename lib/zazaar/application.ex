@@ -13,7 +13,8 @@ defmodule ZaZaar.Application do
       # Start the endpoint when the application starts
       supervisor(ZaZaarWeb.Endpoint, []),
       worker(Guardian.DB.Token.SweeperServer, []),
-      worker(ZaZaarWeb.StreamWatcher, [:channels])
+      worker(ZaZaarWeb.StreamWatcher, [:channels]),
+      worker(ZaZaar.Notification.Notice, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -1,24 +1,15 @@
 defmodule ZaZaar.Notification.Notice do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Agent
 
-  alias ZaZaar.Account
-  alias ZaZaar.Notification
-
-  @foreign_key_type Ecto.UUID
-  @primary_key {:id, :binary_id, autogenerate: true}
-
-  schema "notices" do
-    belongs_to(:user, Account.User)
-    embeds_one(:schema, Notification.Schema)
-
-    timestamps(updated_at: false)
+  def start_link() do
+    Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
-  def changeset(%__MODULE__{} = struct, params \\ %{}) do
-    struct
-    |> cast(params, [:user_id])
-    |> cast_embed(:schema)
-    |> validate_required(:user_id)
+  @doc "append notice to a user_id"
+  def append(user_id, payload) do
+    Agent.update(__MODULE__, fn state ->
+      notices = Map.get(state, user_id, [])
+      Map.put(state, user_id, notices ++ [payload])
+    end)
   end
 end
