@@ -123,7 +123,7 @@ defmodule ZaZaarWeb.UserChannelTest do
       {:ok, socket: socket}
     end
 
-    test "when other service part pushes notice to this, it broadcast to the client", context do
+    test "when other service pushes notice to this, it broadcast to the client", context do
       %{socket: socket} = context
       user1_id = Ecto.UUID.generate()
 
