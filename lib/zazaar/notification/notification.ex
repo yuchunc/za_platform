@@ -14,27 +14,6 @@ defmodule ZaZaar.Notification do
     |> Repo.insert()
   end
 
-  def check(user_id) do
-    check =
-      case Repo.get_by(Check, user_id: user_id) do
-        nil -> %Check{user_id: user_id}
-        check -> check
-      end
-
-    {:ok, check} =
-      Check.changeset(check, %{updated_at: NaiveDateTime.utc_now()})
-      |> Repo.insert_or_update()
-
-    {:ok, check.updated_at}
-  end
-
-  def last_checked(user_id) do
-    case Repo.get_by(Check, user_id: user_id) do
-      nil -> NaiveDateTime.utc_now()
-      %Check{} = check -> check.updated_at
-    end
-  end
-
   def get_notices(user_id, opts \\ []) do
     page = Keyword.get(opts, :page, @page)
 

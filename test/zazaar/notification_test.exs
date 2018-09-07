@@ -67,7 +67,7 @@ defmodule ZaZaar.NotificationTest do
       {:ok, notices: insert_list(15, :notice, user: user)}
     end
 
-    test "gets a list of notices", context do
+    test "gets a list of unread notices", context do
       %{user: user} = context
 
       result = Notification.get_notices(user.id)
@@ -94,25 +94,6 @@ defmodule ZaZaar.NotificationTest do
 
       assert List.first(result1) |> Map.get(:inserted_at) <
                List.last(result) |> Map.get(:inserted_at)
-    end
-  end
-
-  describe "last_checked/1" do
-    test "get the last open timestamp" do
-      user = insert(:viewer)
-
-      assert %NaiveDateTime{} = Notification.last_checked(user.id)
-    end
-  end
-
-  describe "check/1" do
-    test "record the last time the notification was checked" do
-      user = insert(:viewer)
-
-      assert {:ok, %NaiveDateTime{} = time} = Notification.check(user.id)
-      {:ok, %NaiveDateTime{} = time1} = Notification.check(user.id)
-
-      assert time1 > time
     end
   end
 end
