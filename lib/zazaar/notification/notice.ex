@@ -7,9 +7,15 @@ defmodule ZaZaar.Notification.Notice do
 
   @doc "append notice to a user_id"
   def append(user_id, payload) do
-    Agent.update(__MODULE__, fn state ->
+    Agent.update(__MODULE__, fn(state) ->
       notices = Map.get(state, user_id, [])
-      Map.put(state, user_id, notices ++ [payload])
+      Map.put(state, user_id, [payload | notices])
+    end)
+  end
+
+  def fetch(user_id) do
+    Agent.get_and_update(__MODULE__, fn(state) ->
+      {Map.get(state, user_id, []), Map.delete(state, user_id)}
     end)
   end
 end

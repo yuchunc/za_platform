@@ -11,7 +11,8 @@ defmodule ZaZaar.NotificationTest do
     test "adds a new_follower notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert :ok = Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
+      assert :ok =
+               Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
     end
 
     test "adds a followee_is_live notice to the user's notification queue", context do
@@ -49,7 +50,18 @@ defmodule ZaZaar.NotificationTest do
   describe "get_notices/1" do
     setup context do
       %{user: user} = context
-      {:ok, notices: insert_list(15, :notice, user: user)}
+
+      notices = (0..14)
+      |> Enum.reduce([], fn(_, acc) ->
+        notice_type = Enum.random( NoticeSchemaEnum.__enum_map__())
+        [build(notice_type) | acc]
+      end)
+
+      Agent.update(Notification.Notice, fn(state) ->
+        Map.put(state, user.id, notices)
+      end)
+
+      {:ok, notices: notices}
     end
 
     test "gets a list of unread notices", context do
@@ -57,28 +69,7 @@ defmodule ZaZaar.NotificationTest do
 
       result = Notification.get_notices(user.id)
 
-      assert Enum.count(result) == 10
-
-      assert Enum.reduce(result, fn
-               n, nil ->
-                 n
-
-               n, acc ->
-                 assert n.inserted_at < acc.inserted_at
-                 n
-             end)
-    end
-
-    test "can paginate", context do
-      %{user: user} = context
-
-      result = Notification.get_notices(user.id)
-      result1 = Notification.get_notices(user.id, page: 2)
-
-      refute result1 == result
-
-      assert List.first(result1) |> Map.get(:inserted_at) <
-               List.last(result) |> Map.get(:inserted_at)
+      assert Enum.count(result) == 15
     end
   end
 end

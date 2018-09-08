@@ -8,15 +8,17 @@ defmodule ZaZaar.Notification.Schema do
   @types %{
     type: NoticeSchemaEnum,
     from_id: Ecto.UUID,
-    content: :string
+    content: :string,
+    at: :datetime
   }
 
   def validate(attrs) do
     {%{}, @types}
     |> cast(attrs, Map.keys(@types))
     |> validate_required([:from_id, :type])
-    |> validate_inclusion(:type, NoticeSchemaEnum.__valid_values__())
+    |> validate_inclusion(:type, NoticeSchemaEnum.__valid_values__)
     |> validate_schema
+    |> put_change(:at, NaiveDateTime.utc_now)
   end
 
   defp validate_schema(changeset) do

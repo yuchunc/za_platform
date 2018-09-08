@@ -4,8 +4,8 @@ defmodule ZaZaar.Notification do
   alias ZaZaar.Notification
   alias Notification.{Notice, Schema}
 
-  @limit 10
-  @page 1
+  #@limit 10
+  #@page 1
 
   def append_notice(user_id, schema) do
     case Schema.validate(schema) do
@@ -15,12 +15,7 @@ defmodule ZaZaar.Notification do
   end
 
   def get_notices(user_id, opts \\ []) do
-    page = Keyword.get(opts, :page, @page)
-
-    Notice
-    |> where(user_id: ^user_id)
-    |> order_by(desc: :inserted_at)
-    |> limit(^@limit)
-    |> offset(^((page - 1) * @limit))
+    #page = Keyword.get(opts, :page, @page)
+    Notice.fetch(user_id)
   end
 end
