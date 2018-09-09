@@ -52,10 +52,7 @@ defmodule ZaZaarWeb.StreamChannel do
       streamer
       |> Following.get_followers()
       |> Enum.map(&Map.get(&1, :follower_id))
-      |> ZaZaarWeb.UserChannel.send_notification(%{
-        type: :followee_is_live,
-        followee_id: streamer.id
-      })
+      |> Notification.append_notice(%{type: :followee_is_live, from_id: streamer.id})
 
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
       {:reply, {:ok, opentok_params}, socket}

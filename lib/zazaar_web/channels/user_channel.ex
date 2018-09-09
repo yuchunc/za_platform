@@ -66,21 +66,32 @@ defmodule ZaZaarWeb.UserChannel do
     {:noreply, socket}
   end
 
+  def handle_in("follower:add", params, socket) do
+    with %{"followee_id" => followee_id} <- params,
+         user <- current_resource(socket),
+         :ok <- Following.start_following(user, %{id: followee_id}) do
+      {:reply, :ok, socket}
+    else
+      _ -> {:stop, :cannot_follow}
+    end
+  end
+
+  def handle_in("follower:remove", params, socket) do
+    with %{"followee_id" => followee_id} <- params,
+         user <- current_resource(socket),
+         :ok <- Following.stop_following(user, %{id: followee_id}) do
+      {:reply, :ok, socket}
+    else
+      _ -> {:stop, :cannot_follow}
+    end
+  end
+
+  @doc """
+  Internal event
+  """
   def handle_in("notify:new_notice", params, socket) do
     {type, payload} = Map.pop(params, "type")
-    user = current_resource(socket)
-    Notification.append_notice(user.id, params)
     broadcast(socket, "notify:" <> Atom.to_string(type), payload)
     {:noreply, socket}
-  end
-
-  def send_notification(follower_ids, message) when is_list(follower_ids) do
-    Enum.each(follower_ids, fn follower_id -> send_notification(follower_id, message) end)
-  end
-
-  def send_notification(follower_id, message) when is_binary(follower_id) do
-    Task.start(fn ->
-      ZaZaarWeb.Endpoint.broadcast("user:" <> follower_id, "notify:new_notice", message)
-    end)
   end
 end

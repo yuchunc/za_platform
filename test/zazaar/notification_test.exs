@@ -11,8 +11,7 @@ defmodule ZaZaar.NotificationTest do
     test "adds a new_follower notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert :ok =
-               Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
+      assert :ok = Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
     end
 
     test "adds a followee_is_live notice to the user's notification queue", context do
@@ -78,13 +77,14 @@ defmodule ZaZaar.NotificationTest do
   end
 
   defp insert_notices(user, count \\ 15) do
-    notices = (1..count)
-    |> Enum.reduce([], fn(_, acc) ->
-      notice_type = Enum.random( NoticeSchemaEnum.__enum_map__())
-      [build(notice_type) | acc]
-    end)
+    notices =
+      1..count
+      |> Enum.reduce([], fn _, acc ->
+        notice_type = Enum.random(NoticeSchemaEnum.__enum_map__())
+        [build(notice_type) | acc]
+      end)
 
-    Agent.update(Notification.Notice, fn(state) ->
+    Agent.update(Notification.Notice, fn state ->
       Map.put(state, user.id, notices)
     end)
 
