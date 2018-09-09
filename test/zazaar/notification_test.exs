@@ -51,17 +51,7 @@ defmodule ZaZaar.NotificationTest do
     setup context do
       %{user: user} = context
 
-      notices = (0..14)
-      |> Enum.reduce([], fn(_, acc) ->
-        notice_type = Enum.random( NoticeSchemaEnum.__enum_map__())
-        [build(notice_type) | acc]
-      end)
-
-      Agent.update(Notification.Notice, fn(state) ->
-        Map.put(state, user.id, notices)
-      end)
-
-      {:ok, notices: notices}
+      {:ok, notices: insert_notices(user)}
     end
 
     test "gets a list of unread notices", context do
@@ -71,5 +61,33 @@ defmodule ZaZaar.NotificationTest do
 
       assert Enum.count(result) == 15
     end
+  end
+
+  describe "count_notices/1" do
+    setup context do
+      %{user: user} = context
+
+      {:ok, notices: insert_notices(user)}
+    end
+
+    test "get the count of the user notices", context do
+      %{user: user} = context
+
+      assert 15 = Notification.get_count(user.id)
+    end
+  end
+
+  defp insert_notices(user, count \\ 15) do
+    notices = (1..count)
+    |> Enum.reduce([], fn(_, acc) ->
+      notice_type = Enum.random( NoticeSchemaEnum.__enum_map__())
+      [build(notice_type) | acc]
+    end)
+
+    Agent.update(Notification.Notice, fn(state) ->
+      Map.put(state, user.id, notices)
+    end)
+
+    notices
   end
 end

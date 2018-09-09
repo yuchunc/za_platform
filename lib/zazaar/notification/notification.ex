@@ -18,4 +18,8 @@ defmodule ZaZaar.Notification do
     #page = Keyword.get(opts, :page, @page)
     Notice.fetch(user_id)
   end
+
+  def get_count(user_id) do
+    Notice.count(user_id)
+  end
 end

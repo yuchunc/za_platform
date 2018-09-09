@@ -81,7 +81,6 @@ defmodule ZaZaarWeb.UserChannel do
   def send_notification(follower_id, message) when is_binary(follower_id) do
     Task.start(fn ->
       ZaZaarWeb.Endpoint.broadcast("user:" <> follower_id, "notify:new_notice", message)
-      # ZaZaarWeb.Endpoint.broadcast("user:" <> Ecto.UUID.generate, "notify:new_notice", message)
     end)
   end
 end

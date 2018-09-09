@@ -18,4 +18,9 @@ defmodule ZaZaar.Notification.Notice do
       {Map.get(state, user_id, []), Map.delete(state, user_id)}
     end)
   end
+
+  def count(user_id) do
+    Agent.get(__MODULE__, &Map.get(&1, user_id))
+    |> Enum.count
+  end
 end
