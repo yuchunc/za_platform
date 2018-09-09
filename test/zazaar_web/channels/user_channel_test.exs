@@ -5,7 +5,7 @@ defmodule ZaZaarWeb.UserChannelTest do
 
   setup do
     user = insert(:streamer)
-    {:ok, socket: sign_socket(user), user: user}
+    {:ok, user: user}
   end
 
   describe "join channel" do
@@ -17,9 +17,11 @@ defmodule ZaZaarWeb.UserChannelTest do
     end
 
     test "only the user can use own channel", context do
-      %{socket: socket, user: user} = context
+      %{user: user} = context
 
-      subscribe_and_join!(socket, UserChannel, "user:" <> user.id)
+      user
+      |> sign_socket
+      |> subscribe_and_join!(UserChannel, "user:" <> user.id)
 
       assert_broadcast("user:signed_in", _)
     end
@@ -29,9 +31,7 @@ defmodule ZaZaarWeb.UserChannelTest do
     setup context do
       %{user: user} = context
 
-      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
-
-      {:ok, socket: socket}
+      {:ok, socket: join_channel(user)}
     end
 
     test "adds an post to the user feed", context do
@@ -56,10 +56,9 @@ defmodule ZaZaarWeb.UserChannelTest do
     setup context do
       %{user: user} = context
       user_1 = insert(:user)
-      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
       messages = build_list(40, :message, user_id: Enum.random([user.id, user_1.id]))
       history = insert(:history, user_ids: [user.id, user_1.id], messages: messages)
-      {:ok, socket: socket, user_1: user_1, history: history}
+      {:ok, socket: join_channel(user), user_1: user_1, history: history}
     end
 
     test "gets a list of latest chat", context do
@@ -89,10 +88,8 @@ defmodule ZaZaarWeb.UserChannelTest do
     setup context do
       %{user: user} = context
       user1 = insert(:user)
-      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
-      socket1 = subscribe_and_join!(sign_socket(user1), UserChannel, "user:" <> user1.id)
 
-      {:ok, socket: socket, user1: user1, socket1: socket1}
+      {:ok, socket: join_channel(user), user1: user1, socket1: join_channel(user1)}
     end
 
     test "replys :ok", context do
@@ -115,12 +112,42 @@ defmodule ZaZaarWeb.UserChannelTest do
     end
   end
 
-  describe "[INTERNAL] notify:new_notice" do
+  describe "follower:add event" do
     setup context do
       %{user: user} = context
-      socket = subscribe_and_join!(sign_socket(user), UserChannel, "user:" <> user.id)
 
-      {:ok, socket: socket}
+      {:ok, socket: join_channel(user)}
+    end
+
+    test "follows another user", context do
+      %{socket: socket} = context
+      followee = insert(:user)
+      ref = push(socket, "follower:add", %{followee_id: followee.id})
+
+      assert_reply(ref, :ok, %{})
+    end
+  end
+
+  describe "follower:remove event" do
+    setup context do
+      %{user: user} = context
+
+      {:ok, socket: join_channel(user)}
+    end
+
+    test "stop following another user", context do
+      %{socket: socket} = context
+      ref = push(socket, "follower:remove", %{followee_id: Ecto.UUID.generate})
+
+      assert_reply(ref, :ok, %{})
+    end
+  end
+
+  describe "[INTERNAL] :new_notice" do
+    setup context do
+      %{user: user} = context
+
+      {:ok, socket: join_channel(user)}
     end
 
     test "when other service pushes notice to this, it broadcast to the client", context do
@@ -132,13 +159,11 @@ defmodule ZaZaarWeb.UserChannelTest do
       valid_payload = %{"from_id" => user1_id}
       assert_broadcast("notify:new_follower", ^valid_payload)
     end
+  end
 
-    test "send_notification/2 sends the message to the respective user channels", context do
-      %{user: user} = context
-      user1_id = Ecto.UUID.generate()
-      UserChannel.send_notification(user.id, %{type: :new_follower, from_id: user1_id})
-
-      assert_broadcast("notify:new_notice", _)
-    end
+  defp join_channel(%User{} = user) do
+    user
+    |> sign_socket
+    |> subscribe_and_join!(UserChannel, "user:" <> user.id)
   end
 end
