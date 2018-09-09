@@ -11,108 +11,83 @@ defmodule ZaZaar.NotificationTest do
     test "adds a new_follower notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{from_id: user1.id, type: :new_follower})
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
     end
 
     test "adds a followee_is_live notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{from_id: user1.id, type: :followee_is_live})
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
     end
 
     test "adds a new_message notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
       content = Faker.Lorem.sentence()
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{
                  from_id: user1.id,
                  content: content,
                  type: :new_message
                })
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
-      assert notice.schema.content == content
     end
 
     test "adds a new_post notice to the user's notification queue", context do
       %{user: user, user1: user1} = context
       content = Faker.Lorem.sentence()
 
-      assert {:ok, notice} =
+      assert :ok =
                Notification.append_notice(user.id, %{
                  from_id: user1.id,
                  content: content,
                  type: :new_post
                })
-
-      assert notice.user_id == user.id
-      assert notice.schema.from_id == user1.id
-      assert notice.schema.content == content
     end
   end
 
   describe "get_notices/1" do
     setup context do
       %{user: user} = context
-      {:ok, notices: insert_list(15, :notice, user: user)}
+
+      {:ok, notices: insert_notices(user)}
     end
 
-    test "gets a list of notices", context do
+    test "gets a list of unread notices", context do
       %{user: user} = context
 
       result = Notification.get_notices(user.id)
 
-      assert Enum.count(result) == 10
-
-      assert Enum.reduce(result, fn
-               n, nil ->
-                 n
-
-               n, acc ->
-                 assert n.inserted_at < acc.inserted_at
-                 n
-             end)
+      assert Enum.count(result) == 15
     end
+  end
 
-    test "can paginate", context do
+  describe "count_notices/1" do
+    setup context do
       %{user: user} = context
 
-      result = Notification.get_notices(user.id)
-      result1 = Notification.get_notices(user.id, page: 2)
+      {:ok, notices: insert_notices(user)}
+    end
 
-      refute result1 == result
+    test "get the count of the user notices", context do
+      %{user: user} = context
 
-      assert List.first(result1) |> Map.get(:inserted_at) <
-               List.last(result) |> Map.get(:inserted_at)
+      assert 15 = Notification.get_count(user.id)
     end
   end
 
-  describe "last_checked/1" do
-    test "get the last open timestamp" do
-      user = insert(:viewer)
+  defp insert_notices(user, count \\ 15) do
+    notices = (1..count)
+    |> Enum.reduce([], fn(_, acc) ->
+      notice_type = Enum.random( NoticeSchemaEnum.__enum_map__())
+      [build(notice_type) | acc]
+    end)
 
-      assert %NaiveDateTime{} = Notification.last_checked(user.id)
-    end
-  end
+    Agent.update(Notification.Notice, fn(state) ->
+      Map.put(state, user.id, notices)
+    end)
 
-  describe "check/1" do
-    test "record the last time the notification was checked" do
-      user = insert(:viewer)
-
-      assert {:ok, %NaiveDateTime{} = time} = Notification.check(user.id)
-      {:ok, %NaiveDateTime{} = time1} = Notification.check(user.id)
-
-      assert time1 > time
-    end
+    notices
   end
 end

@@ -1,18 +1,24 @@
 defmodule ZaZaar.Notification.Schema do
-  use Ecto.Schema
+  @moduledoc """
+  This is the schema validation module for notifications
+  """
+
   import Ecto.Changeset
 
-  embedded_schema do
-    field(:type, NoticeSchemaEnum)
-    field(:from_id, Ecto.UUID)
-    field(:content, :string)
-  end
+  @types %{
+    type: NoticeSchemaEnum,
+    from_id: Ecto.UUID,
+    content: :string,
+    at: :datetime
+  }
 
-  def changeset(%__MODULE__{} = schema, attrs \\ %{}) do
-    schema
-    |> cast(attrs, [:from_id, :content])
-    |> validate_required(:from_id)
+  def validate(attrs) do
+    {%{}, @types}
+    |> cast(attrs, Map.keys(@types))
+    |> validate_required([:from_id, :type])
+    |> validate_inclusion(:type, NoticeSchemaEnum.__valid_values__)
     |> validate_schema
+    |> put_change(:at, NaiveDateTime.utc_now)
   end
 
   defp validate_schema(changeset) do

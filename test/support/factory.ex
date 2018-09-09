@@ -1,7 +1,7 @@
 defmodule ZaZaar.Factory do
   use ExMachina.Ecto, repo: ZaZaar.Repo
 
-  alias ZaZaar.{Account, Streaming, Following, Feed, ChatLog, Notification}
+  alias ZaZaar.{Account, Streaming, Following, Feed, ChatLog}
 
   # ====== Account =========
   def streamer_factory do
@@ -92,17 +92,17 @@ defmodule ZaZaar.Factory do
     }
   end
 
-  # ====== ChatLog =========
-  def notice_factory do
-    schema =
-      NoticeSchemaEnum.__enum_map__()
-      |> Enum.random()
+  # ====== Notification =========
+  # def notice_factory do
+  # schema =
+  # NoticeSchemaEnum.__enum_map__()
+  # |> Enum.random()
 
-    %Notification.Notice{
-      user: build(:viewer),
-      schema: build(schema)
-    }
-  end
+  # %Notification.Notice{
+  # user: build(:viewer),
+  # schema: build(schema)
+  # }
+  # end
 
   def new_follower_factory do
     %{
