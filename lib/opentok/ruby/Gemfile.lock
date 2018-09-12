@@ -1,0 +1,42 @@
+GIT
+  remote: https://github.com/yuchunc/OpenTok-Ruby-SDK.git
+  revision: 00cfd41791bbf3adef0e20abe494378e88e46ef2
+  branch: master
+  specs:
+    opentok (3.0.3)
+      activesupport (>= 2.0)
+      addressable (~> 2.3)
+      httparty (~> 0.15.5)
+      jwt (~> 1.5.6)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (5.2.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
+    concurrent-ruby (1.0.5)
+    httparty (0.15.7)
+      multi_xml (>= 0.5.2)
+    i18n (1.1.0)
+      concurrent-ruby (~> 1.0)
+    jwt (1.5.6)
+    minitest (5.11.3)
+    multi_xml (0.6.0)
+    public_suffix (3.0.3)
+    thread_safe (0.3.6)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  opentok!
+
+BUNDLED WITH
+   1.16.4

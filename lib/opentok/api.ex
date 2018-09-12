@@ -1,4 +1,6 @@
 defmodule OpenTok.Api do
+  use Export.Ruby
+
   alias OpenTok.Util
 
   @behaviour OpenTok.Behaviour
@@ -6,7 +8,10 @@ defmodule OpenTok.Api do
   @config Util.get_config()
 
   def request_session_id(headers) do
-    {:ok, response} = HTTPoison.post(@config.endpoint <> "/session/create", [], headers)
+    #{:ok, response} = HTTPoison.post(@config.endpoint <> "/session/create", [], headers)
+    {:ok, ruby} = Ruby.start(ruby_lib: Path.expand("lib/opentok/ruby"))
+
+    response = ruby |> Ruby.call("ot_sdk", "create_session", [])
 
     case response.status_code do
       403 ->

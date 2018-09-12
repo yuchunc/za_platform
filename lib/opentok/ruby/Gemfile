@@ -1,0 +1,3 @@
+source "https://rubygems.org"
+
+gem "opentok", git: "https://github.com/yuchunc/OpenTok-Ruby-SDK.git", branch: "master"
