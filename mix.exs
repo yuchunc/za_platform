@@ -51,6 +51,7 @@ defmodule ZaZaar.Mixfile do
       {:argon2_elixir, "~> 1.2"},
       # util
       {:ecto_enum, "~> 1.0"},
+      {:export, "~> 0.1.0"},
       {:httpoison, "~> 1.0"},
       # deployment
       {:edeliver, "~> 1.4.5"},
