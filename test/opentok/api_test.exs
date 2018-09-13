@@ -43,6 +43,7 @@ defmodule OpenTok.ApiTest do
     end
   end
 
+  @tag :skip
   describe "external_broadcast/2" do
     setup do
       headers = create_session_headers(@ot_config)

@@ -2,11 +2,13 @@ defmodule OpenTok.Api do
   alias OpenTok.Util
 
   @behaviour OpenTok.Behaviour
-
   @config Util.get_config()
+  @httpoison_opts [hackney: [lib_headers: :none]]
 
-  def request_session_id(headers) do
-    {:ok, response} = HTTPoison.post(@config.endpoint <> "/session/create", [], headers)
+  def request_session_id(orig_headers) do
+    headers = orig_headers ++ [{"Accept", "application/json"}]
+
+    {:ok, response} = HTTPoison.post(@config.endpoint <> "/session/create", "", headers, @httpoison_opts)
 
     case response.status_code do
       403 ->
@@ -29,7 +31,8 @@ defmodule OpenTok.Api do
       HTTPoison.get(
         @config.endpoint <>
           "/v2/project/" <> @config.key <> "/session/" <> session_id <> "/stream/",
-        headers
+          headers,
+          @httpoison_opts
       )
 
     case response.status_code do
@@ -70,7 +73,8 @@ defmodule OpenTok.Api do
       HTTPoison.post(
         @config.endpoint <> "/v2/project/" <> @config.key <> "/broadcast",
         payload,
-        headers
+        headers,
+        @httpoison_opts
       )
 
     case response.status_code do
