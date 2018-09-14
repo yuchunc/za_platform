@@ -44,7 +44,7 @@ defmodule ZaZaarWeb.Router do
   end
 
   scope "/m", ZaZaarWeb do
-    pipe_through([:auth, :browser])
+    pipe_through([:browser, :auth])
 
     resources "/", MembershipController, singleton: true, only: [:show] do
       resources("/streaming", StreamingController, singleton: true, only: [:show])

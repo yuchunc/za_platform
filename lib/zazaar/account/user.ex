@@ -5,10 +5,12 @@ defmodule ZaZaar.Account.User do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
-    field(:username, :string)
-    field(:phone, :string)
+    field(:name, :string)
     field(:email, :string)
     field(:tier, UserTierEnum)
+    field(:image_url, :string)
+    field :fb_id, :string
+    field :fb_payload, :map
 
     field(:encrypted_password, :string)
     field(:password, :string, virtual: true)
@@ -23,11 +25,9 @@ defmodule ZaZaar.Account.User do
   """
   def changeset(%__MODULE__{} = user, attrs) do
     user
-    |> cast(attrs, [:username, :phone, :email, :password])
-    |> validate_required([:username, :phone, :email])
+    |> cast(attrs, [:email, :password, :fb_id, :image_url, :fb_payload, :name])
+    |> validate_required([:email, :name])
     |> validate_and_encrypt_password
-    |> unique_constraint(:username)
-    |> unique_constraint(:phone)
     |> unique_constraint(:email)
   end
 
