@@ -44,19 +44,19 @@ window.addEventListener('unload', handleDocumentUnload, false);
 document.addEventListener('DOMContentLoaded', function () {
 
   // Controls the modal
-  // document.querySelector('button#fb-login-button').addEventListener('click', function(event) {
-  //   event.preventDefault();
-  //   let modal = document.querySelector('#fb-login');  // assuming you have only 1
-  //   let html = document.querySelector('html');
-  //   modal.classList.add('is-active');
-  //   html.classList.add('is-clipped');
+  //document.querySelector('button#fb-login-button').addEventListener('click', function(event) {
+    //event.preventDefault();
+    //let modal = document.querySelector('#fb-login');  // assuming you have only 1
+    //let html = document.querySelector('html');
+    //modal.classList.add('is-active');
+    //html.classList.add('is-clipped');
 
-  //   modal.querySelector('.modal-background').addEventListener('click', function(e) {
-  //     e.preventDefault();
-  //     modal.classList.remove('is-active');
-  //     html.classList.remove('is-clipped');
-  //   });
-  // });
+    //modal.querySelector('.modal-background').addEventListener('click', function(e) {
+      //e.preventDefault();
+      //modal.classList.remove('is-active');
+      //html.classList.remove('is-clipped');
+    //});
+  //});
 
   // Get all "navbar-burger" elements
   let $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);

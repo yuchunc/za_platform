@@ -1,6 +1,8 @@
 defmodule ZaZaarWeb.SessionController do
   use ZaZaarWeb, :controller
 
+  plug Ueberauth
+
   action_fallback(FallbackController)
 
   alias ZaZaar.Auth.Guardian
@@ -22,5 +24,17 @@ defmodule ZaZaarWeb.SessionController do
     conn
     |> Guardian.Plug.sign_out()
     |> redirect(to: "/")
+  end
+
+  def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
+    conn
+    |> put_flash(:error, "驗證失敗！")
+    #|> redirect(to: "/")
+  end
+
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+    auth
+    |> IO.inspect(label: "label")
+    redirect(conn, to: "/")
   end
 end

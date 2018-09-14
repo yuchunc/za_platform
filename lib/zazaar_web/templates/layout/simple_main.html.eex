@@ -1,13 +1,13 @@
-<section role="nav" class="section main-nav is-paddingless">
-  <nav class="navbar has-background-bright-orange" role="navigation" aria-label="main navigation">
+<nav class="navbar has-background-bright-orange" role="navigation" aria-label="main navigation">
+  <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item is-paddingless" href="/" id="logo-item">
+      <a class="navbar-item" href="/" id="logo-item">
         <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
       </a>
 
-      <div class="navbar-item is-right">
-        <button class="button is-link is-inverted is-outlined"> FB 登入</button>
+      <div class="navbar-item">
+        <a href="/auth/facebook" class="button is-link is-inverted is-outlined"> FB 登入</a>
       </div>
     </div>
-  </nav>
-</section>
+  </div>
+</nav>

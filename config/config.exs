@@ -5,6 +5,10 @@
 # is restricted to this project.
 use Mix.Config
 
+#fb_names = "name,email,first_name,last_name,middle_name,name_format,short_name"
+#fb_info = "birthday,context,gender,profile_pic,security_settings,significant_other"
+#fb_location = "address,hometown,language,location"
+
 # General application configuration
 config :zazaar, ecto_repos: [ZaZaar.Repo]
 
@@ -32,6 +36,15 @@ config :phoenix_inline_svg,
   dir: "/priv/static/images",
   default_collection: "",
   not_found: "<p>Oh No!</p>"
+
+config :ueberauth, Ueberauth,
+  providers: [
+    facebook: {Ueberauth.Strategy.Facebook, [
+      profile_fields: "name,email,first_name,last_name",
+      #profile_fields: fb_names <> fb_info <> fb_location,
+      display: "popup"
+    ]}
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

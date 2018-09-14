@@ -49,6 +49,8 @@ defmodule ZaZaar.Mixfile do
       {:guardian_db, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:ueberauth, "~> 0.4"},
+      {:ueberauth_facebook, "~> 0.7"},
       # util
       {:ecto_enum, "~> 1.0"},
       {:httpoison, "~> 1.0"},
