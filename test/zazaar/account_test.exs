@@ -31,6 +31,7 @@ defmodule ZaZaar.AccountTest do
   describe "fb_authed/2" do
     setup do
       uid = "10100000000005206"
+
       info = %Ueberauth.Auth.Info{
         description: nil,
         email: "something@foo.bar",

@@ -9,8 +9,8 @@ defmodule ZaZaar.Account.User do
     field(:email, :string)
     field(:tier, UserTierEnum)
     field(:image_url, :string)
-    field :fb_id, :string
-    field :fb_payload, :map
+    field(:fb_id, :string)
+    field(:fb_payload, :map)
 
     field(:encrypted_password, :string)
     field(:password, :string, virtual: true)

@@ -6,7 +6,11 @@
       </a>
 
       <div class="navbar-item">
-        <a href="/auth/facebook" class="button is-link is-inverted is-outlined"> FB 登入</a>
+        <%= if current_resource(@conn) do %>
+          <%= link("登 出", to: "/m/logout", class: "button is-link is-inverted is-outlined", method: :delete)%>
+        <% else %>
+          <a href="/auth/facebook" class="button is-link is-inverted is-outlined"> FB 登入</a>
+        <% end %>
       </div>
     </div>
   </div>

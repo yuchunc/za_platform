@@ -1,7 +1,7 @@
 defmodule ZaZaarWeb.SessionController do
   use ZaZaarWeb, :controller
 
-  plug Ueberauth
+  plug(Ueberauth)
 
   action_fallback(FallbackController)
 
@@ -29,12 +29,15 @@ defmodule ZaZaarWeb.SessionController do
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
     |> put_flash(:error, "驗證失敗！")
-    #|> redirect(to: "/")
+    |> redirect(to: "/")
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    auth
-    |> IO.inspect(label: "label")
-    redirect(conn, to: "/")
+    {:ok, user} = Account.fb_auth(auth.uid, auth.info)
+
+    conn
+    |> Guardian.Plug.sign_in(user)
+    |> put_flash(:success, "登入成功！")
+    |> redirect(to: "/")
   end
 end

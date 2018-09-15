@@ -1,6 +1,7 @@
 defmodule OpenTok.Behaviour do
   @type headers :: HTTPoison.Base.headers()
-  @type response :: :ok | {:ok, atom()} | {:ok, String.t()} | {:error, atom} | {:error, String.t()}
+  @type response ::
+          :ok | {:ok, atom()} | {:ok, String.t()} | {:error, atom} | {:error, String.t()}
 
   @callback request_session_id(headers) :: response
 

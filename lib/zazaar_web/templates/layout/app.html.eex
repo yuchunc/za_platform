@@ -15,7 +15,10 @@
     <%= render("simple_main.html", conn: @conn) %>
 
     <main role="main" class="section">
-      <%= render @view_module, @view_template, assigns %>
+      <div class="container">
+        <%= show_flash(@conn) %>
+        <%= render @view_module, @view_template, assigns %>
+      </div>
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

@@ -26,4 +26,17 @@ defmodule ZaZaarWeb.LayoutView do
     |> String.split(".")
     |> Enum.at(0)
   end
+
+  def show_flash(conn) do
+    conn
+    |> get_flash
+    |> Enum.map(&flash_html/1)
+  end
+
+  def flash_html({level, message}),
+    do:
+      {:safe,
+       "<div class='notification is-#{level}'> <button class='delete'></button> #{message} </div>"}
+
+  def flash_html(_), do: nil
 end
