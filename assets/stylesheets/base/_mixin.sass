@@ -1,0 +1,27 @@
+// Mixins
+=size($width, $height)
+  width: $width
+  height: $height
+
+=align-center()
+  position: absolute
+  top: 50%
+  left: 50%
+  +transform(translateX(-50%) translateY(-50%))
+
+=transition($transition...)
+  -moz-transition:    $transition
+  -o-transition:      $transition
+  -webkit-transition: $transition
+  transition:         $transition
+
+=transform($transform...)
+  -ms-transform:     $transform
+  -webkit-transform: $transform
+  transform:         $transform
+
+=hover-effect($duration, $y-transform)
+  transform: translate3d(0, 0, 0)
+  transition: all $duration ease-out
+  &:hover
+    transform: translate3d(0, $y-transform, 0)7

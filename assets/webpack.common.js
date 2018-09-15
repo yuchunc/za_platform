@@ -10,7 +10,7 @@ module.exports = {
   entry: {
     app: [
       "./js/app.js",
-      "./scss/app.scss"
+      "./stylesheets/app.sass"
     ]
   },
 
@@ -31,7 +31,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.(css|scss|sass)$/,
         use: ExtractTextPlugin.extract({
           fallback: "sass-loader",
           use: ['css-loader', 'postcss-loader', 'sass-loader']
