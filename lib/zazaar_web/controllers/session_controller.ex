@@ -23,6 +23,7 @@ defmodule ZaZaarWeb.SessionController do
   def delete(conn, _params) do
     conn
     |> Guardian.Plug.sign_out()
+    |> put_flash(:info, "登出成功！")
     |> redirect(to: "/")
   end
 
