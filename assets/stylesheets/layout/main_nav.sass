@@ -1,48 +1,87 @@
-.main-nav
+$navbar-height: 60px
+  
+.navbar
+  display: flex
+  justify-content: space-between
+
+  background-color: $zazaar-orange
+
+  height: 60px
+  padding: 0 20px
+
+  a
+    color: #fff
+
+  +desktop
+    padding: 0 40px
+
+  .navbar-item img
+    max-height: 100%
+
+  // Logo
   .navbar-brand
-    background-color: $bright-orange
-    padding: 0 10px
+    height: 100%
 
-  #logo-item
-    margin-right: auto
+    #main-logo
+      width: 114px
 
-    #logo
-      height: 82px
+  // Search Bar
+  .navbar-search
+    display: flex
+    align-items: center
+    width: 100%
+    padding: 0 20px
 
+    .field, .bar
+      max-width: 400px
+      width: 100%
 
-  .navbar-burger
-    margin-left: 0
-    font-size: 0.5em
+    .z-input
+      background-color: transparent
+      border-radius: 0
+      border-width: 0
+      border-bottom-width: 1px
+      border-color: #fff
+      box-shadow: 0 0 0 rgba(0,0,0,0)
 
-    span
-      height: 0.1em
-      color: $white
-      width: 20px
+      &::placeholder
+        color: rgba(#fff, 0.8)
 
+    .z-submit
+      +size(36px, 36px)
+      border-bottom: 1px solid #fff
+      padding: 5px
 
-  .fa-search
-    color: $white
-
+  // Menu + Go Streaming + Avatar
   .navbar-menu
-    box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30)
+    display: flex
+    justify-content: flex-end
+    align-items: center
+    background-color: transparent
+    box-shadow: 0 0 0 rgba(0,0,0,0)
 
-    .container
-      padding: 5px 20px
+    .navbar-item
+      padding: 0
+      
+      + .navbar-item
+        margin-left: 20px
 
+    .z-icon
+      +size(36px, 24px)
 
+      svg
+        width: 100%
+        height: 100%
 
-    .fa-comments
-      color: $orange
+    .z-button
+      background-color: $zazaar-dark
+      border-radius: 2px
+      padding: 6px 10px
+      +hover-effect(0.2s, -3px)
 
-
-    .fa-bell
-      color: $orange
-
-
-    .button
-      background-color: $dark
-      color: $white
+      &:hover
+        color: #fff
 
       .fa-bullseye
-        color: $bright-orange
+        color: $zazaar-orange
         padding-right: 3px

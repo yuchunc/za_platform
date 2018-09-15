@@ -1,42 +1,36 @@
 <div class="navbar-brand">
-  <a class="navbar-item is-paddingless" href="/" id="logo-item">
-    <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
-  </a>
-
-  <div class="navbar-item is-right">
-    <a href="#" class="navbar-end icon">
-      <i class="fal fa-search fa-lg"></i>
-    </a>
-  </div>
-
-  <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
+  <a class="navbar-item is-paddingless" href="/">
+    <img src="<%= static_path(@conn, "/images/zazaar_logo.svg") %>" alt="ZaZaar" id="main-logo"/>
   </a>
 </div>
-</nav>
 
-<div class="navbar-menu" id="nav-menu">
-  <div class="container level is-mobile">
-    <a href="#" class="level-item icon">
-      <i class="fas fa-comments fa-2x"></i>
-    </a>
-    <a href="#" class="level-item icon">
-      <i class="fas fa-bell fa-2x"></i>
-    </a>
-    <div class="level-item">
-      <a class="button">
-        <i class="far fa-bullseye"></i>
-        開始直播
+<div class="navbar-search">
+  <div class="field has-addons">
+    <div class="control bar">
+      <input class="input z-input" type="text" placeholder="搜尋">
+    </div>
+    <div class="control z-submit">
+      <a class="#">
+        <i class="fal fa-search"></i>
       </a>
     </div>
-
-    <a href="#" class="level-item">
-      <figure class="image is-32x32">
-        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-      </figure>
-    </a>
   </div>
 </div>
-</section>
+
+<div class="navbar-menu">
+  <a class="navbar-item z-icon">
+    <i class="fas fa-comments"></i>
+  </a>
+  <a class="navbar-item z-icon">
+    <i class="fas fa-bell"></i>
+  </a>
+  <a class="navbar-item z-button">
+    <i class="far fa-bullseye"></i>
+    開始直播
+  </a>
+  <a href="#" class="navbar-item avatar">
+    <figure class="image is-32x32">
+      <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
+    </figure>
+  </a>
+</div>
