@@ -24,7 +24,6 @@ defmodule ZaZaar.Streaming.Stream do
   def changeset(%__MODULE__{} = stream, attrs \\ %{}) do
     stream
     |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id, :upload_key, :video_snapshot])
-    |> cast_embed(:comments)
     |> assoc_constraint(:channel)
     |> validate_not_archived
   end
@@ -33,6 +32,10 @@ defmodule ZaZaar.Streaming.Stream do
     stream
     |> changeset(%{archived_at: NaiveDateTime.utc_now()})
     |> validate_required([:archived_at])
+  end
+
+  def put_comment(changeset, %Streaming.Comment{}=comment) do
+    put_embed(changeset, :comments, [comment | get_field(changeset, :comments)])
   end
 
   defp validate_not_archived(changeset) do

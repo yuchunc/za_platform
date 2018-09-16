@@ -4,19 +4,19 @@
   </div>
 
   <div class="column is-half">
-    <div class="panel">
-      <div class="field has-addons">
-        <div class="control is-expanded">
-          <input id="user_comment" name="user[comment]" class="input" placeholder="留 言" type="text"></input>
-        </div>
-        <div class="control">
-          <button class="button is-info">
-            <i class="fal fa-paper-plane"></i>
-            送出
-          </button>
-        </div>
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input id="user-comment" name="user[comment]" class="input" placeholder="留 言" type="text"></input>
       </div>
+      <div class="control">
+        <button id="send-comment" class="button is-info">
+          <i class="fal fa-paper-plane"></i>
+          送出
+        </button>
+      </div>
+    </div>
 
+    <div id="chat-log" class="panel">
       <div class="panel-block">Fox: What do I say? </div>
       <div class="panel-block">Cat: Meow </div>
       <div class="panel-block">Mickey: who let the dogs out</div>

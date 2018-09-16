@@ -1,8 +1,8 @@
 import socket from '../../socket';
 import main from '../main';
+import commentAction from '../util/comment';
 
 const streamer_id = window.streamConfig.streamer_id;
-
 
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
@@ -50,12 +50,13 @@ export default () => {
         .receive("ok", (resp) => {
           publisher = startStreaming(resp)
 
+          // Takes snapshot when receive message
           channel.on("streamer:take_snapshot", (resp) => {
-            console.log("ping ping");
-            console.log(publisher);
-            uploadSnapshot(publisher, channel, resp.upload_key);
-          });
+              uploadSnapshot(publisher, channel, resp.upload_key);
+            })
         })
+
+      commentAction(channel);
     },
 
     unmount: () => {
