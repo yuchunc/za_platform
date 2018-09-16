@@ -8,7 +8,7 @@ const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
 
   // Create a publisher
-  const publisher = OT.initPublisher('publisher', {
+  const publisher = OT.initPublisher('stream-view', {
     insertMode: 'append',
     width: '100%',
     height: '100%'

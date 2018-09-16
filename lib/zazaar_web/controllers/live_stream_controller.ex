@@ -14,7 +14,8 @@ defmodule ZaZaarWeb.LiveStreamController do
   end
 
   def show(conn, %{"id" => streamer_id}) do
-    render(conn, "show.html", streamer_id: streamer_id)
+    streamer = Account.get_user(streamer_id)
+    render(conn, "show.html", streamer: streamer)
   end
 
   defp append_streamer(channels, users) do

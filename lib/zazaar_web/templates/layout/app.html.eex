@@ -13,7 +13,7 @@
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>"
     class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
-    <%= render("simple_main.html", conn: @conn) %>
+    <%= render("_simple_main.html", conn: @conn) %>
 
     <main role="main" class="section">
       <div class="container">
