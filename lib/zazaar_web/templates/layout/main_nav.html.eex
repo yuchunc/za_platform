@@ -4,7 +4,7 @@
   </a>
 </div>
 
-<div class="navbar-search">
+<div class="navbar-search is-flex">
   <div class="field has-addons">
     <div class="control bar">
       <input class="input z-input" type="text" placeholder="搜尋">
@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<div class="navbar-menu">
+<div class="navbar-menu is-flex">
   <a class="navbar-item z-icon">
     <i class="fas fa-comments"></i>
   </a>
