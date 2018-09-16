@@ -11,19 +11,19 @@ defmodule ZaZaar.Streaming do
 
   def get_channels(opts \\ []) do
     with_snapshot = Keyword.get(opts, :snapshot, false)
-    query = from(c in Channel, order_by: c.updated_at)
+    query0 = from(c in Channel, order_by: c.updated_at)
     # TODO add active_at and sort on it
 
-    query =
+    query1 =
       if with_snapshot do
-        query
+        query0
         |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
         |> select([c, s], %{c | video_snapshot: s.video_snapshot})
       else
-        query
+        query0
       end
 
-    Repo.all(query)
+    Repo.all(query1)
   end
 
   def get_channel(streamer_id) do

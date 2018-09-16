@@ -3,12 +3,20 @@ defmodule ZaZaar.Account do
   Account Context Module
   """
 
+  import Ecto.Query
+
   alias ZaZaar.Repo
 
   alias ZaZaar.Account
   alias Account.User
 
   require Logger
+
+  def get_user(user_ids) when is_list(user_ids) do
+    User
+    |> where([u], u.id in ^user_ids)
+    |> Repo.all()
+  end
 
   def get_user(user_id) do
     Repo.get(User, user_id)
@@ -20,6 +28,7 @@ defmodule ZaZaar.Account do
       name: info.name,
       fb_id: fb_id,
       password: fb_id,
+      image_url: info.image,
       fb_payload: Map.from_struct(info)
     }
 
