@@ -46,7 +46,8 @@ defmodule ZaZaarWeb.StreamChannel do
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
          :ok <-
            StreamWatcher.monitor(:channels, self(), {__MODULE__, :streamer_left, [streamer_id]}),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key}
+    do
       broadcast(socket, "streamer:show_started", %{message: message})
 
       streamer

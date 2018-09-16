@@ -32,7 +32,7 @@ defmodule ZaZaar.Streaming do
     Repo.one(query)
   end
 
-  def create_channel(%{id: streamer_id, tier: :streamer}) do
+  def create_channel(%{id: streamer_id}) do
     {:ok, session_id} = OpenTok.request_session_id()
 
     %Channel{ot_session_id: session_id, streamer_id: streamer_id}

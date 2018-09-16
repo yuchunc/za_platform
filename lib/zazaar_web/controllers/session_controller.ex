@@ -35,6 +35,7 @@ defmodule ZaZaarWeb.SessionController do
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     {:ok, user} = Account.fb_auth(auth.uid, auth.info)
+    Streaming.create_channel(user)
 
     conn
     |> Guardian.Plug.sign_in(user)

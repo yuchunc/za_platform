@@ -1,3 +1,5 @@
+<h1>This is the listing page</h1>
+
 <div class="ui celled grid">
   <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
 </div>
