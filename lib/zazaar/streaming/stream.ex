@@ -34,7 +34,7 @@ defmodule ZaZaar.Streaming.Stream do
     |> validate_required([:archived_at])
   end
 
-  def put_comment(changeset, %Streaming.Comment{}=comment) do
+  def put_comment(changeset, %Streaming.Comment{} = comment) do
     put_embed(changeset, :comments, [comment | get_field(changeset, :comments)])
   end
 

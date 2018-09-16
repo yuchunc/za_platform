@@ -47,8 +47,7 @@ defmodule ZaZaarWeb.StreamChannel do
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
          :ok <-
            StreamWatcher.monitor(:channels, self(), {__MODULE__, :streamer_left, [streamer_id]}),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key}
-    do
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
 
       streamer
@@ -92,8 +91,7 @@ defmodule ZaZaarWeb.StreamChannel do
          stream <- Streaming.get_active_stream(streamer_id),
          user <- current_resource(socket),
          params <- %{user_id: user.id, content: content},
-         {:ok, comment} <- Streaming.append_comment(stream, params)
-    do
+         {:ok, comment} <- Streaming.append_comment(stream, params) do
       broadcast(socket, "stream:comment_sent", %{user_name: user.name, comment: comment})
 
       {:noreply, socket}

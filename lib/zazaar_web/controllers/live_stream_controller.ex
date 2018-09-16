@@ -5,12 +5,11 @@ defmodule ZaZaarWeb.LiveStreamController do
 
   def index(conn, _params) do
     with channels0 <- Streaming.get_channels(snapshot: true),
-         streamer_ids <- Enum.map(channels0, &(&1.streamer_id)),
+         streamer_ids <- Enum.map(channels0, & &1.streamer_id),
          users <- Account.get_user(streamer_ids),
-         channels1 <- append_streamer(channels0, users)
-                           do
-    render(conn, "index.html", channels: channels1)
-                           end
+         channels1 <- append_streamer(channels0, users) do
+      render(conn, "index.html", channels: channels1)
+    end
   end
 
   def show(conn, %{"id" => streamer_id}) do

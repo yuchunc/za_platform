@@ -36,7 +36,7 @@ defmodule ZaZaar.Streaming do
     streamer_id
     |> get_channel()
     |> active_stream_query()
-    |> Repo.one
+    |> Repo.one()
   end
 
   def create_channel(%{id: streamer_id}) do
@@ -94,10 +94,10 @@ defmodule ZaZaar.Streaming do
         result =
           Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update()
 
-          case result do
-            {:ok, _} -> :ok
-            _ -> result
-          end
+        case result do
+          {:ok, _} -> :ok
+          _ -> result
+        end
 
       _ ->
         {:error, :not_found}
@@ -137,10 +137,11 @@ defmodule ZaZaar.Streaming do
   def append_comment(%Stream{} = stream0, comment_params) do
     comment = struct(Comment, comment_params)
 
-    {:ok, stream1} = stream0
-                     |> Ecto.Changeset.change
-                     |> Stream.put_comment(comment)
-                     |> Repo.update()
+    {:ok, stream1} =
+      stream0
+      |> Ecto.Changeset.change()
+      |> Stream.put_comment(comment)
+      |> Repo.update()
 
     {:ok, List.first(stream1.comments)}
   end
