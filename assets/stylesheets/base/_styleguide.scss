@@ -8,7 +8,7 @@ $warm-grey:     #9b9b9b;
 $light-grey:    #dddddd;
 $marble:        #fafafa;
 
-/* Base: */
+/* Custome Style Helpers: */
 .with-shadow {
   box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
 }
@@ -16,4 +16,27 @@ $marble:        #fafafa;
 /* Layouts styles */
 html, body {
   height: 100%;
+}
+
+.main-container{
+  height: 100%;   
+  box-sizing: border-box;
+  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+}
+
+.z-main, .z-sidebar{
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.z-main {
+  order: 1;
+  flex-grow: 2;
+}
+
+.z-sidebar{
+  order: 2;
+  width: 200px;
+  background-color: $zazaar-dark;
 }

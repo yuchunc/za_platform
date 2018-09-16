@@ -12,16 +12,20 @@
   </head>
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>" class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
-    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-flex with-shadow" role="navigation" aria-label="main navigation">
       <%= render("main_nav.html", conn: @conn) %>
     </nav>
 
-    <section role="following" class="section following is-paddingless">
-      <%= render("following.html", conn: @conn) %>
-    </section>
+    <main class="main-container is-flex">
 
-    <section role="main" class="section is-paddingless">
-      <%= render @view_module, @view_template, assigns %>
+      <aside role="sidebar" class="z-sidebar is-flex">
+        <%= render("sidebar.html", conn: @conn) %>
+      </aside>
+
+      <section role="main" class="z-main is-flex">
+        <%= render @view_module, @view_template, assigns %>
+      </section>
+
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

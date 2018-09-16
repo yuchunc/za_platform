@@ -1,0 +1,43 @@
+.following{
+  flex-wrap: wrap;
+  padding: 20px;
+
+  .followed-user{
+    width: 100%;
+    overflow: hidden;
+    padding: 2px;
+
+    + .followed-user{
+      margin-top: 10px;
+    }
+
+    .user-avatar{
+      flex-shrink: 0;
+      box-sizing: border-box;
+      border-radius: 100%;
+      padding: 2px;
+      margin-right: 10px;
+    }
+
+    .user-name {
+      font-family: Lato-Regular;
+      font-size: 14px;
+      color: #fff;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+
+    &.online .user-avatar{
+      box-shadow: 0 0 0 1.5px $zazaar-orange;
+    }
+
+    &.offline {
+      .user-avatar {
+        filter: grayscale(100%);
+      }
+      .user-name {
+        color: $zazaar-grey;
+      }
+    }
+  }
+}
