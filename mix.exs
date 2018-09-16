@@ -53,6 +53,8 @@ defmodule ZaZaar.Mixfile do
       {:ueberauth_facebook, "~> 0.7"},
       # util
       {:ecto_enum, "~> 1.0"},
+      {:hackney,
+       github: "yuchunc/hackney", branch: "add-user-headers-only-option", override: true},
       {:httpoison, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment

@@ -39,14 +39,18 @@ defmodule ZaZaar.Streaming do
     |> Repo.one()
   end
 
-  def create_channel(%{id: streamer_id}) do
-    {:ok, session_id} = OpenTok.request_session_id()
+  def find_or_create_channel(%{id: streamer_id}) do
+    if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
+      channel
+    else
+      {:ok, session_id} = OpenTok.request_session_id()
 
-    %Channel{ot_session_id: session_id, streamer_id: streamer_id}
-    |> Repo.insert([])
+      %Channel{ot_session_id: session_id, streamer_id: streamer_id}
+      |> Repo.insert([])
+    end
   end
 
-  def create_channel(_user) do
+  def find_or_create_channel(_user) do
     {:error, :invalid_user}
   end
 

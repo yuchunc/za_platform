@@ -5,9 +5,9 @@ users_deploy_user: "{{ elixir_release_deploy_user }}"
 users_deploy_group: "{{ elixir_release_deploy_user }}"
 
 # App git repo
-app_repo: git@github.com:yuchunc/ZaZaar.git
+app_repo: git@github.com:ZaZaar/ZaZaar.git
 # App Version, can be branch name, SHA-1, tag name, default to HEAD
-app_git_version: master
+app_git_version: prototype
 
 # Users who can ssh into the deploy account
 # This is needed to run the build and deploy scripts
@@ -17,3 +17,9 @@ users_deploy_users: "{{ users_global_admin_users }}"
 
 yarn_rhel_repo_url: "https://dl.yarnpkg.com/rpm/"
 yarn_rhel_repo_gpg_key_url: "https://dl.yarnpkg.com/rpm/pubkey.gpg"
+
+tokbox_key: "46188922"
+tokbox_secret: "0aa7966295f82c739206dd3d7b779def01d52584"
+
+fb_key: "274386819836868"
+fb_secret: "355d28493a6e376eb2b6e3dcd78428f3"
