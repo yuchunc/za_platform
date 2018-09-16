@@ -1,2 +1,16 @@
 .streaming.show{
+  #publisher {
+    height: 25em;
+  }
+
+  .chat-message::before {
+    content: "";
+    display: table;
+  }
+
+  .chat-message::after {
+    clear:both;
+    content: "";
+    display: table;
+  }
 }
