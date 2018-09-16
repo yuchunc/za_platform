@@ -52,6 +52,7 @@ defmodule ZaZaar.Mixfile do
       # util
       {:ecto_enum, "~> 1.0"},
       {:httpoison, "~> 1.0"},
+      {:phoenix_inline_svg, "~> 1.1"},
       # deployment
       {:edeliver, "~> 1.4.5"},
       {:distillery, "~> 1.0.0"},
