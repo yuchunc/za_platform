@@ -2,7 +2,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item is-paddingless" href="/" id="logo-item">
-        <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
+        <%= svg_image(@conn, "zazaar_logo") |> IO.inspect %>
       </a>
 
       <div class="navbar-item is-right">
