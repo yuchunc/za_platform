@@ -9,6 +9,7 @@
 
     <title>Hello ZaZaar!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   </head>
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>" class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">

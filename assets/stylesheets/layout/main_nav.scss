@@ -1,5 +1,3 @@
-$navbar-height: 60px;
-
 .navbar {
   flex-wrap: wrap;
   background-color: $zazaar-orange;
@@ -67,7 +65,7 @@ $navbar-height: 60px;
         margin-left: 20px;
       }
     }
-
+    
     .z-icon{
       @include size(36px, 24px);
 
