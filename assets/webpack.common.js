@@ -53,23 +53,12 @@ module.exports = {
         }
       },
       {
-        test: /\.(jpg|png|gif)$/,
+        test: /\.(svg|jpg|png|gif)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]?[hash]',
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: './svg/[name].[ext]?[hash]',
             }
           }
         ]

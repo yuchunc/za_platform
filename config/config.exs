@@ -30,6 +30,7 @@ config :zazaar, :ot_api, OpenTok.Api
 
 config :phoenix_inline_svg,
   dir: "/priv/static/images",
+  default_collection: "",
   not_found: "<p>Oh No!</p>"
 
 # Import environment specific config. This must remain at the bottom
