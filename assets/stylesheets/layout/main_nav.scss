@@ -15,8 +15,15 @@
   }
 
   // Logo
-  .navbar-brand #main-logo{
-    width: 114px;
+  .navbar-brand {
+
+    .navbar-item {
+      width: 114px;
+    }
+  
+    svg {
+      width: 100%;
+    }
   }
 
   // Search Bar

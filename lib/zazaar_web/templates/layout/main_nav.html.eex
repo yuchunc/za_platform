@@ -1,6 +1,6 @@
 <div class="navbar-brand">
   <a class="navbar-item is-paddingless" href="/">
-    <img src="<%= static_path(@conn, "/images/zazaar_logo.svg") %>" alt="ZaZaar" id="main-logo"/>
+    <%= svg_image(@conn, "zazaar_logo") %>
   </a>
 </div>
 

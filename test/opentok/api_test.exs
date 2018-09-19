@@ -18,6 +18,13 @@ defmodule OpenTok.ApiTest do
       assert {:ok, session_id} = OpenTok.Api.request_session_id(headers)
       assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
     end
+
+    test "turns archive mode on" do
+      headers = create_session_headers(@ot_config) ++ [{"archiveMode", "always"}]
+
+      assert {:ok, session_id} = OpenTok.Api.request_session_id(headers)
+      assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
+    end
   end
 
   describe "get_session_state/1" do
@@ -43,6 +50,7 @@ defmodule OpenTok.ApiTest do
     end
   end
 
+  @tag :skip
   describe "external_broadcast/2" do
     setup do
       headers = create_session_headers(@ot_config)

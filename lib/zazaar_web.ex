@@ -35,6 +35,7 @@ defmodule ZaZaarWeb do
       use Phoenix.View,
         root: "lib/zazaar_web/templates",
         namespace: ZaZaarWeb
+      use PhoenixInlineSvg.Helpers, otp_app: :phoenix_inline_svg
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -45,6 +46,7 @@ defmodule ZaZaarWeb do
       import ZaZaarWeb.Router.Helpers
       import ZaZaarWeb.ErrorHelpers
       import ZaZaarWeb.Gettext
+      import PhoenixInlineSvg.Helpers
 
       def current_token(conn), do: Guardian.Plug.current_token(conn)
     end
