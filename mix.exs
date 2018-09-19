@@ -21,7 +21,7 @@ defmodule ZaZaar.Mixfile do
   def application do
     [
       mod: {ZaZaar.Application, []},
-      extra_applications: [:logger, :runtime_tools, :edeliver]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -58,7 +58,6 @@ defmodule ZaZaar.Mixfile do
       {:httpoison, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment
-      {:edeliver, "~> 1.4.5"},
       {:distillery, "~> 1.0.0"},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
