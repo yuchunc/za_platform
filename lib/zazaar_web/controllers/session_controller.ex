@@ -1,8 +1,6 @@
 defmodule ZaZaarWeb.SessionController do
   use ZaZaarWeb, :controller
 
-  require Logger
-
   plug(Ueberauth)
 
   action_fallback(FallbackController)
@@ -39,8 +37,6 @@ defmodule ZaZaarWeb.SessionController do
     {:ok, user} = Account.fb_auth(auth.uid, auth.info)
 
     Streaming.find_or_create_channel(user)
-
-    Logger.debug "conn: #{inspect(conn)}"
 
     conn
     |> Guardian.Plug.sign_in(user)
