@@ -40,7 +40,7 @@ defmodule ZaZaarWeb.SessionController do
 
     Streaming.find_or_create_channel(user)
 
-    Logger.debug "conn: #{conn}"
+    Logger.debug "conn: #{inspect(conn)}"
 
     conn
     |> Guardian.Plug.sign_in(user)
