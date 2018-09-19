@@ -19,7 +19,7 @@
 
     <main class="main-container is-flex">
 
-      <aside role="sidebar" class="z-sidebar is-flex">
+      <aside role="sidebar" class="z-sidebar is-flex"> <%# 按下 .sidebar-toggle -> 這邊加上 .is-collapsed %>
         <%= render("sidebar.html", conn: @conn) %>
       </aside>
 
