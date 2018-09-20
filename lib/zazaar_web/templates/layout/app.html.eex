@@ -11,11 +11,15 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>">
-    <%= render("main_nav.html", conn: @conn) %>
+  <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>"
+    class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
+    <%= render("_simple_main.html", conn: @conn) %>
 
-    <section role="main" class="section">
-      <%= render @view_module, @view_template, assigns %>
+    <main role="main" class="section">
+      <div class="container">
+        <%= show_flash(@conn) %>
+        <%= render @view_module, @view_template, assigns %>
+      </div>
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

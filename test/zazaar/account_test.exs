@@ -27,4 +27,41 @@ defmodule ZaZaar.AccountTest do
       assert {:ok, _refresh_token} = result
     end
   end
+
+  describe "fb_authed/2" do
+    setup do
+      uid = "10100000000005206"
+
+      info = %Ueberauth.Auth.Info{
+        description: nil,
+        email: "something@foo.bar",
+        first_name: "Mickey",
+        image: "http://graph.facebook.com/#{uid}/picture?type=square",
+        last_name: "Chen",
+        location: nil,
+        name: "Mickey Chen",
+        nickname: nil,
+        phone: nil,
+        urls: %{facebook: nil, website: nil}
+      }
+
+      {:ok, fb_id: uid, info: info}
+    end
+
+    test "creates a user if she doesn't exist in db", context do
+      %{info: info, fb_id: fb_id} = context
+
+      assert {:ok, user} = Account.fb_auth(fb_id, info)
+      assert user.id
+      assert user.encrypted_password
+      assert user.fb_payload == Map.from_struct(info)
+    end
+
+    test "logs in user if she exist in db", context do
+      %{info: info, fb_id: fb_id} = context
+      insert(:user, fb_id: fb_id)
+
+      assert {:ok, _} = Account.fb_auth(fb_id, info)
+    end
+  end
 end

@@ -1,5 +1,6 @@
 import socket from '../../socket';
 import main from '../main';
+import commentAction from '../util/comment';
 
 const streamer_id = window.streamConfig.streamer_id;
 
@@ -8,7 +9,7 @@ const startSubscribing = (ot_config) => {
 
   session.on("streamCreated", function(event) {
     console.log(event, "event");
-    bar = session.subscribe(event.stream, 'subscriber', {
+    bar = session.subscribe(event.stream, 'stream-view', {
       insertMode: 'append',
       width: '100%',
       height: '100%'
@@ -32,6 +33,8 @@ export default () => {
         .receive("ok", (resp) => {
           startSubscribing(resp);
         });
+
+      commentAction(channel);
     },
 
     unmount: () => {

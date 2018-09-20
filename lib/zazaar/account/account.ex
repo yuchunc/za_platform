@@ -3,6 +3,8 @@ defmodule ZaZaar.Account do
   Account Context Module
   """
 
+  import Ecto.Query
+
   alias ZaZaar.Repo
 
   alias ZaZaar.Account
@@ -10,8 +12,31 @@ defmodule ZaZaar.Account do
 
   require Logger
 
+  def get_user(user_ids) when is_list(user_ids) do
+    User
+    |> where([u], u.id in ^user_ids)
+    |> Repo.all()
+  end
+
   def get_user(user_id) do
     Repo.get(User, user_id)
+  end
+
+  def fb_auth(fb_id, info) do
+    params = %{
+      email: info.email,
+      name: info.name,
+      fb_id: fb_id,
+      password: fb_id,
+      image_url: info.image,
+      fb_payload: Map.from_struct(info)
+    }
+
+    if user = Repo.get_by(User, fb_id: fb_id) do
+      {:ok, user}
+    else
+      create_user(params)
+    end
   end
 
   def login(email, password) do
@@ -26,5 +51,11 @@ defmodule ZaZaar.Account do
       _ ->
         {:error, :invalid_credentials}
     end
+  end
+
+  defp create_user(params) do
+    %User{}
+    |> User.changeset(params)
+    |> Repo.insert()
   end
 end

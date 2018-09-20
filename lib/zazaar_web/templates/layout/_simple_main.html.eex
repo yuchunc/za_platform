@@ -1,0 +1,26 @@
+<nav class="navbar has-background-bright-orange" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/" id="logo-item">
+        <img src="<%= static_path(@conn, "/images/zazaar_logo_white.svg") %>" alt="logo" id="logo"/>
+      </a>
+
+      <%= if current_resource(@conn) do %>
+        <div class="navbar-item">
+          <a href="<%= membership_streaming_path(@conn, :show) %>" class="button is-danger is-rounded is-red">
+            <i class="far fa-bullseye"></i>
+            開始直播
+          </a>
+        </div>
+        <div class="navbar-item">
+          <%= link("登 出", to: "/m/logout", class: "button is-link is-inverted is-outlined", method: :delete)%>
+        </div>
+      <% else %>
+        <div class="navbar-item">
+          <a href="/auth/facebook" class="button is-link is-inverted is-outlined"> FB 登入</a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  </div>
+</nav>

@@ -1,15 +1,28 @@
-<div class="row">
-  <div class="four wide column">
-    <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
-      <%#display default image if snapshot does not exist%>
-      <%= if @channel.video_snapshot do %>
-        <img src="data:image/png;base64, <%= @channel.video_snapshot %>" class="ui rounded image" />
-      <% else %>
-        <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
-      <% end %>
-    <% end %>
-  </div>
-  <div class="five wide column">
-    <%= link "Some Random Stream", to: live_stream_path(@conn, :show, @channel.streamer_id) %>
-  </div>
+<div class="column is-half-tablet">
+  <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
+    <div class="card large">
+      <div class="card-image">
+        <figure class="image">
+          <%= if @channel.video_snapshot do %>
+            <img src="data:image/png;base64, <%= @channel.video_snapshot %>" class="ui rounded image" />
+          <% else %>
+            <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
+          <% end %>
+        </figure>
+      </div>
+
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-64x64">
+              <img src="<%= @channel.streamer.image_url %>" alt="Image" class="is-rounded">
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4 no-padding"> <%= @channel.streamer.name %> 的直播</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

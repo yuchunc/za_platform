@@ -3,3 +3,11 @@ $orange: #fa9856; //hsl(28 74 98);
 $slate: #455a64; //hsl(199 31 39);
 $dark: #243342; //hsl(210 45 26);
 $dark-two: #22282d; //hsl(207 24 18);
+
+.has-background-bright-orange {
+  background-color: $bright-orange;
+}
+
+.has-text-bright-orange {
+  color: $bright-orange;
+}

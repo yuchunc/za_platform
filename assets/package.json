@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run watch",
-    "watch": "webpack --colors --mode development --watch --config webpack.dev.js",
+    "watch": "webpack --colors --mode development --watch --stdin --config webpack.dev.js",
     "deploy": "webpack --config webpack.prod.js"
   },
   "dependencies": {

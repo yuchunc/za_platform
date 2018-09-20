@@ -43,8 +43,23 @@ window.addEventListener('unload', handleDocumentUnload, false);
 
 document.addEventListener('DOMContentLoaded', function () {
 
+  // Controls the modal
+  //document.querySelector('button#fb-login-button').addEventListener('click', function(event) {
+    //event.preventDefault();
+    //let modal = document.querySelector('#fb-login');  // assuming you have only 1
+    //let html = document.querySelector('html');
+    //modal.classList.add('is-active');
+    //html.classList.add('is-clipped');
+
+    //modal.querySelector('.modal-background').addEventListener('click', function(e) {
+      //e.preventDefault();
+      //modal.classList.remove('is-active');
+      //html.classList.remove('is-clipped');
+    //});
+  //});
+
   // Get all "navbar-burger" elements
-  var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  let $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
   // Check if there are any navbar burgers
   if ($navbarBurgers.length > 0) {
@@ -54,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
       $el.addEventListener('click', function () {
 
         // Get the target from the "data-target" attribute
-        var target = $el.dataset.target;
-        var $target = document.getElementById(target);
+        let target = $el.dataset.target;
+        let $target = document.getElementById(target);
 
         // Toggle the class on both the "navbar-burger" and the "navbar-menu"
         $el.classList.toggle('is-active');

@@ -12,7 +12,7 @@ defmodule ZaZaarWeb.LayoutView do
 
   # Takes the resource name of the view module and removes the
   # the ending *_view* string.
-  defp view_name(conn) do
+  def view_name(conn) do
     conn
     |> view_module
     |> Phoenix.Naming.resource_name()
@@ -21,9 +21,22 @@ defmodule ZaZaarWeb.LayoutView do
 
   # Removes the extion from the template and reutrns
   # just the name.
-  defp template_name(template) when is_binary(template) do
+  def template_name(template) when is_binary(template) do
     template
     |> String.split(".")
     |> Enum.at(0)
   end
+
+  def show_flash(conn) do
+    conn
+    |> get_flash
+    |> Enum.map(&flash_html/1)
+  end
+
+  def flash_html({level, message}),
+    do:
+      {:safe,
+       "<div class='notification is-#{level}'> <button class='delete'></button> #{message} </div>"}
+
+  def flash_html(_), do: nil
 end
