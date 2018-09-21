@@ -111,10 +111,12 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
   end
 
-  describe "user:send_message" do
+  describe "stream:send_comment" do
     setup context do
       %{channel: channel} = context
       streamer = Repo.get(User, channel.streamer_id)
+
+      insert(:stream, channel: channel)
 
       socket =
         sign_socket(streamer)
@@ -123,17 +125,17 @@ defmodule ZaZaarWeb.StreamChannelTest do
       {:ok, socket: socket}
     end
 
-    test "receive user:message_sent with message in payload if a stream is active", context do
+    test "receive stream:comment_sent with comment in payload if a stream is active", context do
       %{socket: socket_signed, channel: channel} = context
 
-      message = "Ga Ga Woo Lala ah~"
+      content = "Ga Ga Woo Lala ah~"
 
-      push(socket_signed, "user:send_message", %{message: message})
+      push(socket_signed, "stream:send_comment", %{comment: content})
 
-      assert_broadcast("user:message_sent", payload)
-      assert payload.user_id == channel.streamer_id
-      assert payload.message == message
-      assert payload.send_at
+      assert_broadcast("stream:comment_sent", %{comment: comment})
+      assert comment.user_id == channel.streamer_id
+      assert comment.content == content
+      assert comment.inserted_at
     end
   end
 
