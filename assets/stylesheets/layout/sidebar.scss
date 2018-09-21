@@ -1,0 +1,89 @@
+.sidebar-toggle {
+  flex-shrink: 0;
+  background-color: transparent;
+  border-width: 0;
+  border-radius: 0;
+  border-bottom: 1px solid $zazaar-grey;
+  justify-content: flex-start;
+  padding: 0 24px;
+  color: $zazaar-grey;
+  font-size: 20px;
+
+  &:hover, &:focus {
+    border-bottom: 1px solid $zazaar-grey;
+    color: $zazaar-orange;
+  }
+}
+
+.following {
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  .followed-user {
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 10px 20px;
+
+    &:hover {
+      background-color: rgba($zazaar-grey, 0.3);
+    }
+
+    .user {
+      width: 160px;
+      overflow: hidden;
+      padding: 2px;
+    }
+
+    .user-avatar {
+      flex-shrink: 0;
+      box-sizing: border-box;
+      border-radius: 100%;
+      padding: 2px;
+      margin-right: 10px;
+    }
+
+    .user-name {
+      font-family: Lato;
+      font-size: 14px;
+      color: #fff;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+
+    .online .user-avatar {
+      box-shadow: 0 0 0 1.5px $zazaar-orange;
+    }
+
+    .offline {
+      .user-avatar {
+        filter: grayscale(100%);
+      }
+      .user-name {
+        color: $zazaar-grey;
+      }
+    }
+  }
+}
+
+.z-footer {
+  border-top: 1px solid $zazaar-grey;
+  padding: 20px;
+
+  .guide-links {
+    font-size: 14px;
+
+    .item{
+      color: $warm-grey;
+      line-height: 24px;
+    }
+  }
+
+  .copyright {
+    font-family: Lato;
+    font-size: 14px;
+    color: $zazaar-orange;
+    padding-top: 20px;
+  }
+}

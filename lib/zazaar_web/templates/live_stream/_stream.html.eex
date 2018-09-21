@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="four wide column">
+<div class="column">
+  <%= if false do %>
     <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
       <%#display default image if snapshot does not exist%>
       <%= if @channel.video_snapshot do %>
@@ -8,8 +8,28 @@
         <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
       <% end %>
     <% end %>
-  </div>
-  <div class="five wide column">
-    <%= link "Some Random Stream", to: live_stream_path(@conn, :show, @channel.streamer_id) %>
+  <% end %>
+
+  <%#<img src="http://via.placeholder.com/300x190" class="ui rounded image" />%>
+
+  <div class="hero" style="background-image:url(http://via.placeholder.com/300x190)">
+    <div class="hero-header">
+      <i class="far fa-bullseye"></i>
+      xxx
+    </div>
+    <div class="hero-body"> </div>
+    <div class="hero-footer">
+      <div class="columns is-mobile">
+        <div class="column is-one-fifth">
+          <figure class="image is-32x32">
+            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+          </figure>
+        </div>
+
+        <div class="column">
+          ping
+        </div>
+      </div>
+    </div>
   </div>
 </div>

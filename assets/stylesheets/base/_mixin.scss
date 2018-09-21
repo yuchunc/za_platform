@@ -1,0 +1,33 @@
+@mixin size($width, $height) {
+  width:  $width;
+  height: $height;
+}
+
+@mixin transform($transform...) {
+  -ms-transform:     $transform;
+  -webkit-transform: $transform;
+  transform:         $transform;
+}
+
+@mixin transition($transition...) {
+  -moz-transition:    $transition;
+  -o-transition:      $transition;
+  -webkit-transition: $transition;
+  transition:         $transition;
+}
+
+@mixin align-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include transform(translateX(-50%) translateY(-50%));
+}
+
+@mixin hover-effect($duration, $y-transform) {  
+  transform: translate3d(0, 0, 0);
+  transition: all $duration ease-out;
+
+  &:hover {
+    transform: translate3d(0, $y-transform, 0);
+  }
+}

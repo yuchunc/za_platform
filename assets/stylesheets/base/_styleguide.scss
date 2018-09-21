@@ -1,0 +1,77 @@
+/* Color palette */
+$zazaar-orange: #fd5f00;
+$zazaar-light:  #fa9856;
+$zazaar-dark:   #243342;
+$zazaar-grey:   #455a64;
+$dark-grey:     #4a4a4a;
+$warm-grey:     #9b9b9b;
+$light-grey:    #dddddd;
+$marble:        #fafafa;
+
+/* Custome Style Helpers */
+.with-shadow {
+  box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
+}
+
+.more-btn {
+  font-family: Lato;
+  font-size: 12px;
+  color: #fff;
+  letter-spacing: 0.7px;
+  padding: 15px 20px;
+  transition: color, 0.3s;
+
+  &:hover {
+    color: $zazaar-orange;
+  }
+}
+
+/* Layouts styles */
+html, body {
+  height: 100%;
+}
+
+.main-container{
+  height: calc( 100% - 60px );
+  box-sizing: border-box;
+  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+}
+
+.z-main, .z-sidebar{
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.z-main {
+  order: 1;
+  flex-grow: 2;
+}
+
+.z-sidebar{
+  order: 2;
+  width: 200px;
+  background-color: $zazaar-dark;
+  overflow-y: scroll;
+
+  &.is-collapsed {
+    width: 60px;
+
+    .followed-user{
+      padding: 10px 13px;
+
+      .user-name{
+        display: none;
+      }
+    }
+
+    .more-btn {
+      padding: 15px 12px;
+      text-align: center;
+    }
+
+    footer {
+      display: none;
+    }
+  }
+}
