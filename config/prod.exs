@@ -16,14 +16,14 @@ use Mix.Config
 config :zazaar, ZaZaarWeb.Endpoint,
   load_from_system_env: true,
   http: [port: "4000"],
-  url: [host: "ZaZaar.tv"],
-  https: [
-    port: 4443,
-    otp_app: :zazaar,
-    keyfile: "priv/keys/private.key",
-    certfile: "priv/keys/certificate.crt"
-  ],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  #url: [host: "ZaZaar.tv"],
+  #https: [
+    #port: 4443,
+    #otp_app: :zazaar,
+    #keyfile: "priv/keys/private.key",
+    #certfile: "priv/keys/certificate.crt"
+  #],
+  #force_ssl: [rewrite_on: [:x_forwarded_proto]],
   # check_origin: false,
   server: true,
   root: ".",
