@@ -8,38 +8,65 @@
   &--container {
     border: 1px solid $zazaar-light;
   }
+}
 
-  .featured-stream {
+.featured-stream {
     
-    .video-player {
-      height: 315px;
+  .video-player {
+    height: 315px;
 
-      @include desktop {
-        height: 420px;
-      }
-    }
-
-    &--avatar {
-      width: 60px;
-      height: 60px;
-      margin: 15px 20px;
-    }
-
-    &--info {
-      margin: 20px 0;
-    }
-
-    &--title {
-      font-size: 16px;
-    }
-
-    &--name {
-      font-size: 14px;
-      color: $warm-grey;
+    @include desktop {
+      height: 420px;
     }
   }
 
-  .top-stream {
+  &--avatar {
+    width: 60px;
+    height: 60px;
+    margin: 15px 20px;
+  }
 
+  &--info {
+    margin: 20px 0;
+  }
+
+  &--title {
+    font-size: 16px;
+  }
+
+  &--name {
+    font-size: 14px;
+    color: $warm-grey;
+  }
+}
+
+.top-streams {
+  border-top: 1px solid $zazaar-light;
+  padding: 15px 0;
+
+  .video-player {
+    height: 100px;
+
+    @include desktop {
+      height: 120px;
+    }
+
+    &--header {
+      margin: 5px;
+    }
+  }
+
+  &--block {
+    width: calc(100% / 3);
+    padding: 0 20px;
+
+    & + & {
+      border-left: 1px solid $zazaar-light;
+    }
+  }
+
+  &--title {
+    font-size: 14px;
+    margin-top: 5px;
   }
 }

@@ -11,8 +11,8 @@
     
 <div class="popular-stream--container">
 
-
   <div class="featured-stream">
+
     <div class="video-player" style="background-image:url(http://via.placeholder.com/840x420)">
 
       <div class="video-player--header is-inline-block">
@@ -46,7 +46,23 @@
 
   </div>
 
-  <div class="top-stream--list">
+  <div class="top-streams is-flex">
+
+    <%= for n <- [1, 1, 1] do %> <%# 最多顯示 10 筆 %>
+
+      <div class="top-streams--block">
+
+        <div class="video-player" style="background-image:url(http://via.placeholder.com/240x120)">
+          <div class="video-player--header is-inline-block">
+            <i class="far fa-bullseye"></i>
+            1048 <%# 正在觀看人數 %>
+          </div>
+        </div>
+
+        <h3 class="top-streams--title">Video Title<h3>
+
+      </div>
+    <% end%>
   </div>
 
 
