@@ -14,6 +14,10 @@ $zazaar-red:    #D0021B;
   box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
 }
 
+.is-gradient {
+  background-image: linear-gradient(to top, $zazaar-orange, rgba(#fff, 0));
+}
+
 .more-btn {
   font-family: Lato;
   font-size: 12px;
@@ -53,6 +57,7 @@ html, body {
   flex-direction: column;
   flex-shrink: 0;
   height: 100%;
+  overflow-y: scroll;
 }
 
 .z-main {
@@ -64,7 +69,6 @@ html, body {
   order: 2;
   width: 200px;
   background-color: $zazaar-dark;
-  overflow-y: scroll;
 
   &.is-collapsed {
     width: 60px;
@@ -113,7 +117,6 @@ html, body {
     height: 60px;
 
     justify-content: space-between;
-    background-image: linear-gradient(to top, $zazaar-orange, rgba(#fff, 0));
     padding: 25px 30px 0;
     font-size: 17px;
     color: #fff;
@@ -125,5 +128,23 @@ html, body {
     .fa-volume-down {
       font-size: 20px;
     }
+  }
+
+  &--footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  &--avatar {
+    width: 36px;
+    height: 36px;
+    margin: 10px;
+  }
+
+  &--title {
+    font-size: 14px;
+    color: #fff;
+    line-height: 56px;
   }
 }

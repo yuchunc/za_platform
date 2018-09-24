@@ -9,7 +9,7 @@
   <% end %>
 <% end %>
     
-<div class="popular-stream--container">
+<div class="popular-stream">
 
   <div class="featured-stream">
 
@@ -20,7 +20,7 @@
         2048 <%# 正在觀看人數 %>
       </div>
 
-      <div class="video-player--control-bar is-flex"> <%# Video Control Bar %>
+      <div class="video-player--control-bar is-gradient is-flex"> <%# Video Control Bar %>
         <div class="video-player--play-control">
           <i class="fas fa-stop"></i>
           <i class="fas fa-volume-down"></i>
@@ -64,6 +64,4 @@
       </div>
     <% end%>
   </div>
-
-
 </div>

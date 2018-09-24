@@ -1,17 +1,19 @@
-.popular-stream {
-  flex-direction: column;
+.live-stream {
   width: 100%;
   max-width: 840px;
   padding: 40px;
   margin: 0 auto;
+}
 
-  &--container {
-    border: 1px solid $zazaar-light;
-  }
+.popular-stream {
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid $zazaar-light;
+  margin-bottom: 30px;
 }
 
 .featured-stream {
-    
+
   .video-player {
     height: 315px;
 
@@ -69,4 +71,21 @@
     font-size: 14px;
     margin-top: 5px;
   }
+}
+
+.stream {
+  justify-content: space-between;
+
+  .video-player {
+    height: 196px;
+
+    @include desktop {
+      height: 225px;
+    }
+  }
+
+  &--block {
+    width: calc( 50% - 10px );
+  }
+
 }
