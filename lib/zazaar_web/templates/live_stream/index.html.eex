@@ -1,3 +1,5 @@
-<div class="container is-paddingless">
-  <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
+<div class="popular-stream is-flex">
+  <h2 class="section-title">熱門賣場<h2>
+  <%= render("_popularStream.html", conn: @conn) %>
+  <%# <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
 </div>
