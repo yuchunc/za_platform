@@ -9,13 +9,13 @@
     rules="-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports {{ iptables_http_app_port }}"
   when: iptables_http_redirect
 
-- name: Set HTTP Port 443 SSL Rule
-  iptables_raw:
-    name=app_redirect_http
-    weight=50
-    table=nat
-    rules="-A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports {{ iptables_https_app_port }}"
-  when: iptables_http_redirect
+  # - name: Set HTTP Port 443 SSL Rule
+  #   iptables_raw:
+  #     name=app_redirect_http
+  #     weight=50
+  #     table=nat
+  #     rules="-A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports {{ iptables_https_app_port }}"
+  #   when: iptables_http_redirect
 
 - name: HTTP with rate limit
   iptables_raw:
