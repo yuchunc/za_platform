@@ -88,13 +88,14 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_in("stream:send_comment", params, socket) do
     with %{"comment" => content} <- params,
          "stream:" <> streamer_id <- socket.topic,
-         stream <- Streaming.get_active_stream(streamer_id),
+         %Stream{} = stream <- Streaming.get_active_stream(streamer_id),
          user <- current_resource(socket),
          params <- %{user_id: user.id, content: content},
          {:ok, comment} <- Streaming.append_comment(stream, params) do
       broadcast(socket, "stream:comment_sent", %{user_name: user.name, comment: comment})
-
       {:noreply, socket}
+    else
+      _ -> {:reply, {:error, %{message: "failed comment"}}, socket}
     end
   end
 

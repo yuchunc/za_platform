@@ -25,10 +25,26 @@
     rules: "-A INPUT -p tcp --dport {{ iptables_http_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT"
   when: iptables_http_rate_limit
 
+- name: HTTPS with rate limit
+  iptables_raw:
+    name: app_http
+    weight: 50
+    state: present
+    rules: "-A INPUT -p tcp --dport {{ iptables_https_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT"
+  when: iptables_http_rate_limit
+
 - name: HTTP without rate limit
   iptables_raw:
     name=app_http
     weight=50
     state=present
     rules="-A INPUT -p tcp --dport {{ iptables_http_app_port }} -j ACCEPT"
+  when: not iptables_http_rate_limit
+
+- name: HTTPS without rate limit
+  iptables_raw:
+    name=app_http
+    weight=50
+    state=present
+    rules="-A INPUT -p tcp --dport {{ iptables_https_app_port }} -j ACCEPT"
   when: not iptables_http_rate_limit

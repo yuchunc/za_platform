@@ -1,7 +1,9 @@
 defmodule ZaZaar.Auth.ErrorHandler do
   use ZaZaarWeb, :controller
 
-  def auth_error(conn, _, _opts) do
-    # redirect(conn, to: session_path(conn, :show))
+  def auth_error(conn, {:unauthenticated, reason}, _opts) do
+    conn
+    |> put_flash(:danger, reason)
+    |> redirect(to: live_stream_path(conn, :index))
   end
 end

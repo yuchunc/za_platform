@@ -26,7 +26,10 @@ config :logger, :console,
 
 config :zazaar, ZaZaar.Auth.Guardian,
   issuer: "zazaar",
-  error_handler: ZaZaar.Auth.ErrorHandler
+  error_handler: ZaZaar.Auth.ErrorHandler,
+  secret_key: "TLzXhQ2+gSqRNaEMvuZrWwkfHiNkkcAARlrh4iavEYA/RrQ6A896FtrxnUxn5Qpp",
+  ttl: {30, :days},
+  verify_issuer: true
 
 config :guardian, Guardian.DB, repo: ZaZaar.Repo
 

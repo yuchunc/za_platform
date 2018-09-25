@@ -109,3 +109,23 @@
   tasks:
     - name: Create build dir
       file: path="{{ asdf_user_home }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
+
+- name: Set up app
+  hosts: '*'
+  become: true
+  become_user: "{{ users_deploy_user }}"
+  tasks:
+    - name: Set vars
+      set_fact:
+        build_base_dir: "{{ asdf_user_home }}/build"
+        build_dir: "{{ asdf_user_home }}/build/{{ elixir_release_name }}"
+
+    - name: Create build dir
+      file: path="{{ build_base_dir }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
+
+    - name: Check out project from git
+      git:
+        repo: "{{ app_repo }}"
+        dest: "{{ build_dir }}"
+        version: "{{ app_version | default('HEAD') }}"
+        force: 1

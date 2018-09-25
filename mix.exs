@@ -58,7 +58,7 @@ defmodule ZaZaar.Mixfile do
       {:httpoison, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment
-      {:distillery, "~> 1.0.0"},
+      {:distillery, "~> 2.0"},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},

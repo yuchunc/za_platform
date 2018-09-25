@@ -32,7 +32,7 @@ defmodule ZaZaarWeb.Router do
     get("/", LiveStreamController, :index)
 
     # resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
-    get "/privacy", PageController, :privacy
+    get("/privacy", PageController, :privacy)
 
     resources("/s", LiveStreamController, only: [:show])
   end

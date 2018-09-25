@@ -35,6 +35,7 @@ defmodule ZaZaarWeb do
       use Phoenix.View,
         root: "lib/zazaar_web/templates",
         namespace: ZaZaarWeb
+
       use PhoenixInlineSvg.Helpers, otp_app: :phoenix_inline_svg
 
       # Import convenience functions from controllers
