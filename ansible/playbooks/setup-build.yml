@@ -110,22 +110,22 @@
     - name: Create build dir
       file: path="{{ asdf_user_home }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
 
-- name: Setup app
+- name: Set up app
   hosts: '*'
-  gather_facts: true
   become: true
+  become_user: "{{ users_deploy_user }}"
   tasks:
-    - name: tell the host about our servers it might want to ssh to
-      known_hosts:
-        path: ~/.ssh/known_hosts
-        name: "{{ item }}"
-        key: "{{ lookup('pipe', 'ssh-keyscan -T 10 -H -t rsa ' + item) }}"
-      with_items:
-        - github.com
+    - name: Set vars
+      set_fact:
+        build_base_dir: "{{ asdf_user_home }}/build"
+        build_dir: "{{ asdf_user_home }}/build/{{ elixir_release_name }}"
+
+    - name: Create build dir
+      file: path="{{ build_base_dir }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
 
     - name: Check out project from git
       git:
         repo: "{{ app_repo }}"
-        dest: "/home/{{ users_deploy_user }}/build/{{ elixir_release_name }}"
-        version: "{{ app_git_version | default('HEAD') }}"
-        force: yes
+        dest: "{{ build_dir }}"
+        version: "{{ app_version | default('HEAD') }}"
+        force: 1
