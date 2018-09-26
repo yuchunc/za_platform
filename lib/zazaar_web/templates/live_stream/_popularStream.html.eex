@@ -1,0 +1,67 @@
+<%= if false do %>
+  <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
+    <%#display default image if snapshot does not exist%>
+    <%= if @channel.video_snapshot do %>
+      <img src="data:image/png;base64, <%= @channel.video_snapshot %>" class="ui rounded image" />
+    <% else %>
+      <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
+    <% end %>
+  <% end %>
+<% end %>
+    
+<div class="popular-stream">
+
+  <div class="featured-stream">
+
+    <div class="video-player" style="background-image:url(http://via.placeholder.com/840x420)">
+
+      <div class="video-player--header is-inline-block">
+        <i class="far fa-bullseye"></i>
+        2048 <%# 正在觀看人數 %>
+      </div>
+
+      <div class="video-player--control-bar is-gradient is-flex"> <%# Video Control Bar %>
+        <div class="video-player--play-control">
+          <i class="fas fa-stop"></i>
+          <i class="fas fa-volume-down"></i>
+          <%# 這邊還需要一個音量控制器 %>
+        </div>
+        <div class="video-player--action-control">
+          <i class="fas fa-share-alt"></i>
+          <i class="fas fa-flag"></i>
+          <i class="fas fa-expand-alt"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-stream--intro is-flex">
+      <figure class="featured-stream--avatar image">
+        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+      </figure>
+      <div class="featured-stream--info">
+        <h3 class="featured-stream--title">Video Title<h3>
+        <span class="featured-stream--name">Streamer's Name</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="top-streams is-flex">
+
+    <%= for n <- [1, 1, 1] do %> <%# 最多顯示 10 筆 %>
+
+      <div class="top-streams--block">
+
+        <div class="video-player" style="background-image:url(http://via.placeholder.com/240x120)">
+          <div class="video-player--header is-inline-block">
+            <i class="far fa-bullseye"></i>
+            1048 <%# 正在觀看人數 %>
+          </div>
+        </div>
+
+        <h3 class="top-streams--title">Video Title<h3>
+
+      </div>
+    <% end%>
+  </div>
+</div>
