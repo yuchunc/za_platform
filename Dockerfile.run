@@ -1,0 +1,13 @@
+FROM erlang:21-alpine
+
+# Set environment variables
+ENV MIX_ENV=prod
+
+# Copy tarball release
+ADD _build/prod/rel/zazaar/releases/0.0.1/zazaar.tar.gz ./
+
+# Set user
+USER default
+
+# Set entrypoint
+ENTRYPOINT ["./bin/zazaar"]

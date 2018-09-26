@@ -1,4 +1,5 @@
 .git
+.iex.exs
 _build
 !_build/prod/rel
 deps

@@ -1,4 +1,3 @@
-<%# require IEx; IEx.pry %>
 <section role="nav" class="section main-nav is-paddingless">
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">

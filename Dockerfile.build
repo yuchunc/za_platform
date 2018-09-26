@@ -11,16 +11,16 @@ ENV PORT=4000 \
     TERM=xterm \
     REPLACE_OS_VARS=true
 
-WORKDIR /opt/app
+ADD . .
 
+# Get Libs
 RUN apk update && \
     apk --no-cache --update add nodejs nodejs-npm yarn git && \
     apk --no-cache --update add build-base && \
     mix local.rebar --force && \
     mix local.hex --force
 
-COPY . .
-
+# Elixir Deps, and compile
 RUN mix do deps.get --only prod, deps.compile, compile
 
 # Run frontend build, and digest assets
@@ -30,4 +30,6 @@ RUN cd assets/ && \
     cd - && \
     mix phx.digest
 
-RUN mix release --env=prod --verbose
+# Generate release
+ENTRYPOINT ["mix"]
+CMD ["release", "--env=prod"]

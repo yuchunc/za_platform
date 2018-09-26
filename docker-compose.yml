@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '3'
 networks:
   webnet:
     driver: overlay
@@ -12,17 +12,19 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-        ports:
-          - "80:4000"
-        env_file:
-          - config/docker.env
-        networks:
-          - webnet
+    ports:
+      - "80:4000"
+      - "443:4443"
+    env_file:
+      - config/docker.env
+    networks:
+      - webnet
     depends_on:
       - db
 
   db:
     image: postgres:10-alpine
+    container_name: zazaar-db
     deploy:
       replicas: 1
       placement:
