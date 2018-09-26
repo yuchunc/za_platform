@@ -15,23 +15,41 @@ use Mix.Config
 # which you typically run after static files are built.
 config :zazaar, ZaZaarWeb.Endpoint,
   load_from_system_env: true,
-  http: [port: "${PORT}"],
-  # url: [host: "ZaZaar.tv"],
-  # https: [
-  #   port: 4443,
-  #   otp_app: :zazaar,
-  #   keyfile: "priv/keys/private.key",
-  #   certfile: "priv/keys/certificate.crt"
-  # ],
-  # force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  http: [:inet6, port: "${PORT}"],
+  https: [
+    :inet6,
+    port: "${SSL_PORT}",
+    otp_app: :zazaar,
+    keyfile: "priv/keys/private.key",
+    certfile: "priv/keys/certificate.crt"
+  ],
+  force_ssl: [hsts: true],
+  url: [host: "ZaZaar.tv", port: "443"],
   check_origin: false,
   server: true,
   root: ".",
+  secret_key_base: "${SECRET_KEY_BASE}",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Configure prod database
+config :zazaar, ZaZaar.Repo,
+  hostname: "${DB_HOST}",
+  username: "${DB_USER}",
+  password: "${DB_PASS}",
+  database: "${DB_NAME}",
+  adapter: Ecto.Adapters.Postgres,
+  pool_size: 15
+
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+  client_id: "237361706937885",
+  client_secret: "f6f24c695581da27291b0cca18258530"
+
+config :zazaar, OpenTok,
+  key: "46185942",
+  secret: "7e58a0e8bfc5fe6418a08a3c478bcdf8cc61399e"
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
@@ -72,4 +90,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"

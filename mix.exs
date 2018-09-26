@@ -58,7 +58,7 @@ defmodule ZaZaar.Mixfile do
       {:httpoison, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment
-      {:distillery, "~> 2.0"},
+      {:distillery, "~> 2.0", runtime: false},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
@@ -78,8 +78,11 @@ defmodule ZaZaar.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/#{Atom.to_string(Mix.env)}-seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"],
-      "test.api": ["test --only ot_api"]
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      "test.api": ["test --only ot_api"],
+      "prod.migrate": "rel/commands/migrate.sh",
+      "prod.seed": "rel/commands/seed.sh",
+      "rel.build": "rel/commands/build.sh"
     ]
   end
 end
