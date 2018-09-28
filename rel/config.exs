@@ -34,7 +34,7 @@ environment :dev do
 end
 
 environment :prod do
-  set include_erts: true
+  set include_erts: false
   set include_src: false
   set cookie: :"q;B}XMg<KK_EisEAb_a?KophT_%bM}N<jk_kF~^hy[r!),nGZk$T1e:2<moN6/SW"
   #set output_dir: "rel/zazaar"
@@ -49,6 +49,10 @@ release :zazaar do
   set version: current_version(:zazaar)
   set applications: [
     :runtime_tools
+  ]
+  set commands: [
+    migrate: "rel/commands/migrate.sh",
+    seed: "rel/commands/seed.sh",
   ]
 end
 

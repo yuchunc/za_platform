@@ -80,8 +80,6 @@ defmodule ZaZaar.Mixfile do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.api": ["test --only ot_api"],
-      "prod.migrate": "rel/commands/migrate.sh",
-      "prod.seed": "rel/commands/seed.sh",
       "rel.build": "rel/commands/build.sh"
     ]
   end

@@ -41,15 +41,15 @@ config :zazaar, ZaZaar.Repo,
   password: "${POSTGRES_PASS}",
   database: "${POSTGRES_NAME}",
   adapter: Ecto.Adapters.Postgres,
-  pool_size: 15
+  pool_size: 20
 
 config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
-  client_id: "237361706937885",
-  client_secret: "f6f24c695581da27291b0cca18258530"
+  client_id: "${FB_ID}",
+  client_secret: "${FB_SECRET}"
 
 config :zazaar, OpenTok,
-  key: "46185942",
-  secret: "7e58a0e8bfc5fe6418a08a3c478bcdf8cc61399e"
+  key: "${OT_KEY}",
+  secret: "${OT_SECRET}"
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
