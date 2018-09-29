@@ -1,27 +1,6 @@
 ---
-version: '3'
-networks:
-  webnet:
-    driver: overlay
-    attachable: true # Needed in order to run custom commands in the container
-
+version: '3.7'
 services:
-  web:
-    image: "zazaar:latest"
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    ports:
-      - "80:4000"
-      - "443:4443"
-    env_file:
-      - config/docker.env
-    networks:
-      - webnet
-    depends_on:
-      - db
-
   db:
     image: postgres:10-alpine
     container_name: zazaar-db
@@ -31,11 +10,32 @@ services:
         constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
+    build: "./docker/postgres"
     volumes:
       - "./volumes/postgres:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
     env_file:
       - config/docker.env
-    networks:
-      - webnet
+    #networks:
+      #- main
+  #web:
+    #image: "zazaar:latest"
+    #deploy:
+      #replicas: 1
+      #restart_policy:
+        #condition: on-failure
+    #ports:
+      #- "80:4000"
+      #- "443:4443"
+    #env_file:
+      #- config/docker.env
+    #depends_on:
+      #- db
+    #networks:
+      #- main
+
+#networks:
+  #main:
+    #attachable: true # Needed in order to run custom commands in the container
+    #driver: overlay

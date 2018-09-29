@@ -6,7 +6,6 @@ ARG PHOENIX_SUBDIR=.
 
 # Set exposed ports
 ENV PORT=4000 \
-    SSL_PORT=4443 \
     MIX_ENV=prod \
     TERM=xterm \
     REPLACE_OS_VARS=true
@@ -32,22 +31,23 @@ RUN cd assets/ && \
 
 # Build and move release to directory
 RUN mix release --env=prod --verbose && \
-    mv _build/prod/rel/${APP_NAME} /opt/release && \
-    ls -al /opt/release && \
-    mv /opt/release/bin/${APP_NAME} /opt/release/bin/start_server
+    #mv _build/prod/rel/${APP_NAME} /opt/release && \
+    #ls -al /opt/release
 
 
 ###### Runtime Stage
 FROM alpine:latest
 
 # Install dependencies for ERTS.
-RUN apk update \
-    && apk --no-cache --update add bash openssl-dev
+RUN apk update && \
+    apk --no-cache --update add bash openssl-dev
 
 # This is the runtime environment for a Phoenix app.
 # It listens on port 8080, and runs in the prod environment.
-ENV PORT=8080 \
+ENV PORT=8000 \
+    #SSL_PORT=4443 \
     MIX_ENV=prod \
+    SHELL=/bin/bash \
     REPLACE_OS_VARS=true
 
 # Set the install directory. The app will run from here.
@@ -56,6 +56,15 @@ WORKDIR /opt/app
 # Obtain the built application release from the build stage.
 COPY --from=0 /opt/release .
 
+RUN ls -al && \
+    pwd
+
+#RUN mix ecto.migrate
+
 # Start the server.
 EXPOSE ${PORT}
-CMD ["/opt/app/bin/start_server", "foreground"]
+CMD ["/opt/app/bin/zazaar", "foreground"]
+
+#COPY ./zazaar.tar.gz ./
+RUN tar xfz zazaar.tar.gz
+ENTRYPOINT ["bin/zazaar"]

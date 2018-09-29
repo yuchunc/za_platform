@@ -1,4 +1,5 @@
 .git
+.gitignore
 .iex.exs
 _build
 !_build/prod/rel
@@ -6,3 +7,5 @@ deps
 assets/node_modules
 test
 priv/static
+README*
+Dockerfile*

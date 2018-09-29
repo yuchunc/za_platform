@@ -26,9 +26,9 @@ yarn-error.log
 # secrets files as long as you replace their contents by environment
 # variables.
 /config/*.secret.exs
-/config/docker.env
+k8s/deployment-env.yaml
 
 # Release Folder
 /rel/*
+!/rel/commands/
 !/rel/config.exs
-.deliver/releases/

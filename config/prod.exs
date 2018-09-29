@@ -24,7 +24,7 @@ config :zazaar, ZaZaarWeb.Endpoint,
     certfile: "priv/keys/certificate.crt"
   ],
   force_ssl: [hsts: true],
-  url: [host: "${HOSTNAME}", port: "${SSL_PORT}"],
+  url: [host: "${HOST}", port: "${SSL_PORT}"],
   check_origin: false,
   server: true,
   root: ".",
@@ -37,9 +37,10 @@ config :logger, level: :info
 # Configure prod database
 config :zazaar, ZaZaar.Repo,
   hostname: "${DB_HOST}",
-  username: "${POSTGRES_USER}",
-  password: "${POSTGRES_PASS}",
-  database: "${POSTGRES_NAME}",
+  #username: "${POSTGRES_USER}",
+  #password: "${POSTGRES_PASS}",
+  #database: "${POSTGRES_NAME}",
+  database: "zazaar_dev",
   adapter: Ecto.Adapters.Postgres,
   pool_size: 20
 

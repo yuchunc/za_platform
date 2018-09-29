@@ -10,6 +10,9 @@ zaar-coturn
 [build-servers]
 zazaar
 
+[docker-server]
+206.189.152.23
+
 # [web-servers]
 # elixir-deploy-template-centos-7
 # elixir-deploy-template-ubuntu-16

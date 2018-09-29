@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: zazaar-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: zazaar
+    spec:
+      containers:
+        - name: zazaar
+          image: zazaar:release
+          ports:
+            - containerPort: 8000
+          args: ["foreground"]
+          envFrom:
+            secretRef:
+              name: project-secret

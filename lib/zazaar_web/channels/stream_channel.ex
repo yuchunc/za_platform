@@ -89,6 +89,7 @@ defmodule ZaZaarWeb.StreamChannel do
     with %{"comment" => content} <- params,
          "stream:" <> streamer_id <- socket.topic,
          %Stream{} = stream <- Streaming.get_active_stream(streamer_id),
+         # TODO URGENT: fixed user not found case
          user <- current_resource(socket),
          params <- %{user_id: user.id, content: content},
          {:ok, comment} <- Streaming.append_comment(stream, params) do

@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zazaar-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: zazaar
+    spec:
+      containers:
+        - name: zazaar
+          image: zazaar:release
+          ports:
+            - containerPort: 8000
+          args: ["foreground"]
+          env:
+            HOSTNAME: "ZaZaar.tv"
+            SECRET_KEY_BASE: "u1QXlca4XEZKb1o3HL/aUlznI1qstCNAQ6yme/lFbFIs0Iqiq/annZ+Ty8JyUCDc"
+            DB_HOST: localhost
+            #POSTGRES_USER: zazaar
+            #POSTGRES_PASS: NV6olx9f,6aWzqHc
+            #POSTGRES_DB: zazaar_prod
+            POSTGRES_DB: zazaar_dev
+            PORT: 4000
+            SSL_PORT: 4443
+            LANG: en_US.UTF-8
+            REPLACE_OS_VARS: true
+            ERLANG_COOKIE: "zvG0JlS6gt2YON_o-2NaubkqgIRaU8cynWAgUSKOVuKri_I6GyGZW5adYAzSwvUj"
+            FB_ID: "237361706937885"
+            FB_SECRET: "f6f24c695581da27291b0cca18258530"
+            OT_KEY: "46185942"
+            OT_SECRET: "7e58a0e8bfc5fe6418a08a3c478bcdf8cc61399e"
+          #envFrom:
+            #secretRef:
+              #name: project-secret
+
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+  #name: nginx-deployment
+  #labels:
+    #app: nginx
+#spec:
+  #replicas: 3
+  #selector:
+    #matchLabels:
+      #app: nginx
+  #template:
+    #metadata:
+      #labels:
+        #app: nginx
+    #spec:
+      #containers:
+      #- name: nginx
+        #image: nginx:1.7.9
+        #ports:
+        #- containerPort: 80

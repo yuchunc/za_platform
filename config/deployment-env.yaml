@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: project-secret
+type: Opaque
+data:
+  HOSTNAME: "ZaZaar.tv"
+  SECRET_KEY_BASE: "u1QXlca4XEZKb1o3HL/aUlznI1qstCNAQ6yme/lFbFIs0Iqiq/annZ+Ty8JyUCDc"
+  DB_HOST: zazaar-db
+  POSTGRES_USER: zazaar
+  POSTGRES_PASS: NV6olx9f,6aWzqHc
+  POSTGRES_DB: zazaar_prod
+  PORT: 4000
+  SSL_PORT: 4443
+  LANG: en_US.UTF-8
+  REPLACE_OS_VARS: true
+  ERLANG_COOKIE: "zvG0JlS6gt2YON_o-2NaubkqgIRaU8cynWAgUSKOVuKri_I6GyGZW5adYAzSwvUj"
+  FB_ID: "237361706937885"
+  FB_SECRET: "f6f24c695581da27291b0cca18258530"
+  OT_KEY: "46185942"
+  OT_SECRET: "7e58a0e8bfc5fe6418a08a3c478bcdf8cc61399e"
