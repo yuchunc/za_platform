@@ -1,8 +1,5 @@
 <button class="button sidebar-toggle">
   <i class="fal fa-angle-double-right"></i>
-  <%# 這邊需要 JS 幫我做個簡單的 toggle 效果：
-      點擊 .sidebar-toggle 後，幫我在 .z-sidebar (於 app.html.eex) 加上 .is-collapsed 的 classname
-      同時把 <i class="fal fa-angle-double-right"></i> 換成 <i class="fal fa-angle-double-left"></i> %>
 </button>
 
 <section role="following" class="following is-flex">
@@ -14,7 +11,7 @@
             <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
           </figure>
           <span class="user-name">
-            Username Placeholder 
+            Username Placeholder
             <%#
               這邊可以幫我寫個 helper 判斷超過特地字元之後結尾就以 ... 顯示嗎？
               例如 "Username Placeh..." 或 "一二三四五六七..."
@@ -27,7 +24,7 @@
   <a href="#" class="more-btn"> <%# 10 筆以上預設隱藏，點擊後全部展開 %>
     MORE
     <i class="fal fa-angle-down"></i>
-  </a> 
+  </a>
 </section>
 
 <footer class="z-footer">
