@@ -64,12 +64,12 @@ defmodule ZaZaarWeb.SessionController do
     |> redirect(to: "/")
   end
 
-    defp add_data_to_conn(conn, resource, token) do
-      conn =
-        conn
-        |> GPlug.put_current_token(token)
-        |> Gplug.put_current_resource(resource)
+  defp add_data_to_conn(conn, resource, token) do
+    conn =
+      conn
+      |> GPlug.put_current_token(token)
+      |> Gplug.put_current_resource(resource)
 
-      {:ok, conn}
-    end
+    {:ok, conn}
+  end
 end

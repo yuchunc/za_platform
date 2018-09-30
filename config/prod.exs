@@ -15,7 +15,6 @@ use Mix.Config
 # which you typically run after static files are built.
 config :zazaar, ZaZaarWeb.Endpoint,
   load_from_system_env: true,
-  #http: [port: "${PORT}"],
   url: [host: "ZaZaar.tv", port: 443],
   https: [
     port: 4443,
