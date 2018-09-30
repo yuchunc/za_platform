@@ -24,13 +24,17 @@
   <a class="navbar-item z-icon">
     <i class="fas fa-bell"></i>
   </a>
-  <a class="navbar-item z-button">
-    <i class="far fa-bullseye"></i>
-    開始直播
-  </a>
-  <a href="#" class="navbar-item avatar">
-    <figure class="image is-32x32">
-      <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
-    </figure>
-  </a>
+  <%= if current_resource(@conn) do %>
+    <a class="navbar-item z-button" href="<%= membership_streaming_path(@conn, :show) %>" >
+      <i class="far fa-bullseye"></i>
+      開始直播
+    </a>
+    <a href="#" class="navbar-item avatar">
+      <figure class="image is-32x32">
+        <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
+      </figure>
+    </a>
+  <% else %>
+    <a class="button is-link is-inverted is-outlined navbar-item" href="/auth/facebook"> FB 登入</a>
+  <% end %>
 </div>
