@@ -15,14 +15,18 @@ use Mix.Config
 # which you typically run after static files are built.
 config :zazaar, ZaZaarWeb.Endpoint,
   load_from_system_env: true,
-  http: [port: "4000"],
-  url: [host: "104.199.142.23", port: 4000],
-  # check_origin: false,
+  url: [host: "ZaZaar.tv", port: 443],
+  https: [
+    port: 4443,
+    otp_app: :zazaar,
+    keyfile: "priv/keys/private.key",
+    certfile: "priv/keys/certificate.crt"
+  ],
+  force_ssl: [hsts: true],
+  check_origin: false,
   server: true,
   root: ".",
-  code_reloader: false
-
-# cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info

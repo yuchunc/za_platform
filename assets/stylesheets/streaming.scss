@@ -1,0 +1,16 @@
+.streaming.show, .live_stream.show{
+  #stream-view {
+    height: 25em;
+  }
+
+  .chat-message::before {
+    content: "";
+    display: table;
+  }
+
+  .chat-message::after {
+    clear:both;
+    content: "";
+    display: table;
+  }
+}

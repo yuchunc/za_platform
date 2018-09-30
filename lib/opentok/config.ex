@@ -5,7 +5,7 @@ defmodule OpenTok.Config do
 
   @default_config %{
     env: Mix.env(),
-    #endpoint: "http://localhost:4000"
+    # endpoint: "http://localhost:4000"
 
     endpoint: "https://api.opentok.com"
   }

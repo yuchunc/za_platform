@@ -41,6 +41,7 @@ defmodule ZaZaarWeb.StreamChannel do
          %Channel{} = channel <- Streaming.get_channel(streamer.id),
          # TODO need to better handle starting a stream,
          # it is possible to start 2 unarchived stream
+         # TODO put stream info in to socket
          {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
@@ -84,14 +85,17 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def handle_in("user:send_message", params, socket) do
-    with %{"message" => message} <- params,
-         viewer <- current_resource(socket),
-         current_time <- NaiveDateTime.utc_now(),
-         payload <- %{user_id: viewer.id, message: message, send_at: current_time} do
-      broadcast(socket, "user:message_sent", payload)
-
+  def handle_in("stream:send_comment", params, socket) do
+    with %{"comment" => content} <- params,
+         "stream:" <> streamer_id <- socket.topic,
+         %Stream{} = stream <- Streaming.get_active_stream(streamer_id),
+         user <- current_resource(socket),
+         params <- %{user_id: user.id, content: content},
+         {:ok, comment} <- Streaming.append_comment(stream, params) do
+      broadcast(socket, "stream:comment_sent", %{user_name: user.name, comment: comment})
       {:noreply, socket}
+    else
+      _ -> {:reply, {:error, %{message: "failed comment"}}, socket}
     end
   end
 

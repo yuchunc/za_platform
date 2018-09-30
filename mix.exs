@@ -21,7 +21,7 @@ defmodule ZaZaar.Mixfile do
   def application do
     [
       mod: {ZaZaar.Application, []},
-      extra_applications: [:logger, :runtime_tools, :edeliver]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -49,13 +49,16 @@ defmodule ZaZaar.Mixfile do
       {:guardian_db, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:ueberauth, "~> 0.4"},
+      {:ueberauth_facebook, "~> 0.7"},
       # util
       {:ecto_enum, "~> 1.0"},
+      {:hackney,
+       github: "yuchunc/hackney", branch: "add-user-headers-only-option", override: true},
       {:httpoison, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment
-      {:edeliver, "~> 1.4.5"},
-      {:distillery, "~> 1.0.0"},
+      {:distillery, "~> 2.0"},
       # dev and test
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
@@ -73,7 +76,11 @@ defmodule ZaZaar.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate",
+        "run priv/repo/#{Atom.to_string(Mix.env())}-seeds.exs"
+      ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.api": ["test --only ot_api"]

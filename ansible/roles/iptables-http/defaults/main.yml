@@ -3,9 +3,11 @@
 
 # Port that app listens on
 iptables_http_app_port: 4001
+iptables_https_app_port: 4443
 
 # HTTP public port
 iptables_http_external_port: 80
+iptables_https_external_port: 443
 
 # Whether to redirect external port to listen port
 iptables_http_redirect: true

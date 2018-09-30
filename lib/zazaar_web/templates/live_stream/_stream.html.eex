@@ -6,9 +6,13 @@
     </div>
     <div class="video-player--footer is-gradient is-flex">
       <figure class="video-player--avatar image">
-        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+        <%= if @channel.video_snapshot do %>
+          <img class="is_rounded" src="data:image/png;base64, <%= @channel.video_snapshot %>"/>
+        <% else %>
+          <img class="is_rounded" src="http://via.placeholder.com/128x128"/>
+        <% end %>
       </figure>
-      <h3 class="video-player--title">Video Title<h3>
+      <h3 class="video-player--title"><%= @channel.streamer.name %> 的直播<h3>
     </div>
   </div>
 </div>

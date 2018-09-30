@@ -7,23 +7,23 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Repo
 
   alias ZaZaar.Streaming
-  alias Streaming.{Channel, Stream}
+  alias Streaming.{Channel, Stream, Comment}
 
   def get_channels(opts \\ []) do
     with_snapshot = Keyword.get(opts, :snapshot, false)
-    query = from(c in Channel, order_by: c.updated_at)
+    query0 = from(c in Channel, order_by: c.updated_at)
     # TODO add active_at and sort on it
 
-    query =
+    query1 =
       if with_snapshot do
-        query
+        query0
         |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
         |> select([c, s], %{c | video_snapshot: s.video_snapshot})
       else
-        query
+        query0
       end
 
-    Repo.all(query)
+    Repo.all(query1)
   end
 
   def get_channel(streamer_id) do
@@ -32,14 +32,25 @@ defmodule ZaZaar.Streaming do
     Repo.one(query)
   end
 
-  def create_channel(%{id: streamer_id, tier: :streamer}) do
-    {:ok, session_id} = OpenTok.request_session_id()
-
-    %Channel{ot_session_id: session_id, streamer_id: streamer_id}
-    |> Repo.insert([])
+  def get_active_stream(streamer_id) do
+    streamer_id
+    |> get_channel()
+    |> active_stream_query()
+    |> Repo.one()
   end
 
-  def create_channel(_user) do
+  def find_or_create_channel(%{id: streamer_id}) do
+    if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
+      channel
+    else
+      {:ok, session_id} = OpenTok.request_session_id()
+
+      %Channel{ot_session_id: session_id, streamer_id: streamer_id}
+      |> Repo.insert([])
+    end
+  end
+
+  def find_or_create_channel(_user) do
     {:error, :invalid_user}
   end
 
@@ -127,15 +138,23 @@ defmodule ZaZaar.Streaming do
 
   def end_stream(_), do: {:error, :invalid_channel}
 
-  def append_comment(%Stream{} = stream, comment_params) do
-    stream
-    |> Stream.changeset(%{comments: stream.comments ++ [comment_params]})
-    |> Repo.update()
+  def append_comment(%Stream{} = stream0, comment_params) do
+    comment = struct(Comment, comment_params)
+
+    {:ok, stream1} =
+      stream0
+      |> Ecto.Changeset.change()
+      |> Stream.put_comment(comment)
+      |> Repo.update()
+
+    {:ok, List.first(stream1.comments)}
   end
 
   def stream_to_facebook(channel) do
     OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
   end
+
+  defp active_stream_query(%Channel{} = channel), do: active_stream_query(channel.id)
 
   defp active_stream_query(channel_id) do
     Stream

@@ -49,7 +49,7 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "create_channel/1" do
+  describe "find_or_create_channel/1" do
     test "create a channel with OT session", context do
       %{user: user, session_id: session_id} = context
 
@@ -57,14 +57,8 @@ defmodule ZaZaar.StreamingTest do
         {:ok, session_id}
       end)
 
-      assert {:ok, result} = Streaming.create_channel(user)
+      assert {:ok, result} = Streaming.find_or_create_channel(user)
       assert result.ot_session_id == session_id
-    end
-
-    test "user must be streamer", context do
-      %{user: user} = context
-
-      assert {:error, :invalid_user} = Streaming.create_channel(user.id)
     end
   end
 
@@ -174,9 +168,8 @@ defmodule ZaZaar.StreamingTest do
         content: "We don’t have the Tesseract. It was destroyed on Asgard."
       }
 
-      assert {:ok, stream} = Streaming.append_comment(stream, params)
-      assert Enum.count(stream.comments) == 1
-      assert stream.comments |> List.first() |> Map.get(:user_id) == user.id
+      assert {:ok, comment} = Streaming.append_comment(stream, params)
+      assert Map.get(comment, :user_id) == user.id
     end
   end
 
