@@ -6,15 +6,10 @@
     name: app_redirect_http
     weight: 50
     table: nat
-    rules: "-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports {{ iptables_http_app_port }}"
-  when: iptables_http_redirect
-
-- name: Set HTTP Port 443 SSL Rule
-  iptables_raw:
-    name: app_redirect_https
-    weight: 50
-    table: nat
-    rules: "-A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports {{ iptables_https_app_port }}"
+    state: present
+    rules: |
+      -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports {{ iptables_http_app_port }}
+      -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports {{ iptables_https_app_port }}
   when: iptables_http_redirect
 
 - name: HTTP with rate limit
@@ -22,15 +17,9 @@
     name: app_http
     weight: 50
     state: present
-    rules: "-A INPUT -p tcp --dport {{ iptables_http_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT"
-  when: iptables_http_rate_limit
-
-- name: HTTPS with rate limit
-  iptables_raw:
-    name: app_https
-    weight: 50
-    state: present
-    rules: "-A INPUT -p tcp --dport {{ iptables_https_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT"
+    rules: |
+      -A INPUT -p tcp --dport {{ iptables_http_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT
+      -A INPUT -p tcp --dport {{ iptables_https_app_port }} -m state --state NEW {{ elixir_release_iptables_rate_limit_options }} -j ACCEPT
   when: iptables_http_rate_limit
 
 - name: HTTP without rate limit
@@ -38,13 +27,7 @@
     name: app_http
     weight: 50
     state: present
-    rules: "-A INPUT -p tcp --dport {{ iptables_http_app_port }} -j ACCEPT"
-  when: not iptables_http_rate_limit
-
-- name: HTTPS without rate limit
-  iptables_raw:
-    name: app_http
-    weight: 50
-    state: present
-    rules: "-A INPUT -p tcp --dport {{ iptables_https_app_port }} -j ACCEPT"
+    rules: |
+      -A INPUT -p tcp --dport {{ iptables_http_app_port }} -j ACCEPT
+      -A INPUT -p tcp --dport {{ iptables_https_app_port }} -j ACCEPT
   when: not iptables_http_rate_limit
