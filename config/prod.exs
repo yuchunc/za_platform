@@ -15,15 +15,15 @@ use Mix.Config
 # which you typically run after static files are built.
 config :zazaar, ZaZaarWeb.Endpoint,
   load_from_system_env: true,
-  http: [port: "${PORT}"],
-  # url: [host: "ZaZaar.tv"],
-  # https: [
-  #   port: 4443,
-  #   otp_app: :zazaar,
-  #   keyfile: "priv/keys/private.key",
-  #   certfile: "priv/keys/certificate.crt"
-  # ],
-  # force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  #http: [port: "${PORT}"],
+  url: [host: "ZaZaar.tv", port: 443],
+  https: [
+    port: 4443,
+    otp_app: :zazaar,
+    keyfile: "priv/keys/private.key",
+    certfile: "priv/keys/certificate.crt"
+  ],
+  force_ssl: [hsts: true],
   check_origin: false,
   server: true,
   root: ".",
