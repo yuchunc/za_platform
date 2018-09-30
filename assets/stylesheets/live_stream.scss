@@ -22,21 +22,21 @@
     }
   }
 
-  &--avatar {
+  &__avatar {
     width: 60px;
     height: 60px;
     margin: 15px 20px;
   }
 
-  &--info {
+  &__info {
     margin: 20px 0;
   }
 
-  &--title {
+  &__title {
     font-size: 16px;
   }
 
-  &--name {
+  &__name {
     font-size: 14px;
     color: $warm-grey;
   }
@@ -53,12 +53,12 @@
       height: 120px;
     }
 
-    &--header {
+    &__header {
       margin: 5px;
     }
   }
 
-  &--block {
+  &__block {
     width: calc(100% / 3);
     padding: 0 20px;
 
@@ -67,7 +67,7 @@
     }
   }
 
-  &--title {
+  &__title {
     font-size: 14px;
     margin-top: 5px;
   }
@@ -84,7 +84,7 @@
     }
   }
 
-  &--block {
+  &__block {
     width: calc( 50% - 10px );
   }
 

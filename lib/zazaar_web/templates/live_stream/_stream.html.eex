@@ -1,14 +1,14 @@
-<div class="stream--block">
+<div class="stream__block">
   <div class="video-player" style="background-image:url(http://via.placeholder.com/362x225)">
-    <div class="video-player--header is-inline-block">
+    <div class="video-player__header is-inline-block">
       <i class="far fa-bullseye"></i>
       666 <%# 正在觀看人數 %>
     </div>
-    <div class="video-player--footer is-gradient is-flex">
-      <figure class="video-player--avatar image">
+    <div class="video-player__footer is-gradient is-flex">
+      <figure class="video-player__avatar image">
         <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
       </figure>
-      <h3 class="video-player--title">Video Title<h3>
+      <h3 class="video-player__title">Video Title<h3>
     </div>
   </div>
 </div>

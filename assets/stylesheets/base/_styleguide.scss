@@ -98,7 +98,7 @@ html, body {
   background-repeat: no-repeat;
   background-size: cover;
 
-  &--header {
+  &__header {
     font-size: 14px;
     background-color: rgba(#fff, 0.5);
     border-radius: 2px;
@@ -110,7 +110,7 @@ html, body {
     }
   }
 
-  &--control-bar {
+  &__control-bar {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -130,19 +130,19 @@ html, body {
     }
   }
 
-  &--footer {
+  &__footer {
     position: absolute;
     bottom: 0;
     width: 100%;
   }
 
-  &--avatar {
+  &__avatar {
     width: 36px;
     height: 36px;
     margin: 10px;
   }
 
-  &--title {
+  &__title {
     font-size: 14px;
     color: #fff;
     line-height: 56px;
