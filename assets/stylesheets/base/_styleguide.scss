@@ -31,6 +31,41 @@ $zazaar-red:    #D0021B;
   }
 }
 
+.button {
+  border-radius: 2px;
+    
+  &--zazaar {
+    background-color: $zazaar-dark;
+    border: 1px solid $zazaar-dark;
+    margin-top: 2px;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: translate3d(0, -2px, 0);
+      border: 1px solid $zazaar-dark;
+      color: #fff;
+    }
+
+    .fa-bullseye {
+      color: $zazaar-orange;
+      padding-top: 1px;
+      margin-right: 5px;
+    }
+  }
+
+  &--outline {
+    background-color: rgba(0,0,0,0);
+    border: 1px solid #fff;
+    transition: background-color 0.3s;
+    
+    &:hover {
+      background-color: #fff;
+      border: 1px solid #fff;
+      color: $zazaar-orange;
+    }
+  }
+}
+
 /* Typography Helpers */
 .section-title {
   font-family: NotoSansTC;

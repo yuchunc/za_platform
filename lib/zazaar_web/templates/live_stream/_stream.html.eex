@@ -1,4 +1,3 @@
-
 <div class="stream__block">
   <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
     <%= if @channel.video_snapshot do %>
