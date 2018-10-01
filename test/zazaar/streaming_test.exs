@@ -213,6 +213,11 @@ defmodule ZaZaar.StreamingTest do
       {:ok, channel: channel}
     end
 
+    test "if channel doesn't have facebook_key, does nothing" do
+      channel = insert(:channel, facebook_key: nil)
+      assert Streaming.stream_to_facebook(channel) == nil
+    end
+
     test "activates a rtmp stream on Facebook", context do
       expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
         :ok
