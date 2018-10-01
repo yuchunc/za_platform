@@ -23,20 +23,13 @@
   .followed-user {
     width: 100%;
     overflow: hidden;
-    margin: 0 auto;
     padding: 10px 20px;
 
     &:hover {
       background-color: rgba($zazaar-grey, 0.3);
     }
 
-    .user {
-      width: 160px;
-      overflow: hidden;
-      padding: 2px;
-    }
-
-    .user-avatar {
+    &__avatar {
       flex-shrink: 0;
       box-sizing: border-box;
       border-radius: 100%;
@@ -44,23 +37,26 @@
       margin-right: 10px;
     }
 
-    .user-name {
-      font-family: Lato;
+    &__name {
       font-size: 14px;
       color: #fff;
       line-height: 30px;
       white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
-    .online .user-avatar {
-      box-shadow: 0 0 0 1.5px $zazaar-orange;
+    &.online {
+      .followed-user__avatar {
+        box-shadow: 0 0 0 1.5px $zazaar-orange;
+      }
     }
 
-    .offline {
-      .user-avatar {
+    &.offline {
+      .followed-user__avatar {
         filter: grayscale(100%);
       }
-      .user-name {
+      .followed-user__name {
         color: $zazaar-grey;
       }
     }
