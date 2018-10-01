@@ -1,9 +1,5 @@
-<div class="content">
-  <h1> <%= @streamer.name %>的直播賣場！</h1>
-</div>
-
-<%= render(ZaZaarWeb.LayoutView, "_stream_panel.html") %>
-
+<div class="stream-viewing is-flex">
+  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html") %>
 </div>
 
 <script charset="utf-8">

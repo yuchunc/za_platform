@@ -1,0 +1,52 @@
+.stream-viewing {
+
+  &__main {
+    position: relative;
+    width: calc( 100% - 245px);
+    height: calc( 100vh - 60px);
+    background: #282828;
+  }
+
+  &__chatroom {
+    width: 245px;
+    background: $zazaar-dark;
+    border-right: 1px solid $dark-grey;
+  }
+
+}
+
+.streamer {
+
+  &__window {
+    width: 100%;
+    height: calc( 100% - 100px);
+  }
+
+  &__intro {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    height: 100px;
+    padding: 25px;
+  }
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__info {
+    margin-left: 20px;
+  }
+
+  &__title {
+    font-size: 20px;
+  }
+
+  &__name {
+    font-size: 14px;
+    color: $warm-grey;
+  }
+
+}
