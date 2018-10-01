@@ -7,13 +7,7 @@ defmodule ZaZaarWeb.Router do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
-  end
 
-  pipeline :api do
-    plug(:accepts, ["json"])
-  end
-
-  pipeline :auth do
     plug(
       Guardian.Plug.Pipeline,
       module: ZaZaar.Auth.Guardian,
@@ -21,23 +15,39 @@ defmodule ZaZaarWeb.Router do
     )
 
     plug(Guardian.Plug.VerifySession)
+    plug(Guardian.Plug.LoadResource, allow_blank: true)
+  end
+
+  pipeline :api do
+    plug(:accepts, ["json"])
+  end
+
+  pipeline :auth do
     plug(Guardian.Plug.EnsureAuthenticated)
-    plug(Guardian.Plug.LoadResource)
   end
 
   scope "/", ZaZaarWeb do
-    # Use the default browser stack
     pipe_through(:browser)
 
     get("/", LiveStreamController, :index)
 
-    resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
+    # resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
+    get("/privacy", PageController, :privacy)
 
     resources("/s", LiveStreamController, only: [:show])
   end
 
+  scope "/auth", ZaZaarWeb do
+    pipe_through(:browser)
+
+    get("/:provider", SessionController, :request)
+    get("/:provider/callback", SessionController, :callback)
+  end
+
   scope "/m", ZaZaarWeb do
-    pipe_through([:auth])
+    pipe_through([:browser, :auth])
+
+    delete("/logout", SessionController, :delete)
 
     resources "/", MembershipController, singleton: true, only: [:show] do
       resources("/streaming", StreamingController, singleton: true, only: [:show])

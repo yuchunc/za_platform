@@ -1,6 +1,8 @@
-<h1>Inidividual Stream Page</h1>
+<div class="content">
+  <h1> <%= @streamer.name %>的直播賣場！</h1>
+</div>
 
-<div id="subscriber" style="height:300px; width:300px;">
+<%= render(ZaZaarWeb.LayoutView, "_stream_panel.html") %>
 
 </div>
 
@@ -8,7 +10,7 @@
 
   window.streamConfig =
     {
-      streamer_id: "<%= @streamer_id %>",
+      streamer_id: "<%= @streamer.id %>",
       jwt: "<%= current_token(@conn) %>"
     }
 

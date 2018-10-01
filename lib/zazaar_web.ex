@@ -35,10 +35,11 @@ defmodule ZaZaarWeb do
       use Phoenix.View,
         root: "lib/zazaar_web/templates",
         namespace: ZaZaarWeb
+
       use PhoenixInlineSvg.Helpers, otp_app: :phoenix_inline_svg
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
@@ -49,6 +50,7 @@ defmodule ZaZaarWeb do
       import PhoenixInlineSvg.Helpers
 
       def current_token(conn), do: Guardian.Plug.current_token(conn)
+      def current_resource(conn), do: Guardian.Plug.current_resource(conn)
     end
   end
 
