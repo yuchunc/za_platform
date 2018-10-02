@@ -14,17 +14,12 @@
 </div>
 
 <div class="stream-viewing__chatroom">
-  <div class="field has-addons">
-    <div class="control is-expanded">
-      <input id="user-comment" name="user[comment]" class="input" placeholder="留 言" type="text"/>
-    </div>
+  <span class="message__title is-block">聊天室</span>
+  <div class="message__log" id="chat-log" ></div>
+  <div class="field message__input">
     <div class="control">
-      <button id="send-comment" class="button is-info">
-        <i class="fal fa-paper-plane"></i>
-        送出
-      </button>
+      <textarea class="textarea" id="user-comment" name="user[comment]" type="text" placeholder="留言..."></textarea>
+      <button id="send-comment" class="button msgSubmit">傳送</button>
     </div>
   </div>
-
-  <div id="chat-log" class="panel"></div>
 </div>

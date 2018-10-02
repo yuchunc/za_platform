@@ -12,7 +12,6 @@
     background: $zazaar-dark;
     border-right: 1px solid $dark-grey;
   }
-
 }
 
 .streamer {
@@ -49,4 +48,60 @@
     color: $warm-grey;
   }
 
+}
+
+.message {
+
+  &__title {
+    border-bottom: 1px solid $zazaar-grey;
+    height: 40px;
+    padding-left: 20px;
+    font-size: 14px;
+    color: $zazaar-light;
+    line-height: 40px;
+  }
+
+  &__log {
+    height: calc( 100% - 148px );
+    padding: 10px;
+    overflow: hidden;
+  }
+  
+  &__input {
+    padding: 10px;
+
+    .textarea {
+      border: 1px solid $zazaar-light;
+      background-color: rgba(0,0,0,0) !important;
+      border-radius: 0px;
+      min-height: 60px;
+      font-size: 12px;
+      color: $zazaar-light;
+
+      &::placeholder {
+        color: rgba($zazaar-light, 0.5);
+      }
+    }
+
+    .msgSubmit, .msgSubmit:focus {
+      border: 1px solid $zazaar-light;
+      border-radius: 0px !important;
+      background-color: rgba(0,0,0,0) !important;
+      float: right;
+      width: 60px;
+      height: 24px;
+      padding: 0;
+      margin-top: 5px;
+  
+      font-size: 12px;
+      color: $zazaar-light;
+      line-height: 22px;
+  
+      &:hover {
+        border: 1px solid $zazaar-light !important;
+        background-color: $zazaar-light !important;
+        color: #fff;
+      }
+    }
+  }
 }
