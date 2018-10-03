@@ -67,7 +67,7 @@ defmodule OpenTok do
   Broadcast to Facebook
   """
   def stream_to_facebook(session_id, streamer_id, facebook_key) do
-    headers = generate_headers()
+    headers = generate_headers() ++ [{"Content-Type", "application/json"}]
     rtmp_list = [Util.build_facebook_rtmp(streamer_id, facebook_key)]
 
     @ot_api.external_broadcast(session_id, headers, rtmp_list)

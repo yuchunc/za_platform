@@ -30,9 +30,9 @@ defmodule OpenTok.Util do
 
   def build_facebook_rtmp(streamer_id, facebook_key) do
     %{
-      id: facebook_key,
-      streamName: "facebook:" <> streamer_id,
-      serverUrl: "rtmp://live-api.facebook.com:80/rtmp/"
+      id: "facebook:" <> streamer_id,
+      streamName: facebook_key,
+      serverUrl: "rtmp://live-api-s.facebook.com:80/rtmp/"
     }
   end
 
