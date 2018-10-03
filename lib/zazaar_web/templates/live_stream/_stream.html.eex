@@ -1,27 +1,19 @@
-<div class="column is-half-tablet">
+<div class="stream__block">
   <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
-    <div class="card large">
-      <div class="card-image">
-        <figure class="image">
-          <%= if @channel.video_snapshot do %>
-            <img src="data:image/png;base64, <%= @channel.video_snapshot %>" class="ui rounded image" />
-          <% else %>
-            <img src="http://via.placeholder.com/150x120" class="ui rounded image" />
-          <% end %>
-        </figure>
+    <%= if @channel.video_snapshot do %>
+      <div class="video-player" style="background-image:url(data:image/png;base64,<%= @channel.video_snapshot %>)">
+    <% else %>
+      <div class="video-player" style="background-image:url(http://via.placeholder.com/362x225)">
+    <% end %>
+      <div class="video-player__header is-inline-block">
+        <i class="far fa-bullseye"></i>
+        666 <%# 正在觀看人數 %>
       </div>
-
-      <div class="card-content">
-        <div class="media">
-          <div class="media-left">
-            <figure class="image is-64x64">
-              <img src="<%= @channel.streamer.image_url %>" alt="Image" class="is-rounded">
-            </figure>
-          </div>
-          <div class="media-content">
-            <p class="title is-4 no-padding"> <%= @channel.streamer.name %> 的直播</p>
-          </div>
-        </div>
+      <div class="video-player__footer is-gradient is-flex">
+        <figure class="video-player__avatar image">
+          <img class="is-rounded" src="http://via.placeholder.com/128x128.png"/>
+        </figure>
+        <h3 class="video-player__title"><%= @channel.streamer.name %> 的直播<h3>
       </div>
     </div>
   <% end %>

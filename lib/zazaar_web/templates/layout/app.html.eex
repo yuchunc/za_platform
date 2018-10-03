@@ -9,17 +9,26 @@
 
     <title>Hello ZaZaar!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanstc.css"/>
   </head>
 
-  <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>"
-    class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
-    <%= render("_simple_main.html", conn: @conn) %>
+  <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>" class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
+    <nav class="navbar is-flex with-shadow" role="navigation" aria-label="main navigation">
+      <%= render("main_nav.html", conn: @conn) %>
+    </nav>
 
-    <main role="main" class="section">
-      <div class="container">
-        <%= show_flash(@conn) %>
-        <%= render @view_module, @view_template, assigns %>
-      </div>
+    <main class="main-container is-flex">
+
+    <aside role="sidebar" class="z-sidebar is-flex">
+      <%= render("sidebar.html", conn: @conn) %>
+    </aside>
+
+    <section role="main" class="z-main is-flex">
+      <%= show_flash(@conn) %>
+      <%= render @view_module, @view_template, assigns %>
+    </section>
+
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

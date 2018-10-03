@@ -1,0 +1,90 @@
+.navbar {
+  flex-wrap: wrap;
+  background-color: $zazaar-orange;
+  min-height: 60px;
+  padding: 0 30px;
+
+  a {color: #fff;}
+
+  .navbar-item img {
+    max-height: 100%;
+  }
+
+  // Logo
+  .navbar-brand {
+
+    .navbar-item {
+      width: 114px;
+    }
+
+    svg {
+      width: 100%;
+    }
+  }
+
+  // Search Bar
+  .navbar-search {
+    flex-grow: 2;
+    align-items: center;
+    padding: 0 20px;
+
+    .field, .bar {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .z-input {
+      background-color: transparent;
+      border-radius: 0;
+      border-width: 0;
+      border-bottom-width: 1px;
+      border-color: #fff;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+
+      &::placeholder{
+        color: rgba(#fff, 0.8);
+      }
+    }
+
+    .z-submit {
+      @include size(36px, 36px);
+      border-bottom: 1px solid #fff;
+      padding: 5px;
+    }
+  }
+
+  // Menu + Go Streaming + Avatar
+  .navbar-menu {
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: transparent;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+
+    .navbar-item {
+      padding: 0;
+
+      + .navbar-item {
+        margin-left: 20px;
+      }
+
+      &:hover {
+        background-color: transparent;
+        color: #fff;
+      }
+    }
+
+    .z-icon{
+      @include size(36px, 24px);
+      @include hover-effect(0.2s, -3px);
+
+      svg {
+        @include size(100%, 100%);
+      }
+    }
+
+    .button {
+      margin-left: 20px;
+    }
+  }
+}
