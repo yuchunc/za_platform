@@ -32,9 +32,14 @@ defmodule ZaZaar.Streaming do
     Repo.one(query)
   end
 
-  def get_active_stream(streamer_id) do
+  def get_active_stream(streamer_id) when is_binary(streamer_id) do
     streamer_id
     |> get_channel()
+    |> get_active_stream()
+  end
+
+  def get_active_stream(%Channel{} = channel) do
+    channel
     |> active_stream_query()
     |> Repo.one()
   end
@@ -81,32 +86,26 @@ defmodule ZaZaar.Streaming do
   end
 
   def update_snapshot(streamer_id, key, data) when is_binary(streamer_id) do
-    get_channel(streamer_id)
+    streamer_id
+    |> get_active_stream()
     |> update_snapshot(key, data)
   end
 
-  def update_snapshot(channel, key, data) do
-    stream =
-      channel.id
-      |> active_stream_query
-      |> where([s], not is_nil(s.upload_key))
-      |> where(upload_key: ^key)
-      |> Repo.one()
+  def update_snapshot(%Channel{} = channel, key, data) do
+    channel
+    |> get_active_stream()
+    |> update_snapshot(key, data)
+  end
 
-    case stream do
-      %Stream{} ->
-        result =
-          Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update()
-
-        case result do
-          {:ok, _} -> :ok
-          _ -> result
-        end
-
-      _ ->
-        {:error, :not_found}
+  def update_snapshot(%Stream{upload_key: key} = stream, key, data) do
+    case result =
+           Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update() do
+      {:ok, _} -> :ok
+      _ -> result
     end
   end
+
+  def update_snapshot(_, _, _), do: {:error, :not_found}
 
   def start_stream(streamer_id) when is_binary(streamer_id) do
     get_channel(streamer_id)
@@ -150,7 +149,9 @@ defmodule ZaZaar.Streaming do
     {:ok, List.first(stream1.comments)}
   end
 
-  def stream_to_facebook(channel) do
+  def stream_to_facebook(%Channel{facebook_key: nil} = channel), do: nil
+
+  def stream_to_facebook(%Channel{} = channel) do
     OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
   end
 

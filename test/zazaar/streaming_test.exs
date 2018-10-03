@@ -49,6 +49,28 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
+  describe "get_active_stream/1" do
+    setup do
+      streamer_id = insert(:user) |> Map.get(:id)
+      channel = insert(:channel, streamer_id: streamer_id)
+      stream = insert(:stream, channel: channel)
+
+      {:ok, streamer_id: streamer_id, channel: channel, stream: stream}
+    end
+
+    test "gets the active stream from streamer_id", context do
+      %{streamer_id: streamer_id, stream: %{id: stream_id}} = context
+
+      assert Streaming.get_active_stream(streamer_id) |> Map.get(:id) == stream_id
+    end
+
+    test "gets the active stream from channel", context do
+      %{stream: %{id: stream_id}, channel: channel} = context
+
+      assert Streaming.get_active_stream(channel) |> Map.get(:id) == stream_id
+    end
+  end
+
   describe "find_or_create_channel/1" do
     test "create a channel with OT session", context do
       %{user: user, session_id: session_id} = context
@@ -96,8 +118,19 @@ defmodule ZaZaar.StreamingTest do
                )
     end
 
+    test "update snapshot of a given stream", context do
+      %{stream: stream} = context
+
+      assert :ok =
+               Streaming.update_snapshot(
+                 stream,
+                 "foobar",
+                 :crypto.strong_rand_bytes(12) |> Base.encode64()
+               )
+    end
+
     test "error if no valid stream is found" do
-      stream = insert(:stream, upload_key: nil)
+      stream = insert(:stream, upload_key: "foobar")
 
       assert {:error, :not_found} =
                Streaming.update_snapshot(
@@ -178,6 +211,11 @@ defmodule ZaZaar.StreamingTest do
       facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
       channel = insert(:channel, facebook_key: facebook_key)
       {:ok, channel: channel}
+    end
+
+    test "if channel doesn't have facebook_key, does nothing" do
+      channel = insert(:channel, facebook_key: nil)
+      assert Streaming.stream_to_facebook(channel) == nil
     end
 
     test "activates a rtmp stream on Facebook", context do

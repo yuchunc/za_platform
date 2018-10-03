@@ -63,8 +63,13 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_in("streamer:upload_snapshot", params, socket) do
     with %{"upload_key" => key, "snapshot" => snapshot} <- params,
          %User{} = streamer <- current_resource(socket),
-         channel <- Streaming.get_channel(streamer.id),
-         :ok <- Streaming.update_snapshot(channel, key, snapshot) do
+         %Channel{} = channel <- Streaming.get_channel(streamer.id),
+         %Stream{} = stream <- Streaming.get_active_stream(channel) do
+      if is_nil(stream.video_snapshot) do
+        Streaming.stream_to_facebook(channel)
+      end
+
+      Streaming.update_snapshot(stream, key, snapshot)
       {:noreply, socket}
     end
   end

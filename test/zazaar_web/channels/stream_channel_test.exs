@@ -54,15 +54,11 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
     test "streamer can start broadcasting on her own stream", context do
       %{socket: socket} = context
-
       params = %{message: "hello world"}
+      ref = push(socket, "streamer:show_start", params)
 
-      capture_log(fn ->
-        ref = push(socket, "streamer:show_start", params)
-
-        assert_broadcast("streamer:show_started", %{message: _})
-        assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
-      end)
+      assert_broadcast("streamer:show_started", %{message: _})
+      assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
     end
   end
 
@@ -73,9 +69,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       socket = sign_socket(streamer)
       key = random_string(32)
       stream = insert(:stream, channel: channel, upload_key: key)
-
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> streamer.id)
-
       push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
 
       Process.sleep(10)

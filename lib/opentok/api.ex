@@ -74,15 +74,14 @@ defmodule OpenTok.Api do
       HTTPoison.post(
         @config.endpoint <> "/v2/project/" <> @config.key <> "/broadcast",
         payload,
-        headers,
-        @httpoison_opts
+        headers
       )
 
     case response.status_code do
       404 ->
         {:error, :noclient}
 
-      sc when sc in 200..300 ->
+      sc when sc in 200..300 or sc == 409 ->
         :ok
 
       sc ->

@@ -31,26 +31,23 @@ defmodule ZaZaarWeb.Router do
 
     get("/", LiveStreamController, :index)
 
-    # resources("/auth", SessionController, singleton: true, only: [:show, :create, :delete])
     get("/privacy", PageController, :privacy)
 
     resources("/s", LiveStreamController, only: [:show])
-  end
 
-  scope "/auth", ZaZaarWeb do
-    pipe_through(:browser)
+    scope "/auth" do
+      get("/:provider", SessionController, :request)
+      get("/:provider/callback", SessionController, :callback)
+    end
 
-    get("/:provider", SessionController, :request)
-    get("/:provider/callback", SessionController, :callback)
-  end
+    scope "/m" do
+      pipe_through(:auth)
 
-  scope "/m", ZaZaarWeb do
-    pipe_through([:browser, :auth])
+      delete("/logout", SessionController, :delete)
 
-    delete("/logout", SessionController, :delete)
-
-    resources "/", MembershipController, singleton: true, only: [:show] do
-      resources("/streaming", StreamingController, singleton: true, only: [:show])
+      resources "/", MembershipController, singleton: true, only: [:show] do
+        resources("/streaming", StreamingController, singleton: true, only: [:show])
+      end
     end
   end
 end
