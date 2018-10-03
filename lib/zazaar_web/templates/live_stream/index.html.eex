@@ -1,6 +1,8 @@
 <div class="live-stream">
-  <h2 class="section-title">熱門賣場</h2>
-  <%= render("_popularStream.html", conn: @conn) %>
+  <% if false do %>
+    <h2 class="section-title">熱門賣場</h2>
+    <%= render("_popularStream.html", conn: @conn) %>
+  <% end %>
 
   <h2 class="section-title">推薦賣場</h2>
   <div class="stream is-flex">
