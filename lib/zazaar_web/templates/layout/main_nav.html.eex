@@ -22,12 +22,15 @@
 
 <div class="navbar-menu is-flex">
   <%= if current_resource(@conn) do %>
-    <a class="navbar-item z-icon">
-      <i class="fas fa-comments"></i>
-    </a>
-    <a class="navbar-item z-icon">
-      <i class="fas fa-bell"></i>
-    </a>
+    <% if false do %>
+      <a class="navbar-item z-icon">
+        <i class="fas fa-comments"></i>
+      </a>
+      <a class="navbar-item z-icon">
+        <i class="fas fa-bell"></i>
+      </a>
+    <% end %>
+
     <a class="button button--zazaar" href="<%= membership_streaming_path(@conn, :show) %>" >
       <i class="far fa-bullseye"></i>
       開始直播

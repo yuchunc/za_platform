@@ -20,14 +20,14 @@
 
     <main class="main-container is-flex">
 
-      <aside role="sidebar" class="z-sidebar is-flex">
-        <%= render("sidebar.html", conn: @conn) %>
-      </aside>
+    <aside role="sidebar" class="z-sidebar is-flex">
+      <%= render("sidebar.html", conn: @conn) %>
+    </aside>
 
-      <section role="main" class="z-main is-flex">
-        <%= show_flash(@conn) %>
-        <%= render @view_module, @view_template, assigns %>
-      </section>
+    <section role="main" class="z-main is-flex">
+      <%= show_flash(@conn) %>
+      <%= render @view_module, @view_template, assigns %>
+    </section>
 
     </main>
 
