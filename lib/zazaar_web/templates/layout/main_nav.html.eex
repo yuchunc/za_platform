@@ -32,10 +32,10 @@
       <i class="far fa-bullseye"></i>
       開始直播
     </a>
-    <%# 登出的部分再麻煩補一下 %>
-    <a class="button button--outline" href="#">登出</a>
-    <%# Avatar %>
+    <%= link("登 出", to: "/m/logout", class: "button button--outline", method: :delete)%>
+
     <%= if false do %>
+      <%# Avatar %>
       <a href="#" class="navbar-item avatar">
         <figure class="image is-32x32">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
