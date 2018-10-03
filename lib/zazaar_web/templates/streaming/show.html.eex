@@ -1,8 +1,6 @@
-<div class="content">
-  <h1>你的直播！</h1>
+<div class="stream-viewing is-flex">
+  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html") %>
 </div>
-
-<%= render(ZaZaarWeb.LayoutView, "_stream_panel.html") %>
 
 <script charset="utf-8">
 

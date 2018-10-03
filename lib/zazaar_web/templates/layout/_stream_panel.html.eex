@@ -1,21 +1,25 @@
-<div class="columns is-mobile">
-  <div class="column is-half">
-    <div id="stream-view"></div>
-  </div>
-
-  <div class="column is-half">
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input id="user-comment" name="user[comment]" class="input" placeholder="留 言" type="text"></input>
-      </div>
-      <div class="control">
-        <button id="send-comment" class="button is-info">
-          <i class="fal fa-paper-plane"></i>
-          送出
-        </button>
-      </div>
+<div class="stream-viewing__main">
+  <div class="streamer__window" id="stream-view"></div>
+  <div class="streamer__intro is-flex">
+    <a href="#" class="streamer__link is-block">
+      <figure class="image streamer__avatar">
+        <img class="is-rounded" src="http://via.placeholder.com/50x50">
+      </figure>
+    </a>
+    <div class="streamer__info">
+      <h1 class="streamer__title">Streaming Title</h1>
+      <h2 class="streamer__name">Streamer's Name</span>
     </div>
+  </div>
+</div>
 
-    <div id="chat-log" class="panel"></div>
+<div class="stream-viewing__chatroom">
+  <span class="message__title is-block">聊天室</span>
+  <div class="message__log" id="chat-log" ></div>
+  <div class="field message__input">
+    <div class="control">
+      <textarea class="textarea" id="user-comment" name="user[comment]" type="text" placeholder="留言..."></textarea>
+      <button id="send-comment" class="button msgSubmit">傳送</button>
+    </div>
   </div>
 </div>

@@ -2,13 +2,9 @@
   flex-wrap: wrap;
   background-color: $zazaar-orange;
   min-height: 60px;
-  padding: 0 20px;
+  padding: 0 30px;
 
   a {color: #fff;}
-
-  @include desktop {
-    padding: 0 40px;
-  }
 
   .navbar-item img {
     max-height: 100%;
@@ -20,7 +16,7 @@
     .navbar-item {
       width: 114px;
     }
-  
+
     svg {
       width: 100%;
     }
@@ -67,7 +63,6 @@
 
     .navbar-item {
       padding: 0;
-      @include hover-effect(0.2s, -3px);
 
       + .navbar-item {
         margin-left: 20px;
@@ -78,29 +73,18 @@
         color: #fff;
       }
     }
-    
+
     .z-icon{
       @include size(36px, 24px);
+      @include hover-effect(0.2s, -3px);
 
       svg {
         @include size(100%, 100%);
       }
     }
 
-    .z-button {
-      background-color: $zazaar-dark;
-      border-radius: 2px;
-      padding: 6px 10px;
-
-      &:hover {
-        background-color: $zazaar-dark;
-        color: #fff;
-      }
-
-      .fa-bullseye{
-        color: $zazaar-orange;
-        padding-right: 3px;
-      }
+    .button {
+      margin-left: 20px;
     }
   }
 }

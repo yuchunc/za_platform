@@ -4,37 +4,45 @@
   </a>
 </div>
 
-<div class="navbar-search is-flex">
-  <div class="field has-addons">
-    <div class="control bar">
-      <input class="input z-input" type="text" placeholder="搜尋">
-    </div>
-    <div class="control z-submit">
-      <a class="#">
-        <i class="fal fa-search"></i>
-      </a>
+<%# Search Bar %>
+<%= if false do %>
+  <div class="navbar-search is-flex">
+    <div class="field has-addons">
+      <div class="control bar">
+        <input class="input z-input" type="text" placeholder="搜尋">
+      </div>
+      <div class="control z-submit">
+        <a class="#">
+          <i class="fal fa-search"></i>
+        </a>
+      </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <div class="navbar-menu is-flex">
-  <a class="navbar-item z-icon">
-    <i class="fas fa-comments"></i>
-  </a>
-  <a class="navbar-item z-icon">
-    <i class="fas fa-bell"></i>
-  </a>
   <%= if current_resource(@conn) do %>
-    <a class="navbar-item z-button" href="<%= membership_streaming_path(@conn, :show) %>" >
+    <a class="navbar-item z-icon">
+      <i class="fas fa-comments"></i>
+    </a>
+    <a class="navbar-item z-icon">
+      <i class="fas fa-bell"></i>
+    </a>
+    <a class="button button--zazaar" href="<%= membership_streaming_path(@conn, :show) %>" >
       <i class="far fa-bullseye"></i>
       開始直播
     </a>
-    <a href="#" class="navbar-item avatar">
-      <figure class="image is-32x32">
-        <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
-      </figure>
-    </a>
+    <%# 登出的部分再麻煩補一下 %>
+    <a class="button button--outline" href="#">登出</a>
+    <%# Avatar %>
+    <%= if false do %>
+      <a href="#" class="navbar-item avatar">
+        <figure class="image is-32x32">
+          <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
+        </figure>
+      </a>
+    <% end %>
   <% else %>
-    <a class="button is-link is-inverted is-outlined navbar-item" href="/auth/facebook"> FB 登入</a>
+    <a class="button button--outline" href="/auth/facebook">Facebook 登入</a>
   <% end %>
 </div>

@@ -5,9 +5,11 @@
   border-radius: 0;
   border-bottom: 1px solid $zazaar-grey;
   justify-content: flex-start;
+  height: 40px;
   padding: 0 24px;
+  margin-bottom: 10px;
   color: $zazaar-grey;
-  font-size: 20px;
+  font-size: 18px;
 
   &:hover, &:focus {
     border-bottom: 1px solid $zazaar-grey;
@@ -48,7 +50,7 @@
 
     &.online {
       .followed-user__avatar {
-        box-shadow: 0 0 0 1.5px $zazaar-orange;
+        box-shadow: 0 0 0 1px $zazaar-orange;
       }
     }
 
