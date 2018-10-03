@@ -61,11 +61,11 @@ defmodule OpenTok.Api do
   def external_broadcast(session_id, headers, rtmp_list) do
     {:ok, payload} =
       %{
-          sessionId: session_id,
-          maxDuration: 36000,
-          layout: %{type: "bestFit"},
-          outputs: %{
-            rtmp: rtmp_list
+        sessionId: session_id,
+        maxDuration: 36000,
+        layout: %{type: "bestFit"},
+        outputs: %{
+          rtmp: rtmp_list
         }
       }
       |> Poison.encode()
