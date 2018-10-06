@@ -14,7 +14,6 @@ defmodule ZaZaar.Application do
       supervisor(ZaZaarWeb.Endpoint, []),
       supervisor(ZaZaarWeb.StreamPresence, []),
       worker(Guardian.DB.Token.SweeperServer, []),
-      #worker(ZaZaarWeb.StreamWatcher, [:channels]),
       worker(ZaZaar.Notification.Notice, [])
     ]
 
