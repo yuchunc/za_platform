@@ -50,9 +50,15 @@ defmodule ZaZaar.Streaming do
   end
 
   def start_stream(%Channel{} = channel) do
-    %Stream{channel_id: channel.id}
-    |> Stream.changeset(%{})
-    |> Repo.insert()
+    case get_active_stream(channel) do
+      nil ->
+        %Stream{channel_id: channel.id}
+        |> Stream.changeset(%{})
+        |> Repo.insert()
+
+      %Stream{} ->
+        {:error, :another_stream_is_active}
+    end
   end
 
   def start_stream(_), do: {:error, :cannot_start_stream}
@@ -61,6 +67,18 @@ defmodule ZaZaar.Streaming do
     get_channel(streamer_id)
     |> end_stream
   end
+
+  def end_stream(%Channel{} = channel) do
+    if stream = active_stream_query(channel.id) |> Repo.one() do
+      stream
+      |> Stream.archive()
+      |> Repo.update()
+    else
+      end_stream(nil)
+    end
+  end
+
+  def end_stream(_), do: {:error, :invalid_channel}
 
   def find_or_create_channel(%{id: streamer_id}) do
     if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
@@ -125,18 +143,6 @@ defmodule ZaZaar.Streaming do
 
   def update_snapshot(_, _, _), do: {:error, :not_found}
 
-  def end_stream(%Channel{} = channel) do
-    if stream = active_stream_query(channel.id) |> Repo.one() do
-      stream
-      |> Stream.archive()
-      |> Repo.update()
-    else
-      end_stream(nil)
-    end
-  end
-
-  def end_stream(_), do: {:error, :invalid_channel}
-
   def append_comment(%Stream{} = stream0, comment_params) do
     comment = struct(Comment, comment_params)
 
@@ -149,7 +155,7 @@ defmodule ZaZaar.Streaming do
     {:ok, List.first(stream1.comments)}
   end
 
-  def stream_to_facebook(%Channel{facebook_key: nil} = channel), do: nil
+  def stream_to_facebook(%Channel{facebook_key: nil}), do: nil
 
   def stream_to_facebook(%Channel{} = channel) do
     OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)

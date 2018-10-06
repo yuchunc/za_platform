@@ -1,8 +1,6 @@
 defmodule ZaZaarWeb.StreamChannelTest do
   use ZaZaarWeb.ChannelCase
 
-  import ExUnit.CaptureLog
-
   alias ZaZaarWeb.StreamChannel
 
   setup do
@@ -25,7 +23,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       assert_broadcast(^receiving_topic, %{})
     end
 
-    test "a signed in user can join a stream channel", context do
+    test "a signed in user can join a streaming channel", context do
       %{channel: channel} = context
 
       user = insert(:user)

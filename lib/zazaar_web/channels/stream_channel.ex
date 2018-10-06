@@ -20,9 +20,19 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
+  def handle_info({:after_join, payload}, socket) when payload == %{} do
+    broadcast(socket, "user:joined", payload)
+
+    Presence.track(socket, "anom:" <> Ecto.UUID.generate(), %{
+      online_at: inspect(System.system_time(:seconds))
+    })
+
+    {:noreply, socket}
+  end
+
   def handle_info({:after_join, payload}, socket) do
     broadcast(socket, "user:joined", payload)
-    Presence.track(socket, payload.user_id, %{ online_at: inspect(System.system_time(:seconds)) })
+    Presence.track(socket, payload.user_id, %{online_at: inspect(System.system_time(:seconds))})
     {:noreply, socket}
   end
 
@@ -39,16 +49,18 @@ defmodule ZaZaarWeb.StreamChannel do
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
          %Channel{} = channel <- Streaming.get_channel(streamer.id),
-         # TODO diss-allow streaming 2 unarchived stream
          # TODO put stream info in to socket
          {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key}
-    do
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
 
-      {:ok, _} = Presence.update(socket, streamer_id, %{ streamer: true, online_at: inspect(System.system_time(:seconds)) })
+      {:ok, _} =
+        Presence.update(socket, streamer_id, %{
+          streamer: true,
+          online_at: inspect(System.system_time(:seconds))
+        })
 
       streamer
       |> Following.get_followers()
@@ -104,14 +116,15 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def terminate(reason, socket) do
-    %{topic: "stream:" <> streamer_id} = socket
+  def terminate(_reason, socket) do
     user = current_resource(socket)
-    if %{id: ^streamer_id} = user do
-      broadcast!(socket, "streamer:show_ended", %{})
-      Streaming.end_stream(streamer_id)
-    end
-
+    archive_stream(socket.topic, user)
     :ok
   end
+
+  defp archive_stream("stream:" <> streamer_id, %{id: streamer_id}) do
+    Streaming.end_stream(streamer_id)
+  end
+
+  defp archive_stream(_, _), do: nil
 end

@@ -154,6 +154,12 @@ defmodule ZaZaar.StreamingTest do
       assert stream.__struct__ == ZaZaar.Streaming.Stream
     end
 
+    test "faile if channel already has another active stream", context do
+      %{user: streamer} = context
+      assert {:ok, _stream} = Streaming.start_stream(streamer.id)
+      assert {:error, :another_stream_is_active} = Streaming.start_stream(streamer.id)
+    end
+
     test "failed to find the streamer's channel" do
       streamer = insert(:streamer)
 
