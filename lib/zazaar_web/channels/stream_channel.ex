@@ -3,7 +3,7 @@ defmodule ZaZaarWeb.StreamChannel do
 
   require Logger
 
-  alias ZaZaarWeb.StreamWatcher
+  alias ZaZaarWeb.StreamPresence, as: Presence
 
   def join("stream:" <> streamer_id, _message, socket) do
     payload =
@@ -16,13 +16,13 @@ defmodule ZaZaarWeb.StreamChannel do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
-      {:error, %{reason: "stream does not exist"}}
+      {:error, %{reason: :channel_not_found}}
     end
   end
 
   def handle_info({:after_join, payload}, socket) do
     broadcast(socket, "user:joined", payload)
-
+    Presence.track(socket, payload.user_id, %{ online_at: inspect(System.system_time(:seconds)) })
     {:noreply, socket}
   end
 
@@ -39,16 +39,16 @@ defmodule ZaZaarWeb.StreamChannel do
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
          %Channel{} = channel <- Streaming.get_channel(streamer.id),
-         # TODO need to better handle starting a stream,
-         # it is possible to start 2 unarchived stream
+         # TODO diss-allow streaming 2 unarchived stream
          # TODO put stream info in to socket
          {:ok, _stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
-         :ok <-
-           StreamWatcher.monitor(:channels, self(), {__MODULE__, :streamer_left, [streamer_id]}),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key}
+    do
       broadcast(socket, "streamer:show_started", %{message: message})
+
+      {:ok, _} = Presence.update(socket, streamer_id, %{ streamer: true, online_at: inspect(System.system_time(:seconds)) })
 
       streamer
       |> Following.get_followers()
@@ -106,24 +106,12 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def terminate(reason, socket) do
     %{topic: "stream:" <> streamer_id} = socket
-
-    Logger.debug("> leave #{inspect(reason)}")
-
-    case current_resource(socket) do
-      nil ->
-        broadcast!(socket, "viewer:left", %{})
-
-      %{id: ^streamer_id} ->
-        broadcast!(socket, "streamer:show_ended", %{})
-
-      user ->
-        broadcast!(socket, "viewer:left", %{user: user})
+    user = current_resource(socket)
+    if %{id: ^streamer_id} = user do
+      broadcast!(socket, "streamer:show_ended", %{})
+      Streaming.end_stream(streamer_id)
     end
 
     :ok
-  end
-
-  def streamer_left(streamer_id) do
-    Streaming.end_stream(streamer_id)
   end
 end

@@ -44,6 +44,24 @@ defmodule ZaZaar.Streaming do
     |> Repo.one()
   end
 
+  def start_stream(streamer_id) when is_binary(streamer_id) do
+    get_channel(streamer_id)
+    |> start_stream
+  end
+
+  def start_stream(%Channel{} = channel) do
+    %Stream{channel_id: channel.id}
+    |> Stream.changeset(%{})
+    |> Repo.insert()
+  end
+
+  def start_stream(_), do: {:error, :cannot_start_stream}
+
+  def end_stream(streamer_id) when is_binary(streamer_id) do
+    get_channel(streamer_id)
+    |> end_stream
+  end
+
   def find_or_create_channel(%{id: streamer_id}) do
     if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
       channel
@@ -106,24 +124,6 @@ defmodule ZaZaar.Streaming do
   end
 
   def update_snapshot(_, _, _), do: {:error, :not_found}
-
-  def start_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> start_stream
-  end
-
-  def start_stream(%Channel{} = channel) do
-    %Stream{channel_id: channel.id}
-    |> Stream.changeset(%{})
-    |> Repo.insert()
-  end
-
-  def start_stream(_), do: {:error, :cannot_start_stream}
-
-  def end_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> end_stream
-  end
 
   def end_stream(%Channel{} = channel) do
     if stream = active_stream_query(channel.id) |> Repo.one() do

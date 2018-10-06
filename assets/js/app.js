@@ -74,7 +74,6 @@ let sidebar = document.querySelector('.z-sidebar');
 let sidebarToggle = document.querySelector('.sidebar-toggle');
 
 sidebarToggle.addEventListener('click', () => {
-  console.log("ping");
   sidebar.classList.toggle("is-collapsed");
 
   if(sidebar.classList.contains("is-collapsed")) {

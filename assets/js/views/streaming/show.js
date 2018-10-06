@@ -54,7 +54,7 @@ export default () => {
           channel.on("streamer:take_snapshot", (resp) => {
               uploadSnapshot(publisher, channel, resp.upload_key);
             })
-        })
+        });
 
       commentAction(channel);
     },
