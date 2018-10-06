@@ -8,7 +8,7 @@
     <% end %>
   <% end %>
 <% end %>
-    
+
 <div class="popular-stream">
 
   <div class="featured-stream">
@@ -48,7 +48,7 @@
 
   <div class="top-streams is-flex">
 
-    <%= for n <- [1, 1, 1] do %> <%# 最多顯示 10 筆 %>
+    <%= for _ <- [1, 1, 1] do %> <%# 最多顯示 10 筆 %>
 
       <div class="top-streams__block">
 

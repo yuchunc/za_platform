@@ -7,8 +7,6 @@ defmodule ZaZaarWeb.SessionController do
 
   action_fallback(FallbackController)
 
-  alias ZaZaar.Auth.Guardian
-
   def show(conn, _params) do
     render(conn, "sign_in.html")
   end
@@ -62,14 +60,5 @@ defmodule ZaZaarWeb.SessionController do
     |> GPlug.sign_in(user)
     |> put_flash(:success, "登入成功！")
     |> redirect(to: "/")
-  end
-
-  defp add_data_to_conn(conn, resource, token) do
-    conn =
-      conn
-      |> GPlug.put_current_token(token)
-      |> Gplug.put_current_resource(resource)
-
-    {:ok, conn}
   end
 end

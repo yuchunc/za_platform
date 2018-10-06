@@ -5,7 +5,6 @@ defmodule ZaZaarWeb.StreamingControllerTest do
     # test "redirects to root page", context do
     #   %{conn: conn0} = context
     #   conn = conn0
-    #          |> IO.inspect(label: "label")
     #     |> get(membership_streaming_path(conn0, :show))
 
     #   assert redirected_to(conn) == live_stream_path(conn, :index)
