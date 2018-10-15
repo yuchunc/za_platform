@@ -70,8 +70,16 @@ notificationCloseBtns.forEach( (btn) => {
   });
 })
 
+// Sidebar
+
+const ww = document.body.clientWidth;
 let sidebar = document.querySelector('.z-sidebar');
 let sidebarToggle = document.querySelector('.sidebar-toggle');
+
+if(ww >= 769) {
+  sidebar.classList.remove("is-collapsed");
+  sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
+}
 
 sidebarToggle.addEventListener('click', () => {
   sidebar.classList.toggle("is-collapsed");

@@ -1,5 +1,5 @@
 <button class="button sidebar-toggle">
-  <i class="fal fa-angle-double-right"></i>
+  <i class="fal fa-angle-double-left"></i>
 </button>
 
 <section role="following" class="following is-flex">
