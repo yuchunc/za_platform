@@ -43,11 +43,13 @@ defmodule ZaZaarWeb.Router do
     scope "/m" do
       pipe_through(:auth)
 
-      delete("/logout", SessionController, :delete)
-
       resources "/", MembershipController, singleton: true, only: [:show] do
         resources("/streaming", StreamingController, singleton: true, only: [:show])
       end
+
+      delete("/logout", SessionController, :delete)
+
+      resources "/messages", MessageController, singleton: true, only: [:show]
     end
   end
 end
