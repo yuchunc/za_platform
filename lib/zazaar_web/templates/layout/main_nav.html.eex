@@ -22,10 +22,11 @@
 
 <div class="navbar-menu is-flex">
   <%= if current_resource(@conn) do %>
+    <a class="navbar-item z-icon" href="<%= message_path(@conn, :show) %>">
+      <i class="fas fa-comments"></i>
+    </a>
+
     <% if false do %>
-      <a class="navbar-item z-icon">
-        <i class="fas fa-comments"></i>
-      </a>
       <a class="navbar-item z-icon">
         <i class="fas fa-bell"></i>
       </a>
