@@ -10,6 +10,12 @@
       <h1 class="streamer__title">Streaming Title</h1>
       <h2 class="streamer__name">Streamer's Name</span>
     </div>
+
+    <%= if view_module(@conn) == ZaZaarWeb.LiveStreamView do %>
+      <div class="viewer__actions">
+        <a class="viewer__follow-btn button is-outlined " href="#">追蹤</a>
+      </div>
+    <% end %>
   </div>
 </div>
 
