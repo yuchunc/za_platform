@@ -45,6 +45,8 @@
         }
 
         &__avatar {
+          width: 30px;
+          height: 30px;
           border-radius: 100%;
           margin-right: 10px;
         }
@@ -88,8 +90,59 @@
     }
 
     &__log {
+      flex-direction: column-reverse;
       flex-grow: 2;
+      align-items: flex-end;
+      align-content: flex-end;
       overflow-y: scroll;
+      padding: 20px;
+    }
+
+    &__receiver, &__sender {
+      width: 100%;
+      flex-shrink: 0;
+      align-items: flex-end;
+      margin-top: 10px;
+    }
+
+    &__sender {
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    &__avatar {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 30px;
+    }
+
+    &__dialog {
+      margin: 10px;
+
+      .dialog {
+        max-width: 600px;
+        display: inline-block;
+        background: #fff;
+        border-radius: 6px;
+        padding: 3px 10px;
+  
+        word-wrap: break-word;
+      }
+
+      .attachment {
+        padding: 10px;
+      }
+
+      .timestamp {
+        display: block;
+        margin-top: 5px;
+        font-size: 10px;
+        color: $warm-grey;
+
+        + .dialog {
+          margin-top: 10px;
+        }
+      }  
     }
 
     &__input {
