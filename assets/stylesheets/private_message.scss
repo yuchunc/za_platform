@@ -64,6 +64,7 @@
 
   &__conversation {
     width: 100%;
+    background: rgba(221, 221, 221, 0.3);
     flex-direction: column;
     align-items: stretch;
 
@@ -85,7 +86,11 @@
         position: absolute;
         top: 18px;
         right: 20px;
-        color: $zazaar-orange;
+        color: $zazaar-light;
+
+        &:hover {
+          color: $zazaar-orange;
+        }
       }
     }
 
