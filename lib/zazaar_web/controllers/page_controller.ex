@@ -4,4 +4,8 @@ defmodule ZaZaarWeb.PageController do
   def privacy(conn, _attr) do
     render(conn, "privacy.html")
   end
+
+  def about(conn, _attr) do
+    render conn, "about.html"
+  end
 end

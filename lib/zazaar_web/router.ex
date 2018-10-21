@@ -32,6 +32,7 @@ defmodule ZaZaarWeb.Router do
     get("/", LiveStreamController, :index)
 
     get("/privacy", PageController, :privacy)
+    get("/about", PageController, :about)
 
     resources("/s", LiveStreamController, only: [:show])
 
