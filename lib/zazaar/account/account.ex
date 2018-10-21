@@ -12,7 +12,7 @@ defmodule ZaZaar.Account do
 
   require Logger
 
-  def get_user(user_ids) when is_list(user_ids) do
+  def get_users(user_ids) when is_list(user_ids) do
     User
     |> where([u], u.id in ^user_ids)
     |> Repo.all()

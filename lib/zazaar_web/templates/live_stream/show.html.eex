@@ -1,5 +1,5 @@
 <div class="stream-viewing is-flex">
-  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn) %>
+  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn, comments: @comments) %>
 </div>
 
 <script charset="utf-8">

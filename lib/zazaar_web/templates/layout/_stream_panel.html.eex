@@ -21,7 +21,13 @@
 
 <div class="stream-viewing__chatroom">
   <span class="message__title is-block">聊天室</span>
-  <div class="message__log" id="chat-log" ></div>
+  <div class="message__log" id="chat-log">
+    <%= for c <- @comments do %>
+      <div class="panel-block">
+        <%= c.user_name %>：<%= c.content %>
+      </div>
+    <% end %>
+  </div>
   <div class="field message__input">
     <div class="control">
       <textarea class="textarea" id="user-comment" name="user[comment]" type="text" placeholder="留言..."></textarea>
