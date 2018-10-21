@@ -14,9 +14,12 @@ defmodule ZaZaarWeb.LiveStreamController do
 
   def show(conn, %{"id" => streamer_id}) do
     streamer = Account.get_user(streamer_id)
-    comments = Streaming.get_active_stream(streamer_id)
-               |> Map.get(:comments)
-               |> include_user_names
+
+    comments =
+      Streaming.get_active_stream(streamer_id)
+      |> Map.get(:comments)
+      |> include_user_names
+
     render(conn, "show.html", streamer: streamer, comments: comments)
   end
 
@@ -28,15 +31,17 @@ defmodule ZaZaarWeb.LiveStreamController do
   end
 
   defp include_user_names(comments) do
-    users = comments
-               |> Enum.map(&(&1.user_id))
-               |> Enum.uniq
-               |> Account.get_users
+    users =
+      comments
+      |> Enum.map(& &1.user_id)
+      |> Enum.uniq()
+      |> Account.get_users()
 
-    Enum.map(comments, fn(c) ->
-      name = users
-      |> Enum.find(&(&1.id == c.user_id))
-      |> Map.get(:name)
+    Enum.map(comments, fn c ->
+      name =
+        users
+        |> Enum.find(&(&1.id == c.user_id))
+        |> Map.get(:name)
 
       Map.put(c, :user_name, name)
     end)

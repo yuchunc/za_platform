@@ -31,7 +31,8 @@ export default () => {
       channel
         .push("viewer:join", {})
         .receive("ok", (resp) => {
-          startSubscribing(resp);
+          // TODO uncomment this
+          //startSubscribing(resp);
         });
 
       commentAction(channel);

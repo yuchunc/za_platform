@@ -48,7 +48,7 @@ export default () => {
       channel
         .push("streamer:show_start", {message: ""})
         .receive("ok", (resp) => {
-          publisher = startStreaming(resp)
+          //publisher = startStreaming(resp)
 
           // Takes snapshot when receive message
           channel.on("streamer:take_snapshot", (resp) => {
