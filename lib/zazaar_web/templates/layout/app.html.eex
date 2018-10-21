@@ -20,9 +20,11 @@
 
     <main class="main-container is-flex">
 
-    <aside role="sidebar" class="z-sidebar is-flex">
-      <%= render("sidebar.html", conn: @conn) %>
-    </aside>
+    <%= if current_resource(@conn) do %>
+      <aside role="sidebar" class="z-sidebar is-flex is-collapsed">
+        <%= render("sidebar.html", conn: @conn) %>
+      </aside>
+    <% end %>
 
     <section role="main" class="z-main is-flex">
       <%= show_flash(@conn) %>
