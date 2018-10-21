@@ -76,7 +76,7 @@ const ww = document.body.clientWidth;
 let sidebar = document.querySelector('.z-sidebar');
 let sidebarToggle = document.querySelector('.sidebar-toggle');
 
-if(!bodyClasses.contains("message") && ww >= 769) {
+if(!bodyClasses.contains("message") && ww >= 1024) {
   sidebar.classList.remove("is-collapsed");
   sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
 }

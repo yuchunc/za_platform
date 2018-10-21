@@ -82,7 +82,7 @@ defmodule ZaZaar.Mixfile do
         "run priv/repo/#{Atom.to_string(Mix.env())}-seeds.exs"
       ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.api": ["test --only ot_api"]
     ]
   end

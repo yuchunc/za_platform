@@ -3,6 +3,18 @@ defmodule ZaZaar.AccountTest do
 
   alias ZaZaar.Account
 
+  describe "get_users/1" do
+    test "gets the list of user from the list of user ids" do
+      user_ids =
+        insert_list(5, :user)
+        |> Enum.map(& &1.id)
+
+      users = Account.get_users(user_ids)
+
+      assert Enum.map(users, & &1.id) == user_ids
+    end
+  end
+
   describe "get_user/1" do
     test "gets the respective user" do
       user = insert(:user)

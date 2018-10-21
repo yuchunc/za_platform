@@ -76,6 +76,10 @@
     height: calc( 100% - 148px );
     padding: 10px;
     overflow: hidden;
+
+    .panel-block {
+      color: white;
+    }
   }
 
   &__input {

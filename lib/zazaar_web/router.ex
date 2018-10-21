@@ -49,7 +49,7 @@ defmodule ZaZaarWeb.Router do
 
       delete("/logout", SessionController, :delete)
 
-      resources "/messages", MessageController, singleton: true, only: [:show]
+      resources("/messages", MessageController, singleton: true, only: [:show])
     end
   end
 end
