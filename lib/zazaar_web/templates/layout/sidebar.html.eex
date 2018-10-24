@@ -21,9 +21,9 @@
 
 <footer class="z-footer">
   <ul class="guide-links">
-    <li><a href="#" class="item">關於 ZaZaar</a></li>
-    <li><a href="#" class="item">服務條款</a></li>
-    <li><a href="#" class="item">隱私權條款</a></li>
+    <li><a href="/about" class="item">關於 ZaZaar</a></li>
+    <li><a href="/service" class="item">服務條款</a></li>
+    <li><a href="/privacy" class="item">隱私權條款</a></li>
   </ul>
   <span class="copyright is-block">© 2018 ZaZaar</span>
 </footer>
