@@ -90,7 +90,6 @@ html, body {
 
 .z-main, .z-sidebar{
   flex-direction: column;
-  flex-shrink: 0;
   height: 100%;
   overflow-y: scroll;
 }
@@ -102,7 +101,9 @@ html, body {
 
 .z-sidebar{
   order: 2;
-  width: 200px;
+  flex-shrink: 0;
+  width: 20%;
+  max-width: 200px;
   background-color: $zazaar-dark;
 
   &.is-collapsed {
@@ -125,6 +126,10 @@ html, body {
       display: none;
     }
   }
+}
+
+.content {
+  padding: 40px;
 }
 
 .video-player {

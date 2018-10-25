@@ -38,8 +38,8 @@
 
     <div class="private-message__conversation__log is-flex" id="chat-log" >
 
-      <%# Template of Sender %>
       <%= if false do %>
+      <%# Template of Sender %>
       <div class="private-message__conversation__sender is-flex" >
         <div class="private-message__conversation__dialog" >
           <div class="dialog" >訊息</div>
@@ -51,10 +51,8 @@
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
       </div>
-      <% end %>
 
       <%# Template of Receiver %>
-      <%= if false do %>
       <div class="private-message__conversation__receiver is-flex" >
         <figure class="private-message__conversation__avatar image is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
