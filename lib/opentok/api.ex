@@ -108,8 +108,6 @@ defmodule OpenTok.Api do
         headers
       )
 
-    response.body |> IO.inspect(label: "label")
-
     case response.status_code do
       sc when sc in 200..300 ->
         response.body |> Poison.decode()

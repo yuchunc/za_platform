@@ -12,6 +12,7 @@ defmodule ZaZaar.Streaming.Stream do
     field(:archived_at, :naive_datetime)
     field(:upload_key, :string)
     field(:video_snapshot, :string)
+    field(:recording_id, Ecto.UUID)
 
     belongs_to(:channel, Streaming.Channel)
 
@@ -23,7 +24,14 @@ defmodule ZaZaar.Streaming.Stream do
   @doc false
   def changeset(%__MODULE__{} = stream, attrs \\ %{}) do
     stream
-    |> cast(attrs, [:facebook_stream_key, :archived_at, :channel_id, :upload_key, :video_snapshot])
+    |> cast(attrs, [
+      :facebook_stream_key,
+      :archived_at,
+      :channel_id,
+      :upload_key,
+      :video_snapshot,
+      :recording_id
+    ])
     |> assoc_constraint(:channel)
     |> validate_not_archived
   end

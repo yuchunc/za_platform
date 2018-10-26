@@ -232,4 +232,24 @@ defmodule ZaZaar.StreamingTest do
       assert Streaming.stream_to_facebook(context.channel) == :ok
     end
   end
+
+  describe "update_stream" do
+    setup do
+      {:ok, stream: insert(:stream), recording_id: Ecto.UUID.generate()}
+    end
+
+    test "can update a stream by stream id", ctx do
+      %{stream: stream0, recording_id: recording_id} = ctx
+      {:ok, stream1} = Streaming.update_stream(stream0.id, %{recording_id: recording_id})
+
+      refute stream1.recording_id == stream0.recording_id
+    end
+
+    test "can update a stream by stream struct", ctx do
+      %{stream: stream0, recording_id: recording_id} = ctx
+      {:ok, stream1} = Streaming.update_stream(stream0, %{recording_id: recording_id})
+
+      refute stream1.recording_id == stream0.recording_id
+    end
+  end
 end

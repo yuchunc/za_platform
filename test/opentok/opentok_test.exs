@@ -98,12 +98,12 @@ defmodule OpenTok.OpenTokTest do
       assert OpenTok.record(:start, session_id) == {:ok, recording_id}
     end
 
-    test ":stop, start recording a stream" do
+    test ":stop, stop recording a stream" do
       expect(OpenTok.ApiMock, :stop_recording, fn _, _ ->
         :ok
       end)
 
-      {:ok, session_id} = OpenTok.request_session_id()
+      {:ok, _session_id} = OpenTok.request_session_id()
 
       assert OpenTok.record(:stop, Ecto.UUID.generate()) == :ok
     end
