@@ -72,6 +72,17 @@ defmodule OpenTok do
     @ot_api.external_broadcast(session_id, headers, rtmp_list)
   end
 
+  @doc """
+  Records a Stream
+  """
+  def record(:start, session_id) do
+    headers = generate_headers() ++ [{"Content-Type", "application/json"}]
+
+    {:ok, result} = @ot_api.start_recording(session_id, headers)
+
+    {:ok, Map.get(result, :id)}
+  end
+
   defp generate_headers do
     @config
     |> Util.generate_jwt()
