@@ -73,14 +73,25 @@ defmodule OpenTok do
   end
 
   @doc """
-  Records a Stream
+  Start recording a Stream
   """
   def record(:start, session_id) do
     headers = generate_headers() ++ [{"Content-Type", "application/json"}]
 
-    {:ok, result} = @ot_api.start_recording(session_id, headers)
+    {:ok, %{"id" => recording_id}} = @ot_api.start_recording(session_id, headers)
 
-    {:ok, result |> Poisen.decode |> Map.get(:id)}
+    {:ok, recording_id}
+  end
+
+  @doc """
+  Stop recording a stream
+  """
+  def record(:stop, recording_id) do
+    headers = generate_headers() ++ [{"Content-Type", "application/json"}]
+
+    :ok = @ot_api.stop_recording(recording_id, headers)
+
+    :ok
   end
 
   defp generate_headers do

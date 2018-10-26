@@ -75,7 +75,11 @@ defmodule OpenTok.ApiTest do
       header0 = create_session_headers(@ot_config)
       {:ok, session_id} = OpenTok.Api.request_session_id(header0)
 
-      assert {:error, _} = OpenTok.Api.start_recording(session_id, header0 ++ [{"Content-Type", "application/json"}])
+      assert {:error, _} =
+               OpenTok.Api.start_recording(
+                 session_id,
+                 header0 ++ [{"Content-Type", "application/json"}]
+               )
     end
   end
 
@@ -84,7 +88,11 @@ defmodule OpenTok.ApiTest do
       header0 = create_session_headers(@ot_config)
       {:ok, session_id} = OpenTok.Api.request_session_id(header0)
 
-      assert {:error, _} = OpenTok.Api.stop_recording(session_id, header0 ++ [{"Content-Type", "application/json"}])
+      assert {:error, _} =
+               OpenTok.Api.stop_recording(
+                 session_id,
+                 header0 ++ [{"Content-Type", "application/json"}]
+               )
     end
   end
 

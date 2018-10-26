@@ -10,4 +10,6 @@ defmodule OpenTok.Behaviour do
   @callback external_broadcast(String.t(), headers, [map]) :: response
 
   @callback start_recording(String.t(), headers) :: response
+
+  @callback stop_recording(String.t(), headers) :: response
 end

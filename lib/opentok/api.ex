@@ -93,10 +93,13 @@ defmodule OpenTok.Api do
   Start Recording
   """
   def start_recording(session_id, headers) do
-    {:ok, payload} = %{ "sessionId": session_id,
-      "layout": %{ "type": "bestfit"},
-      "name": NaiveDateTime.utc_now |> NaiveDateTime.to_iso8601
-    } |> Poison.encode
+    {:ok, payload} =
+      %{
+        sessionId: session_id,
+        layout: %{type: "bestfit"},
+        name: NaiveDateTime.utc_now() |> NaiveDateTime.to_iso8601()
+      }
+      |> Poison.encode()
 
     {:ok, response} =
       HTTPoison.post(
@@ -105,9 +108,12 @@ defmodule OpenTok.Api do
         headers
       )
 
+    response.body |> IO.inspect(label: "label")
+
     case response.status_code do
       sc when sc in 200..300 ->
-        {:ok, response.body}
+        response.body |> Poison.decode()
+
       sc ->
         {:error, "Failed to archive. Response code: #{sc}"}
     end
@@ -119,7 +125,8 @@ defmodule OpenTok.Api do
   def stop_recording(recording_id, headers) do
     {:ok, response} =
       HTTPoison.post(
-        @config.endpoint <> "/v2/project/" <> @config.key <> "/archive/" <> recording_id <> "stop",
+        @config.endpoint <>
+          "/v2/project/" <> @config.key <> "/archive/" <> recording_id <> "/stop",
         "",
         headers
       )
@@ -127,6 +134,7 @@ defmodule OpenTok.Api do
     case response.status_code do
       sc when sc in 200..300 ->
         :ok
+
       sc ->
         {:error, "Failed to archive. Response code: #{sc}"}
     end
