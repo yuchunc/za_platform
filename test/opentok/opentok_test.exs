@@ -84,4 +84,28 @@ defmodule OpenTok.OpenTokTest do
       assert OpenTok.stream_to_facebook(session_id, streamer.id, stream_key) == :ok
     end
   end
+
+  describe "record/2" do
+    test ":start, start recording a stream" do
+      recording_id = Ecto.UUID.generate()
+
+      expect(OpenTok.ApiMock, :start_recording, fn _, _ ->
+        {:ok, %{"id" => recording_id}}
+      end)
+
+      {:ok, session_id} = OpenTok.request_session_id()
+
+      assert OpenTok.record(:start, session_id) == {:ok, recording_id}
+    end
+
+    test ":stop, stop recording a stream" do
+      expect(OpenTok.ApiMock, :stop_recording, fn _, _ ->
+        :ok
+      end)
+
+      {:ok, _session_id} = OpenTok.request_session_id()
+
+      assert OpenTok.record(:stop, Ecto.UUID.generate()) == :ok
+    end
+  end
 end

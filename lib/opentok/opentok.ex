@@ -15,8 +15,7 @@ defmodule OpenTok do
   """
   def request_session_id do
     with jwt <- Util.generate_jwt(@config),
-         settings <- [{"archiveMode", "always"}],
-         request_header <- Util.wrap_request_headers(jwt, settings),
+         request_header <- Util.wrap_request_headers(jwt),
          {:ok, session_id} <- @ot_api.request_session_id(request_header) do
       {:ok, session_id}
     end
@@ -71,6 +70,28 @@ defmodule OpenTok do
     rtmp_list = [Util.build_facebook_rtmp(streamer_id, facebook_key)]
 
     @ot_api.external_broadcast(session_id, headers, rtmp_list)
+  end
+
+  @doc """
+  Start recording a Stream
+  """
+  def record(:start, session_id) do
+    headers = generate_headers() ++ [{"Content-Type", "application/json"}]
+
+    {:ok, %{"id" => recording_id}} = @ot_api.start_recording(session_id, headers)
+
+    {:ok, recording_id}
+  end
+
+  @doc """
+  Stop recording a stream
+  """
+  def record(:stop, recording_id) do
+    headers = generate_headers() ++ [{"Content-Type", "application/json"}]
+
+    :ok = @ot_api.stop_recording(recording_id, headers)
+
+    :ok
   end
 
   defp generate_headers do

@@ -43,14 +43,20 @@ defmodule ZaZaarWeb.StreamChannel do
     {:noreply, socket}
   end
 
+  def handle_info({:start_recording, stream, session_id}, socket) do
+    {:ok, recording_id} = OpenTok.record(:start, session_id)
+    Streaming.update_stream(stream, %{recording_id: recording_id})
+
+    {:noreply, socket}
+  end
+
   def handle_in("streamer:show_start", params, socket) do
     with %{"message" => message} <- params,
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
          %Channel{} = channel <- Streaming.get_channel(streamer.id),
-         # TODO put stream info in to socket
-         {:ok, _stream} <- Streaming.start_stream(channel),
+         {:ok, stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
@@ -68,6 +74,8 @@ defmodule ZaZaarWeb.StreamChannel do
       |> Notification.append_notice(%{type: :followee_is_live, from_id: streamer.id})
 
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
+      Process.send_after(self(), {:start_recording, stream, channel.ot_session_id}, 1_000 * 2)
+
       {:reply, {:ok, opentok_params}, socket}
     end
   end
@@ -119,6 +127,7 @@ defmodule ZaZaarWeb.StreamChannel do
   def terminate(_reason, socket) do
     user = current_resource(socket)
     archive_stream(socket.topic, user)
+    # TODO stop OpenTok archiving
     :ok
   end
 

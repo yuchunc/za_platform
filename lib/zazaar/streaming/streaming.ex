@@ -44,6 +44,17 @@ defmodule ZaZaar.Streaming do
     |> Repo.one()
   end
 
+  def update_stream(stream_id, params) when is_binary(stream_id) do
+    Repo.get(Stream, stream_id)
+    |> update_stream(params)
+  end
+
+  def update_stream(%Stream{} = stream, params) do
+    stream
+    |> Stream.changeset(params)
+    |> Repo.update()
+  end
+
   def start_stream(streamer_id) when is_binary(streamer_id) do
     get_channel(streamer_id)
     |> start_stream

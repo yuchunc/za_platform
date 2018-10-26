@@ -18,13 +18,6 @@ defmodule OpenTok.ApiTest do
       assert {:ok, session_id} = OpenTok.Api.request_session_id(headers)
       assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
     end
-
-    test "turns archive mode on" do
-      headers = create_session_headers(@ot_config) ++ [{"archiveMode", "always"}]
-
-      assert {:ok, session_id} = OpenTok.Api.request_session_id(headers)
-      assert String.match?(session_id, ~r/^\d_\w{15}-\w{51}-\w{2}$/)
-    end
   end
 
   describe "get_session_state/1" do
@@ -50,7 +43,6 @@ defmodule OpenTok.ApiTest do
     end
   end
 
-  @tag :skip
   describe "external_broadcast/2" do
     setup do
       headers = create_session_headers(@ot_config)
@@ -65,20 +57,44 @@ defmodule OpenTok.ApiTest do
           ot_session_id: session_id
         )
 
-      {:ok, headers: headers, channel: channel}
+      {:ok, headers: headers ++ [{"Content-Type", "application/json"}], channel: channel}
     end
 
     test "broadcasts to external services", context do
       %{headers: headers, channel: channel} = context
 
       session_id = channel.ot_session_id
-      rtmp_list = [Util.build_facebook_rtmp(channel)]
+      rtmp_list = [Util.build_facebook_rtmp(session_id, channel.facebook_key)]
 
       assert OpenTok.Api.external_broadcast(session_id, headers, rtmp_list) == {:error, :noclient}
     end
   end
 
-  # TODO stop broadcasting
+  describe "start_recording/2" do
+    test "throws error if there is no user on the session" do
+      header0 = create_session_headers(@ot_config)
+      {:ok, session_id} = OpenTok.Api.request_session_id(header0)
+
+      assert {:error, _} =
+               OpenTok.Api.start_recording(
+                 session_id,
+                 header0 ++ [{"Content-Type", "application/json"}]
+               )
+    end
+  end
+
+  describe "stop_recording/1" do
+    test "throws error since there is no stream" do
+      header0 = create_session_headers(@ot_config)
+      {:ok, session_id} = OpenTok.Api.request_session_id(header0)
+
+      assert {:error, _} =
+               OpenTok.Api.stop_recording(
+                 session_id,
+                 header0 ++ [{"Content-Type", "application/json"}]
+               )
+    end
+  end
 
   defp create_session_headers(config) do
     config

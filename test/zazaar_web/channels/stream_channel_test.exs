@@ -1,7 +1,11 @@
 defmodule ZaZaarWeb.StreamChannelTest do
-  use ZaZaarWeb.ChannelCase
+  use ZaZaarWeb.ChannelCase, asycn: true
 
   alias ZaZaarWeb.StreamChannel
+
+  import Mox
+
+  setup :verify_on_exit!
 
   setup do
     channel = insert(:channel)
@@ -38,6 +42,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
   end
 
+  @tag :skip
   describe "streamer:show_start" do
     setup context do
       %{channel: channel} = context
@@ -51,6 +56,10 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
 
     test "streamer can start broadcasting on her own stream", context do
+      expect(OpenTok.ApiMock, :start_recording, fn _, _ ->
+        {:ok, %{"id" => Ecto.UUID.generate()}}
+      end)
+
       %{socket: socket} = context
       params = %{message: "hello world"}
       ref = push(socket, "streamer:show_start", params)
