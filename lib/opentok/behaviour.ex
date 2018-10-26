@@ -8,4 +8,6 @@ defmodule OpenTok.Behaviour do
   @callback get_session_state(String.t(), headers) :: response
 
   @callback external_broadcast(String.t(), headers, [map]) :: response
+
+  @callback start_recording(String.t(), headers) :: response
 end

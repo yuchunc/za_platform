@@ -15,7 +15,7 @@ defmodule OpenTok do
   """
   def request_session_id do
     with jwt <- Util.generate_jwt(@config),
-         request_header <- Util.wrap_request_headers(jwt, [{"archiveMode", "always"}]),
+         request_header <- Util.wrap_request_headers(jwt),
          {:ok, session_id} <- @ot_api.request_session_id(request_header) do
       {:ok, session_id}
     end

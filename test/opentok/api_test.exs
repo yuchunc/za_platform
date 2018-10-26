@@ -70,6 +70,15 @@ defmodule OpenTok.ApiTest do
     end
   end
 
+  describe "start_recording/2" do
+    test "throws error if there is no user on the session" do
+      header0 = create_session_headers(@ot_config)
+      {:ok, session_id} = OpenTok.Api.request_session_id(header0)
+
+      OpenTok.Api.start_recording(session_id, header0 ++ [{"Content-Type", "application/json"}])
+    end
+  end
+
   defp create_session_headers(config) do
     config
     |> Util.generate_jwt()
