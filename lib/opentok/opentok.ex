@@ -80,7 +80,7 @@ defmodule OpenTok do
 
     {:ok, result} = @ot_api.start_recording(session_id, headers)
 
-    {:ok, Map.get(result, :id)}
+    {:ok, result |> Poisen.decode |> Map.get(:id)}
   end
 
   defp generate_headers do
