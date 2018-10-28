@@ -50,10 +50,10 @@ defmodule ZaZaar.Streaming do
     |> Repo.update()
   end
 
-  def start_stream(channel) do
-    case get_stream(channel) do
+  def start_stream(streamer_id) do
+    case get_stream(streamer_id) do
       nil ->
-        %Stream{channel_id: channel.id}
+        %Stream{streamer_id: streamer_id}
         |> Stream.changeset(%{})
         |> Repo.insert()
 

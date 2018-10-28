@@ -55,7 +55,8 @@ defmodule ZaZaarWeb.StreamChannel do
          %{topic: "stream:" <> streamer_id} <- socket,
          %User{} = streamer <- current_resource(socket),
          true <- streamer_id == streamer.id,
-         %Channel{} = channel <- Streaming.get_channel(streamer.id),
+         # TODO need to revisit L59
+         channel <- Streaming.get_channel(streamer.id),
          {:ok, stream} <- Streaming.start_stream(channel),
          {:ok, key, token} <-
            OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
@@ -83,7 +84,8 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_in("streamer:upload_snapshot", params, socket) do
     with %{"upload_key" => key, "snapshot" => snapshot} <- params,
          %User{} = streamer <- current_resource(socket),
-         %Channel{} = channel <- Streaming.get_channel(streamer.id),
+         # TODO revisit L88
+         channel <- Streaming.get_channel(streamer.id),
          %Stream{} = stream <- Streaming.get_active_stream(channel) do
       if is_nil(stream.video_snapshot) do
         Streaming.stream_to_facebook(channel)
@@ -97,7 +99,8 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_in("viewer:join", _params, socket) do
     with %{topic: "stream:" <> streamer_id} <- socket,
          viewer <- current_resource(socket),
-         %Channel{} = channel <- Streaming.get_channel(streamer_id),
+         # TODO revisit L103
+         channel <- Streaming.get_channel(streamer_id),
          {:ok, key, token} <- OpenTok.generate_token(channel.ot_session_id, :subscriber),
          opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
       if is_nil(viewer) do

@@ -93,11 +93,6 @@ defmodule ZaZaar.StreamingTest do
   end
 
   describe "start_stream/1" do
-    setup context do
-      %{user: streamer} = context
-      {:ok, channel: insert(:channel, streamer_id: streamer.id)}
-    end
-
     test "returns a stream", context do
       %{user: streamer} = context
 
@@ -109,12 +104,6 @@ defmodule ZaZaar.StreamingTest do
       %{user: streamer} = context
       assert {:ok, _stream} = Streaming.start_stream(streamer.id)
       assert {:error, :another_stream_is_active} = Streaming.start_stream(streamer.id)
-    end
-
-    test "failed to find the streamer's channel" do
-      streamer = insert(:user)
-
-      assert {:error, :cannot_start_stream} = Streaming.start_stream(streamer.id)
     end
   end
 
