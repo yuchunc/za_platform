@@ -46,10 +46,14 @@ defmodule ZaZaar.StreamingTest do
       assert {:ok, _key} = Streaming.gen_snapshot_key(stream.id)
     end
 
-    test "error when no stream is found" do
+    test "error when stream is archived" do
       stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
 
-      assert {:error, :not_found} = Streaming.gen_snapshot_key(stream.channel)
+      assert {:error, _} = Streaming.gen_snapshot_key(stream)
+    end
+
+    test "error when stream is not found" do
+      assert {:error, :stream_not_found} = Streaming.gen_snapshot_key(Ecto.UUID.generate())
     end
   end
 

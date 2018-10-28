@@ -91,12 +91,13 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
-  def gen_snapshot_key(channel) do
-    stream =
-      channel.id
-      |> active_stream_query
-      |> Repo.one()
+  def gen_snapshot_key(stream_id) when is_binary(stream_id) do
+    stream_id
+    |> get_stream
+    |> gen_snapshot_key()
+  end
 
+  def gen_snapshot_key(stream) do
     case stream do
       %Stream{} ->
         random_string = :crypto.strong_rand_bytes(Enum.random(8..12)) |> Base.url_encode64()
@@ -108,7 +109,7 @@ defmodule ZaZaar.Streaming do
         end
 
       _ ->
-        {:error, :not_found}
+        {:error, :stream_not_found}
     end
   end
 
