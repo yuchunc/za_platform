@@ -13,6 +13,7 @@ defmodule ZaZaar.Streaming.Stream do
     field(:upload_key, :string)
     field(:video_snapshot, :string)
     field(:recording_id, Ecto.UUID)
+    field(:streamer_id, Ecto.UUID)
 
     belongs_to(:channel, Streaming.Channel)
 
@@ -30,7 +31,8 @@ defmodule ZaZaar.Streaming.Stream do
       :channel_id,
       :upload_key,
       :video_snapshot,
-      :recording_id
+      :recording_id,
+      :streamer_id
     ])
     |> assoc_constraint(:channel)
     |> validate_not_archived

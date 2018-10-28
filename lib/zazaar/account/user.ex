@@ -15,6 +15,9 @@ defmodule ZaZaar.Account.User do
     field(:encrypted_password, :string)
     field(:password, :string, virtual: true)
 
+    field(:ot_session_id, :string)
+    field(:fb_stream_key, :string)
+
     field(:refresh_token, :string)
 
     timestamps()
@@ -25,7 +28,16 @@ defmodule ZaZaar.Account.User do
   """
   def changeset(%__MODULE__{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :fb_id, :image_url, :fb_payload, :name])
+    |> cast(attrs, [
+      :email,
+      :password,
+      :fb_id,
+      :image_url,
+      :fb_payload,
+      :name,
+      :ot_session_id,
+      :fb_stream_key
+    ])
     |> validate_required([:email, :name])
     |> validate_and_encrypt_password
     |> unique_constraint(:email)
