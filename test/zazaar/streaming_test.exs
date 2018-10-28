@@ -111,28 +111,25 @@ defmodule ZaZaar.StreamingTest do
 
   describe "end_stream/1" do
     setup context do
-      %{user: streamer} = context
-      channel = insert(:channel, streamer_id: streamer.id)
-      {:ok, stream: insert(:stream, channel: channel)}
+      {:ok, stream: insert(:stream)}
     end
 
     test "sets the archived_at time on stream", context do
       %{stream: stream} = context
 
-      assert {:ok, stream1} = Streaming.end_stream(stream.channel.streamer_id)
+      assert {:ok, stream1} = Streaming.end_stream(stream)
       assert stream1.archived_at
     end
 
-    test "errors when invalid stream is used" do
-      assert {:error, :invalid_channel} = Streaming.end_stream(Ecto.UUID.generate())
+    test "sets the archived_at time on stream by streamer_id", context do
+      %{stream: stream} = context
+
+      assert {:ok, stream1} = Streaming.end_stream(stream.streamer_id)
+      assert stream1.archived_at
     end
 
-    test "archived stream cannot be touched" do
-      streamer = insert(:user)
-      channel = insert(:channel, streamer_id: streamer.id)
-      insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
-
-      assert {:error, :invalid_channel} = Streaming.end_stream(streamer.id)
+    test "errors when stream is not found" do
+      assert {:error, :stream_not_found} = Streaming.end_stream(Ecto.UUID.generate())
     end
   end
 
@@ -192,6 +189,12 @@ defmodule ZaZaar.StreamingTest do
       {:ok, stream1} = Streaming.update_stream(stream0, %{recording_id: recording_id})
 
       refute stream1.recording_id == stream0.recording_id
+    end
+
+    test "archived stream cannot be touched" do
+      stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
+
+      assert {:error, :stream_archived} = Streaming.update_stream(stream, %{upload_key: "baz"})
     end
   end
 end

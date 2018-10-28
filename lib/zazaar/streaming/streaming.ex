@@ -41,17 +41,19 @@ defmodule ZaZaar.Streaming do
 
   def start_stream(_), do: {:error, :cannot_start_stream}
 
-  def end_stream(channel) do
-    if stream = active_stream_query(channel.id) |> Repo.one() do
-      stream
-      |> Stream.archive()
-      |> Repo.update()
-    else
-      end_stream(nil)
-    end
+  def end_stream(uuid) when is_binary(uuid) do
+    uuid
+    |> get_stream
+    |> end_stream
   end
 
-  def end_stream(_), do: {:error, :invalid_channel}
+  def end_stream(%Stream{} = stream) do
+    stream
+    |> Stream.archive()
+    |> Repo.update()
+  end
+
+  def end_stream(_), do: {:error, :stream_not_found}
 
   def find_or_create_channel(%{id: streamer_id}) do
     if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
@@ -78,7 +80,7 @@ defmodule ZaZaar.Streaming do
     case stream do
       %Stream{} ->
         random_string = :crypto.strong_rand_bytes(Enum.random(8..12)) |> Base.url_encode64()
-        result = Stream.changeset(stream, %{upload_key: random_string}) |> Repo.update()
+        result = update_stream(stream, %{upload_key: random_string})
 
         case result do
           {:ok, _} -> {:ok, random_string}
@@ -121,13 +123,5 @@ defmodule ZaZaar.Streaming do
 
   def stream_to_facebook(%{} = channel) do
     OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
-  end
-
-  defp active_stream_query(%{} = channel), do: active_stream_query(channel.id)
-
-  defp active_stream_query(channel_id) do
-    Stream
-    |> where(channel_id: ^channel_id)
-    |> where([s], is_nil(s.archived_at))
   end
 end
