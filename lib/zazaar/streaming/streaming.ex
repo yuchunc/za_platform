@@ -9,29 +9,6 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Streaming
   alias Streaming.{Stream, Comment}
 
-  # def get_channels(opts \\ []) do
-  #   with_snapshot = Keyword.get(opts, :snapshot, false)
-  #   query0 = from(c in Channel, order_by: c.updated_at)
-  #   # TODO add active_at and sort on it
-
-  #   query1 =
-  #     if with_snapshot do
-  #       query0
-  #       |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
-  #       |> select([c, s], %{c | video_snapshot: s.video_snapshot})
-  #     else
-  #       query0
-  #     end
-
-  #   Repo.all(query1)
-  # end
-
-  # def get_channel(streamer_id) do
-  #   query = from(s in Channel, where: s.streamer_id == ^streamer_id)
-
-  #   Repo.one(query)
-  # end
-
   def get_stream(uuid) do
     Stream
     |> where(id: ^uuid)
@@ -119,21 +96,14 @@ defmodule ZaZaar.Streaming do
     |> update_snapshot(key, data)
   end
 
-  def update_snapshot(channel, key, data) do
-    channel
-    |> get_stream()
-    |> update_snapshot(key, data)
-  end
-
   def update_snapshot(%Stream{upload_key: key} = stream, key, data) do
-    case result =
-           Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update() do
+    case result = update_stream(stream, %{upload_key: nil, video_snapshot: data}) do
       {:ok, _} -> :ok
       _ -> result
     end
   end
 
-  def update_snapshot(_, _, _), do: {:error, :not_found}
+  def update_snapshot(_, _, _), do: {:error, :stream_not_found}
 
   def append_comment(%Stream{} = stream0, comment_params) do
     comment = struct(Comment, comment_params)

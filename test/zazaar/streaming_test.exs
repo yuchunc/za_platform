@@ -67,7 +67,7 @@ defmodule ZaZaar.StreamingTest do
 
       assert :ok =
                Streaming.update_snapshot(
-                 stream.channel,
+                 stream.streamer_id,
                  "foobar",
                  :crypto.strong_rand_bytes(12) |> Base.encode64()
                )
@@ -85,11 +85,9 @@ defmodule ZaZaar.StreamingTest do
     end
 
     test "error if no valid stream is found" do
-      stream = insert(:stream, upload_key: "foobar")
-
-      assert {:error, :not_found} =
+      assert {:error, :stream_not_found} =
                Streaming.update_snapshot(
-                 stream.channel,
+                 Ecto.UUID.generate(),
                  "somethingelse",
                  :crypto.strong_rand_bytes(12) |> Base.encode64()
                )
