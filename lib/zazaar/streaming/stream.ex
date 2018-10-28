@@ -15,8 +15,6 @@ defmodule ZaZaar.Streaming.Stream do
     field(:recording_id, Ecto.UUID)
     field(:streamer_id, Ecto.UUID)
 
-    belongs_to(:channel, Streaming.Channel)
-
     embeds_many(:comments, Streaming.Comment)
 
     timestamps()
@@ -28,13 +26,11 @@ defmodule ZaZaar.Streaming.Stream do
     |> cast(attrs, [
       :facebook_stream_key,
       :archived_at,
-      :channel_id,
       :upload_key,
       :video_snapshot,
       :recording_id,
       :streamer_id
     ])
-    |> assoc_constraint(:channel)
     |> validate_not_archived
   end
 

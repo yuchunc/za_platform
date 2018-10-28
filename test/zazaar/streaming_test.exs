@@ -4,83 +4,33 @@ defmodule ZaZaar.StreamingTest do
   import Mox
 
   alias ZaZaar.Streaming
-  alias Streaming.Channel
 
   setup [:verify_on_exit!, :insert_user]
 
   defp insert_user(context) do
-    Map.put_new(context, :user, insert(:streamer))
+    Map.put_new(context, :user, insert(:user))
   end
 
-  describe "get_channels/0" do
-    test "gets a list of channels" do
-      channel_list = insert_list(10, :channel)
-
-      result = Streaming.get_channels()
-
-      Enum.each(result, &assert(%Channel{} = &1))
-      assert Enum.count(result) == 10
-
-      assert result |> Enum.map(& &1.id) |> Enum.sort() ==
-               channel_list |> Enum.map(& &1.id) |> Enum.sort()
-    end
-  end
-
-  describe "get_channels/1" do
-    test "gets list of channels with the last active snapshot with snapshot: true" do
-      insert_pair(:channel)
-      |> Enum.map(fn c ->
-        insert(:stream, channel: c, video_snapshot: "jibberish")
-      end)
-
-      result = Streaming.get_channels(snapshot: true)
-
-      assert Enum.map(result, & &1.video_snapshot)
-             |> Enum.reject(&is_nil/1)
-             |> Enum.count() == 2
-    end
-  end
-
-  describe "get_channel/1" do
-    test "gets the current channel" do
-      channel = insert(:channel)
-
-      assert %Channel{} = Streaming.get_channel(channel.streamer_id)
-    end
-  end
-
-  describe "get_active_stream/1" do
+  describe "get_stream/1" do
     setup do
-      streamer_id = insert(:user) |> Map.get(:id)
-      channel = insert(:channel, streamer_id: streamer_id)
-      stream = insert(:stream, channel: channel)
+      stream = insert(:stream)
 
-      {:ok, streamer_id: streamer_id, channel: channel, stream: stream}
+      {:ok, stream: stream}
     end
 
     test "gets the active stream from streamer_id", context do
-      %{streamer_id: streamer_id, stream: %{id: stream_id}} = context
+      %{stream: stream} = context
 
-      assert Streaming.get_active_stream(streamer_id) |> Map.get(:id) == stream_id
+      stream1 = Streaming.get_stream(stream.streamer_id)
+
+      assert stream1.id == stream.id
+      assert is_nil(stream1.archived_at)
     end
 
-    test "gets the active stream from channel", context do
-      %{stream: %{id: stream_id}, channel: channel} = context
+    test "gets stream by stream_id", context do
+      %{stream: %{id: stream_id}} = context
 
-      assert Streaming.get_active_stream(channel) |> Map.get(:id) == stream_id
-    end
-  end
-
-  describe "find_or_create_channel/1" do
-    test "create a channel with OT session", context do
-      %{user: user, session_id: session_id} = context
-
-      expect(OpenTok.ApiMock, :request_session_id, fn _ ->
-        {:ok, session_id}
-      end)
-
-      assert {:ok, result} = Streaming.find_or_create_channel(user)
-      assert result.ot_session_id == session_id
+      assert Streaming.get_stream(stream_id) |> Map.get(:id) == stream_id
     end
   end
 
@@ -92,7 +42,8 @@ defmodule ZaZaar.StreamingTest do
     test "generates a upload key for uploading snapshot to an active stream", context do
       %{stream: stream} = context
 
-      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.channel)
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream)
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.id)
     end
 
     test "error when no stream is found" do
@@ -161,7 +112,7 @@ defmodule ZaZaar.StreamingTest do
     end
 
     test "failed to find the streamer's channel" do
-      streamer = insert(:streamer)
+      streamer = insert(:user)
 
       assert {:error, :cannot_start_stream} = Streaming.start_stream(streamer.id)
     end
@@ -186,7 +137,7 @@ defmodule ZaZaar.StreamingTest do
     end
 
     test "archived stream cannot be touched" do
-      streamer = insert(:streamer)
+      streamer = insert(:user)
       channel = insert(:channel, streamer_id: streamer.id)
       insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
 

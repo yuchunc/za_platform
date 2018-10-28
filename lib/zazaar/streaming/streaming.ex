@@ -7,40 +7,35 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Repo
 
   alias ZaZaar.Streaming
-  alias Streaming.{Channel, Stream, Comment}
+  alias Streaming.{Stream, Comment}
 
-  def get_channels(opts \\ []) do
-    with_snapshot = Keyword.get(opts, :snapshot, false)
-    query0 = from(c in Channel, order_by: c.updated_at)
-    # TODO add active_at and sort on it
+  # def get_channels(opts \\ []) do
+  #   with_snapshot = Keyword.get(opts, :snapshot, false)
+  #   query0 = from(c in Channel, order_by: c.updated_at)
+  #   # TODO add active_at and sort on it
 
-    query1 =
-      if with_snapshot do
-        query0
-        |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
-        |> select([c, s], %{c | video_snapshot: s.video_snapshot})
-      else
-        query0
-      end
+  #   query1 =
+  #     if with_snapshot do
+  #       query0
+  #       |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
+  #       |> select([c, s], %{c | video_snapshot: s.video_snapshot})
+  #     else
+  #       query0
+  #     end
 
-    Repo.all(query1)
-  end
+  #   Repo.all(query1)
+  # end
 
-  def get_channel(streamer_id) do
-    query = from(s in Channel, where: s.streamer_id == ^streamer_id)
+  # def get_channel(streamer_id) do
+  #   query = from(s in Channel, where: s.streamer_id == ^streamer_id)
 
-    Repo.one(query)
-  end
+  #   Repo.one(query)
+  # end
 
-  def get_active_stream(streamer_id) when is_binary(streamer_id) do
-    streamer_id
-    |> get_channel()
-    |> get_active_stream()
-  end
-
-  def get_active_stream(%Channel{} = channel) do
-    channel
-    |> active_stream_query()
+  def get_stream(uuid) do
+    Stream
+    |> where(id: ^uuid)
+    |> or_where([s], s.streamer_id == ^uuid and is_nil(s.archived_at))
     |> Repo.one()
   end
 
@@ -55,13 +50,8 @@ defmodule ZaZaar.Streaming do
     |> Repo.update()
   end
 
-  def start_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> start_stream
-  end
-
-  def start_stream(%Channel{} = channel) do
-    case get_active_stream(channel) do
+  def start_stream(channel) do
+    case get_stream(channel) do
       nil ->
         %Stream{channel_id: channel.id}
         |> Stream.changeset(%{})
@@ -74,12 +64,7 @@ defmodule ZaZaar.Streaming do
 
   def start_stream(_), do: {:error, :cannot_start_stream}
 
-  def end_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> end_stream
-  end
-
-  def end_stream(%Channel{} = channel) do
+  def end_stream(channel) do
     if stream = active_stream_query(channel.id) |> Repo.one() do
       stream
       |> Stream.archive()
@@ -97,7 +82,7 @@ defmodule ZaZaar.Streaming do
     else
       {:ok, session_id} = OpenTok.request_session_id()
 
-      %Channel{ot_session_id: session_id, streamer_id: streamer_id}
+      %{ot_session_id: session_id, streamer_id: streamer_id}
       |> Repo.insert([])
     end
   end
@@ -106,12 +91,7 @@ defmodule ZaZaar.Streaming do
     {:error, :invalid_user}
   end
 
-  def gen_snapshot_key(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> gen_snapshot_key
-  end
-
-  def gen_snapshot_key(%Channel{} = channel) do
+  def gen_snapshot_key(channel) do
     stream =
       channel.id
       |> active_stream_query
@@ -134,13 +114,13 @@ defmodule ZaZaar.Streaming do
 
   def update_snapshot(streamer_id, key, data) when is_binary(streamer_id) do
     streamer_id
-    |> get_active_stream()
+    |> get_stream()
     |> update_snapshot(key, data)
   end
 
-  def update_snapshot(%Channel{} = channel, key, data) do
+  def update_snapshot(channel, key, data) do
     channel
-    |> get_active_stream()
+    |> get_stream()
     |> update_snapshot(key, data)
   end
 
@@ -166,13 +146,13 @@ defmodule ZaZaar.Streaming do
     {:ok, List.first(stream1.comments)}
   end
 
-  def stream_to_facebook(%Channel{facebook_key: nil}), do: nil
+  def stream_to_facebook(%{facebook_key: nil}), do: nil
 
-  def stream_to_facebook(%Channel{} = channel) do
+  def stream_to_facebook(%{} = channel) do
     OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
   end
 
-  defp active_stream_query(%Channel{} = channel), do: active_stream_query(channel.id)
+  defp active_stream_query(%{} = channel), do: active_stream_query(channel.id)
 
   defp active_stream_query(channel_id) do
     Stream

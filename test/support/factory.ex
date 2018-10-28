@@ -4,14 +4,6 @@ defmodule ZaZaar.Factory do
   alias ZaZaar.{Account, Streaming, Following, Feed, ChatLog}
 
   # ====== Account =========
-  def streamer_factory do
-    build(:user, tier: :streamer)
-  end
-
-  def viewer_factory do
-    build(:user, tier: :viewer)
-  end
-
   def user_factory do
     password = "12345678"
 
@@ -25,19 +17,11 @@ defmodule ZaZaar.Factory do
   end
 
   # ====== Streaming =========
-
-  def channel_factory do
-    streamer = insert(:streamer)
-
-    %Streaming.Channel{
-      ot_session_id: sequence("some_ot_session_id"),
-      streamer_id: streamer.id
-    }
-  end
-
   def stream_factory do
+    user = insert(:user)
+
     %Streaming.Stream{
-      channel: build(:channel)
+      streamer_id: user.id
     }
   end
 
@@ -52,8 +36,8 @@ defmodule ZaZaar.Factory do
 
   # ====== Follow =========
   def follow_factory do
-    follower = insert(:viewer)
-    followee = insert(:streamer)
+    follower = insert(:user)
+    followee = insert(:user)
 
     %Following.Follow{
       follower_id: follower.id,
@@ -63,7 +47,7 @@ defmodule ZaZaar.Factory do
 
   # ====== Feed =========
   def post_factory do
-    user = insert(:viewer)
+    user = insert(:user)
 
     %Feed.Post{
       user_id: user.id,
@@ -73,8 +57,8 @@ defmodule ZaZaar.Factory do
 
   # ====== ChatLog =========
   def history_factory do
-    streamer = insert(:streamer)
-    viewer = insert(:viewer)
+    streamer = insert(:user)
+    viewer = insert(:user)
     user_ids = [streamer.id, viewer.id]
 
     %ChatLog.History{
@@ -84,7 +68,7 @@ defmodule ZaZaar.Factory do
   end
 
   def message_factory do
-    user = insert(:viewer)
+    user = insert(:user)
 
     %ChatLog.Message{
       user_id: user.id,
@@ -93,17 +77,6 @@ defmodule ZaZaar.Factory do
   end
 
   # ====== Notification =========
-  # def notice_factory do
-  # schema =
-  # NoticeSchemaEnum.__enum_map__()
-  # |> Enum.random()
-
-  # %Notification.Notice{
-  # user: build(:viewer),
-  # schema: build(schema)
-  # }
-  # end
-
   def new_follower_factory do
     %{
       type: :new_follower,
