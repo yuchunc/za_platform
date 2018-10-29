@@ -4,11 +4,11 @@ defmodule ZaZaarWeb.LiveStreamController do
   action_fallback(FallbackController)
 
   def index(conn, _params) do
-    with channels0 <- Streaming.get_channels(snapshot: true),
-         streamer_ids <- Enum.map(channels0, & &1.streamer_id),
+    with streams0 <- Streaming.get_streams(),
+         streamer_ids <- Enum.map(streams0, & &1.streamer_id),
          users <- Account.get_users(streamer_ids),
-         channels1 <- append_streamer(channels0, users) do
-      render(conn, "index.html", channels: channels1)
+         streams1 <- append_streamer(streams0, users) do
+      render(conn, "index.html", streams: streams1)
     end
   end
 
@@ -19,10 +19,10 @@ defmodule ZaZaarWeb.LiveStreamController do
     render(conn, "show.html", stream: stream, comments: comments)
   end
 
-  defp append_streamer(channels, users) do
-    Enum.map(channels, fn channel ->
-      user = Enum.find(users, &(&1.id == channel.streamer_id))
-      Map.put_new(channel, :streamer, user)
+  defp append_streamer(streams, users) do
+    Enum.map(streams, fn stream ->
+      user = Enum.find(users, &(&1.id == stream.streamer_id))
+      Map.put_new(stream, :streamer, user)
     end)
   end
 

@@ -1,7 +1,7 @@
 <div class="stream__block">
-  <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
-    <%= if @channel.video_snapshot do %>
-      <div class="video-player" style="background-image:url(data:image/png;base64,<%= @channel.video_snapshot %>)">
+  <%= link to: live_stream_path(@conn, :show, @stream.streamer_id) do %>
+    <%= if @stream.video_snapshot do %>
+      <div class="video-player" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
     <% else %>
       <div class="video-player" style="background-image:url(http://via.placeholder.com/362x225)">
     <% end %>
@@ -13,7 +13,7 @@
         <figure class="video-player__avatar image">
           <img class="is-rounded" src="http://via.placeholder.com/128x128.png"/>
         </figure>
-        <h3 class="video-player__title"><%= @channel.streamer.name %> 的直播<h3>
+        <h3 class="video-player__title"><%= @stream.streamer.name %> 的直播<h3>
       </div>
     </div>
   <% end %>
