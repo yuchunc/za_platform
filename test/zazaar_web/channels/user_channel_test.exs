@@ -4,14 +4,14 @@ defmodule ZaZaarWeb.UserChannelTest do
   alias ZaZaarWeb.UserChannel
 
   setup do
-    user = insert(:streamer)
+    user = insert(:user)
     {:ok, user: user}
   end
 
   describe "join channel" do
     test "produces wrong error if miss matched" do
       {:ok, socket} = connect(UserSocket, %{})
-      user = insert(:viewer)
+      user = insert(:user)
 
       assert join(socket, UserChannel, "user:" <> user.id) == {:error, :wrong_user}
     end

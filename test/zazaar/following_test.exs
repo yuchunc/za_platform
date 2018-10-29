@@ -5,8 +5,8 @@ defmodule ZaZaar.FollowingTest do
 
   describe "start_following/2" do
     setup do
-      streamer = insert(:streamer)
-      follower = insert(:viewer)
+      streamer = insert(:user)
+      follower = insert(:user)
 
       {:ok, streamer: streamer, follower: follower}
     end
@@ -33,7 +33,7 @@ defmodule ZaZaar.FollowingTest do
 
   describe "get_following/1" do
     test "gets a list of currently following user ids for a user" do
-      follower = insert(:viewer)
+      follower = insert(:user)
       follows = insert_pair(:follow, follower_id: follower.id)
 
       result = Following.get_followings(follower)
@@ -45,7 +45,7 @@ defmodule ZaZaar.FollowingTest do
 
   describe "get_follower/1" do
     test "gets a list of followers for a user" do
-      followee = insert(:streamer)
+      followee = insert(:user)
       follows = insert_pair(:follow, followee_id: followee.id)
 
       result = Following.get_followers(followee)
@@ -67,7 +67,7 @@ defmodule ZaZaar.FollowingTest do
     end
 
     test "if user is not following, it is fine" do
-      assert Following.stop_following(insert(:viewer), insert(:streamer)) == :ok
+      assert Following.stop_following(insert(:user), insert(:user)) == :ok
     end
   end
 end

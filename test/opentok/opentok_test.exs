@@ -78,7 +78,7 @@ defmodule OpenTok.OpenTokTest do
       end)
 
       {:ok, session_id} = OpenTok.request_session_id()
-      streamer = insert(:streamer)
+      streamer = insert(:user)
       stream_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
 
       assert OpenTok.stream_to_facebook(session_id, streamer.id, stream_key) == :ok
