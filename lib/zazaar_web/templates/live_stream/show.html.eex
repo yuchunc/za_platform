@@ -6,7 +6,7 @@
 
   window.streamConfig =
     {
-      streamer_id: "<%= @streamer.id %>",
+      stream_id: "<%= @stream.id %>",
       jwt: "<%= current_token(@conn) %>"
     }
 

@@ -104,8 +104,9 @@ defmodule ZaZaar.StreamingTest do
 
     test "faile if channel already has another active stream", context do
       %{user: streamer} = context
-      assert {:ok, _stream} = Streaming.start_stream(streamer.id)
-      assert {:error, :another_stream_is_active} = Streaming.start_stream(streamer.id)
+      assert {:ok, stream} = Streaming.start_stream(streamer.id)
+      assert {:error, :another_stream_is_active, sid} = Streaming.start_stream(streamer.id)
+      assert sid == stream.id
     end
   end
 

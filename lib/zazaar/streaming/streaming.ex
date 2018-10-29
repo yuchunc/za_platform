@@ -31,6 +31,7 @@ defmodule ZaZaar.Streaming do
     |> Repo.update()
   end
 
+  # NOTE maybe this should be create stream
   def start_stream(streamer_id) do
     case get_stream(streamer_id) do
       nil ->
@@ -38,8 +39,8 @@ defmodule ZaZaar.Streaming do
         |> Stream.changeset(%{})
         |> Repo.insert()
 
-      %Stream{} ->
-        {:error, :another_stream_is_active}
+      %Stream{} = stream ->
+        {:error, :another_stream_is_active, stream.id}
     end
   end
 

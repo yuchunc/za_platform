@@ -5,14 +5,14 @@ defmodule ZaZaarWeb.StreamChannel do
 
   alias ZaZaarWeb.StreamPresence, as: Presence
 
-  def join("stream:" <> streamer_id, _message, socket) do
+  def join("stream:" <> stream_id, _message, socket) do
     payload =
       case current_resource(socket) do
         %User{} = user -> %{user_id: user.id}
         nil -> %{}
       end
 
-    if Streaming.get_channel(streamer_id) do
+    if Streaming.get_stream(stream_id) do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
@@ -52,19 +52,17 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def handle_in("streamer:show_start", params, socket) do
     with %{"message" => message} <- params,
-         %{topic: "stream:" <> streamer_id} <- socket,
+         %{topic: "stream:" <> stream_id} <- socket,
          %User{} = streamer <- current_resource(socket),
-         true <- streamer_id == streamer.id,
-         # TODO need to revisit L59
-         channel <- Streaming.get_channel(streamer.id),
-         {:ok, stream} <- Streaming.start_stream(channel),
+         stream <- Streaming.get_stream(stream_id),
+         true <- stream.streamer_id == streamer.id,
          {:ok, key, token} <-
-           OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+           OpenTok.generate_token(streamer.ot_session_id, :publisher, stream.id),
+         opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
       broadcast(socket, "streamer:show_started", %{message: message})
 
       {:ok, _} =
-        Presence.update(socket, streamer_id, %{
+        Presence.update(socket, streamer.id, %{
           streamer: true,
           online_at: inspect(System.system_time(:seconds))
         })
@@ -75,7 +73,7 @@ defmodule ZaZaarWeb.StreamChannel do
       |> Notification.append_notice(%{type: :followee_is_live, from_id: streamer.id})
 
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
-      Process.send_after(self(), {:start_recording, stream, channel.ot_session_id}, 1_000 * 2)
+      Process.send_after(self(), {:start_recording, stream, streamer.ot_session_id}, 1_000 * 2)
 
       {:reply, {:ok, opentok_params}, socket}
     end
@@ -84,12 +82,12 @@ defmodule ZaZaarWeb.StreamChannel do
   def handle_in("streamer:upload_snapshot", params, socket) do
     with %{"upload_key" => key, "snapshot" => snapshot} <- params,
          %User{} = streamer <- current_resource(socket),
-         # TODO revisit L88
-         channel <- Streaming.get_channel(streamer.id),
-         %Stream{} = stream <- Streaming.get_active_stream(channel) do
-      if is_nil(stream.video_snapshot) do
-        Streaming.stream_to_facebook(channel)
-      end
+         "stream:" <> stream_id <- socket.topic,
+         stream <- Streaming.get_stream(stream_id) do
+      # TODO need a better way to handle facebook broadcast
+      # if is_nil(stream.video_snapshot) do
+      # Streaming.stream_to_facebook(stream, stream.fb_stream_key, streamer.ot_session_id)
+      # end
 
       Streaming.update_snapshot(stream, key, snapshot)
       {:noreply, socket}
@@ -97,12 +95,12 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_in("viewer:join", _params, socket) do
-    with %{topic: "stream:" <> streamer_id} <- socket,
+    with %{topic: "stream:" <> stream_id} <- socket,
          viewer <- current_resource(socket),
-         # TODO revisit L103
-         channel <- Streaming.get_channel(streamer_id),
-         {:ok, key, token} <- OpenTok.generate_token(channel.ot_session_id, :subscriber),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+         streamer <-
+           Streaming.get_stream(stream_id) |> Map.get(:streamer_id) |> Account.get_user(),
+         {:ok, key, token} <- OpenTok.generate_token(streamer.ot_session_id, :subscriber),
+         opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
       if is_nil(viewer) do
         broadcast(socket, "viewer:joined", %{})
       else

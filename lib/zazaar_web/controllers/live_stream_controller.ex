@@ -12,15 +12,11 @@ defmodule ZaZaarWeb.LiveStreamController do
     end
   end
 
-  def show(conn, %{"id" => streamer_id}) do
-    streamer = Account.get_user(streamer_id)
+  def show(conn, %{"id" => stream_id}) do
+    stream = Streaming.get_stream(stream_id)
+    comments = include_user_names(stream.comments)
 
-    comments =
-      Streaming.get_active_stream(streamer_id)
-      |> Map.get(:comments)
-      |> include_user_names
-
-    render(conn, "show.html", streamer: streamer, comments: comments)
+    render(conn, "show.html", stream: stream, comments: comments)
   end
 
   defp append_streamer(channels, users) do

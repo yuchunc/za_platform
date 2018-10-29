@@ -8,9 +8,9 @@ defmodule ZaZaarWeb.StreamChannelTest do
   setup :verify_on_exit!
 
   setup do
-    channel = insert(:channel)
+    stream = insert(:stream)
     {:ok, socket} = connect(UserSocket, %{})
-    {:ok, socket: socket, channel: channel}
+    {:ok, socket: socket, stream: stream}
   end
 
   def random_string(length) do
@@ -18,23 +18,23 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   describe "join a channel" do
-    test "anybody can join a stream channel", context do
-      %{socket: socket, channel: channel} = context
+    test "anybody can join a stream", ctx do
+      %{socket: socket, stream: stream} = ctx
 
-      subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, %{})
     end
 
-    test "a signed in user can join a streaming channel", context do
-      %{channel: channel} = context
+    test "a signed in user can join a streaming channel", ctx do
+      %{stream: stream} = ctx
 
       user = insert(:user)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
 
-      subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       receiving_topic = "user:joined"
       assert_broadcast(^receiving_topic, payload)
@@ -42,25 +42,20 @@ defmodule ZaZaarWeb.StreamChannelTest do
     end
   end
 
-  @tag :skip
   describe "streamer:show_start" do
-    setup context do
-      %{channel: channel} = context
-      user = Repo.get(User, channel.streamer_id)
+    setup ctx do
+      %{stream: stream} = ctx
+      user = Repo.get(User, stream.streamer_id)
       insert(:follow, followee_id: user.id)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       {:ok, socket: socket_1}
     end
 
-    test "streamer can start broadcasting on her own stream", context do
-      expect(OpenTok.ApiMock, :start_recording, fn _, _ ->
-        {:ok, %{"id" => Ecto.UUID.generate()}}
-      end)
-
-      %{socket: socket} = context
+    test "streamer can start broadcasting on her own stream", ctx do
+      %{socket: socket} = ctx
       params = %{message: "hello world"}
       ref = push(socket, "streamer:show_start", params)
 
@@ -70,28 +65,27 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   describe "streamer:upload_snapshot" do
-    test "streamer can upload a video snapshot with provided secret", context do
-      %{channel: channel} = context
-      streamer = Repo.get(User, channel.streamer_id)
-      socket = sign_socket(streamer)
+    test "streamer can upload a video snapshot with provided secret" do
       key = random_string(32)
-      stream = insert(:stream, channel: channel, upload_key: key)
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> streamer.id)
-      push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
+      stream = insert(:stream, upload_key: key)
+      streamer = Repo.get(User, stream.streamer_id)
+      socket = sign_socket(streamer)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
-      Process.sleep(10)
+      push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
+      Process.sleep(5)
 
       refute Repo.get(Stream, stream.id) |> Map.get(:video_snapshot) |> is_nil
     end
   end
 
   describe "viewer:join" do
-    test "member viewer can join through this event", context do
-      %{channel: channel} = context
-      viewer = insert(:viewer)
+    test "member viewer can join through this event", ctx do
+      %{stream: stream} = ctx
+      viewer = insert(:user)
       socket = sign_socket(viewer)
 
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
       ref = push(socket_1, "viewer:join", %{})
 
@@ -100,10 +94,10 @@ defmodule ZaZaarWeb.StreamChannelTest do
       assert_reply(ref, :ok, %{token: "T1==" <> _, session_id: _, key: _})
     end
 
-    test "anonymous viewer can join through event", context do
-      %{socket: socket, channel: channel} = context
+    test "anonymous viewer can join through event", ctx do
+      %{socket: socket, stream: stream} = ctx
 
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
 
       ref = push(socket_1, "viewer:join", %{})
 
@@ -113,8 +107,8 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   describe "stream:send_comment" do
-    setup context do
-      %{channel: channel} = context
+    setup ctx do
+      %{channel: channel} = ctx
       streamer = Repo.get(User, channel.streamer_id)
 
       insert(:stream, channel: channel)
@@ -126,8 +120,8 @@ defmodule ZaZaarWeb.StreamChannelTest do
       {:ok, socket: socket}
     end
 
-    test "receive stream:comment_sent with comment in payload if a stream is active", context do
-      %{socket: socket_signed, channel: channel} = context
+    test "receive stream:comment_sent with comment in payload if a stream is active", ctx do
+      %{socket: socket_signed, channel: channel} = ctx
 
       content = "Ga Ga Woo Lala ah~"
 
@@ -141,23 +135,23 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   # describe "terminate" do
-  #   setup context do
-  #     %{socket: socket, channel: channel} = context
+  #   setup ctx do
+  #     %{socket: socket, channel: channel} = ctx
   #     socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> channel.streamer_id)
 
   #     {:ok, socket: socket_1}
   #   end
 
-  #   test "broadcast stream:viewer_left when an anonymous user left", context do
-  #     %{socket: socket} = context
+  #   test "broadcast stream:viewer_left when an anonymous user left", ctx do
+  #     %{socket: socket} = ctx
 
   #     StreamChannel.terminate("", socket)
 
   #     assert_broadcast("viewer:left", %{})
   #   end
 
-  #   test "broadcast stream:viewer_left when a user left", context do
-  #     %{channel: channel} = context
+  #   test "broadcast stream:viewer_left when a user left", ctx do
+  #     %{channel: channel} = ctx
   #     viewer = insert(:user)
   #     {:ok, jwt, _} = Guardian.encode_and_sign(viewer)
   #     {:ok, socket} = connect(UserSocket, %{token: jwt})
@@ -169,8 +163,8 @@ defmodule ZaZaarWeb.StreamChannelTest do
   #     assert payload.user.id == viewer.id
   #   end
 
-  #   test "broadcast stream:show_ended when the streamer left", context do
-  #     %{channel: channel} = context
+  #   test "broadcast stream:show_ended when the streamer left", ctx do
+  #     %{channel: channel} = ctx
   #     streamer = Repo.get(User, channel.streamer_id)
   #     {:ok, jwt, _} = Guardian.encode_and_sign(streamer)
   #     {:ok, socket} = connect(UserSocket, %{token: jwt})
