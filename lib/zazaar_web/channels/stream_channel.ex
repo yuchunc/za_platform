@@ -81,7 +81,6 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def handle_in("streamer:upload_snapshot", params, socket) do
     with %{"upload_key" => key, "snapshot" => snapshot} <- params,
-         %User{} = streamer <- current_resource(socket),
          "stream:" <> stream_id <- socket.topic,
          stream <- Streaming.get_stream(stream_id) do
       # TODO need a better way to handle facebook broadcast
@@ -113,8 +112,8 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def handle_in("stream:send_comment", params, socket) do
     with %{"comment" => content} <- params,
-         "stream:" <> streamer_id <- socket.topic,
-         %Stream{} = stream <- Streaming.get_active_stream(streamer_id),
+         "stream:" <> stream_id <- socket.topic,
+         %Stream{} = stream <- Streaming.get_stream(stream_id),
          user <- current_resource(socket),
          params <- %{user_id: user.id, content: content},
          {:ok, comment} <- Streaming.append_comment(stream, params) do

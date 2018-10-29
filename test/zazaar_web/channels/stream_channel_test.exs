@@ -73,7 +73,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       push(socket_1, "streamer:upload_snapshot", %{upload_key: key, snapshot: random_string(32)})
-      Process.sleep(5)
+      Process.sleep(10)
 
       refute Repo.get(Stream, stream.id) |> Map.get(:video_snapshot) |> is_nil
     end
@@ -108,27 +108,25 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   describe "stream:send_comment" do
     setup ctx do
-      %{channel: channel} = ctx
-      streamer = Repo.get(User, channel.streamer_id)
-
-      insert(:stream, channel: channel)
+      %{stream: stream} = ctx
+      streamer = Repo.get(User, stream.streamer_id)
 
       socket =
         sign_socket(streamer)
-        |> subscribe_and_join!(StreamChannel, "stream:" <> channel.streamer_id)
+        |> subscribe_and_join!(StreamChannel, "stream:" <> stream.id)
 
       {:ok, socket: socket}
     end
 
     test "receive stream:comment_sent with comment in payload if a stream is active", ctx do
-      %{socket: socket_signed, channel: channel} = ctx
+      %{socket: socket_signed, stream: stream} = ctx
 
       content = "Ga Ga Woo Lala ah~"
 
       push(socket_signed, "stream:send_comment", %{comment: content})
 
       assert_broadcast("stream:comment_sent", %{comment: comment})
-      assert comment.user_id == channel.streamer_id
+      assert comment.user_id == stream.streamer_id
       assert comment.content == content
       assert comment.inserted_at
     end
