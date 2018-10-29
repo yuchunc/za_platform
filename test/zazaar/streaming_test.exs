@@ -110,7 +110,7 @@ defmodule ZaZaar.StreamingTest do
   end
 
   describe "end_stream/1" do
-    setup context do
+    setup do
       {:ok, stream: insert(:stream)}
     end
 
@@ -151,24 +151,34 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "stream_to_facebook" do
+  describe "stream_to_facebook/3" do
     setup do
       facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
-      channel = insert(:channel, facebook_key: facebook_key)
-      {:ok, channel: channel}
+      {:ok, stream: insert(:stream), fb_key: facebook_key}
     end
 
-    test "if channel doesn't have facebook_key, does nothing" do
-      channel = insert(:channel, facebook_key: nil)
-      assert Streaming.stream_to_facebook(channel) == nil
+    test "if channel doesn't have facebook_key, does nothing", ctx do
+      %{stream: stream} = ctx
+
+      expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
+        {:error, :noclient}
+      end)
+
+      session_id = "some_ot_session_id"
+      assert {:ok, stream1} = Streaming.stream_to_facebook(stream, nil, session_id)
+      assert stream1.fb_stream_key == nil
     end
 
-    test "activates a rtmp stream on Facebook", context do
+    test "activates a rtmp stream on Facebook", ctx do
+      %{stream: stream, fb_key: fb_key} = ctx
+      session_id = "some_ot_session_id"
+
       expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
         :ok
       end)
 
-      assert Streaming.stream_to_facebook(context.channel) == :ok
+      assert {:ok, stream1} = Streaming.stream_to_facebook(stream, fb_key, session_id)
+      assert stream1.fb_stream_key == fb_key
     end
   end
 

@@ -21,6 +21,10 @@ defmodule ZaZaar.Streaming do
     |> update_stream(params)
   end
 
+  def update_stream(%Stream{archived_at: dt}, _) when dt != nil do
+    {:error, :stream_archived}
+  end
+
   def update_stream(%Stream{} = stream, params) do
     stream
     |> Stream.changeset(params)
@@ -119,9 +123,22 @@ defmodule ZaZaar.Streaming do
     {:ok, List.first(stream1.comments)}
   end
 
-  def stream_to_facebook(%{facebook_key: nil}), do: nil
+  def stream_to_facebook(uuid, fb_key, ot_session_id) when is_binary(uuid) do
+    uuid
+    |> get_stream
+    |> stream_to_facebook(fb_key, ot_session_id)
+  end
 
-  def stream_to_facebook(%{} = channel) do
-    OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
+  def stream_to_facebook(%Stream{} = stream, fb_key, ot_session_id) do
+    case OpenTok.stream_to_facebook(ot_session_id, stream.streamer_id, fb_key) do
+      :ok ->
+        update_stream(stream, %{fb_stream_key: fb_key})
+
+      {:error, :noclient} ->
+        update_stream(stream, %{fb_stream_key: fb_key})
+
+      response ->
+        response
+    end
   end
 end

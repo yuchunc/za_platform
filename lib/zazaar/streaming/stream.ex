@@ -8,7 +8,7 @@ defmodule ZaZaar.Streaming.Stream do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "streams" do
-    field(:facebook_stream_key, :string)
+    field(:fb_stream_key, :string)
     field(:archived_at, :naive_datetime)
     field(:upload_key, :string)
     field(:video_snapshot, :string)
@@ -24,7 +24,7 @@ defmodule ZaZaar.Streaming.Stream do
   def changeset(%__MODULE__{} = stream, attrs \\ %{}) do
     stream
     |> cast(attrs, [
-      :facebook_stream_key,
+      :fb_stream_key,
       :archived_at,
       :upload_key,
       :video_snapshot,
