@@ -9,6 +9,14 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Streaming
   alias Streaming.{Stream, Comment}
 
+  def get_streams(opts \\ []) do
+    sort_by = Keyword.get(opts, :order_by, [])
+
+    Stream
+    |> order_by([s], ^sort_by)
+    |> Repo.all()
+  end
+
   def get_stream(uuid) do
     Stream
     |> where(id: ^uuid)
@@ -32,7 +40,7 @@ defmodule ZaZaar.Streaming do
   end
 
   # NOTE maybe this should be create stream
-  def start_stream(streamer_id) do
+  def start_stream(streamer_id) when is_binary(streamer_id) do
     case get_stream(streamer_id) do
       nil ->
         %Stream{streamer_id: streamer_id}
@@ -43,8 +51,6 @@ defmodule ZaZaar.Streaming do
         {:error, :another_stream_is_active, stream.id}
     end
   end
-
-  def start_stream(_), do: {:error, :cannot_start_stream}
 
   def end_stream(uuid) when is_binary(uuid) do
     uuid

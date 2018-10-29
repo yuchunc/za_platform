@@ -11,6 +11,37 @@ defmodule ZaZaar.StreamingTest do
     Map.put_new(context, :user, insert(:user))
   end
 
+  describe "get_streams/1" do
+    setup do
+      streams =
+        Enum.map(0..6, fn
+          n when rem(n, 2) == 0 -> insert(:stream)
+          _n -> insert(:stream, archived_at: NaiveDateTime.utc_now())
+        end)
+
+      {:ok, streams: streams}
+    end
+
+    test "gets a list of streams", ctx do
+      %{streams: streams} = ctx
+      stream_ids = streams |> Enum.map(&Map.get(&1, :id))
+
+      results =
+        Streaming.get_streams()
+        |> Enum.map(&Map.get(&1, :id))
+
+      assert results |> Enum.sort() == stream_ids |> Enum.sort()
+    end
+
+    test "gets a list of streams, with active_first option" do
+      results =
+        Streaming.get_streams(order_by: [desc: :archived_at, desc: :inserted_at])
+        |> Enum.map(&Map.get(&1, :archived_at))
+
+      assert [nil, nil, nil, nil, _, _, _] = results
+    end
+  end
+
   describe "get_stream/1" do
     setup do
       stream = insert(:stream)
