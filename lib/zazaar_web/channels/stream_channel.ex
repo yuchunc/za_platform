@@ -50,19 +50,20 @@ defmodule ZaZaarWeb.StreamChannel do
     {:noreply, socket}
   end
 
-  def handle_in("streamer:show_start", params, socket) do
+  def handle_in("streamer:show_start", params, socket0) do
     with %{"message" => message} <- params,
-         %{topic: "stream:" <> stream_id} <- socket,
-         %User{} = streamer <- current_resource(socket),
+         %{topic: "stream:" <> stream_id} <- socket0,
+         %User{} = streamer <- current_resource(socket0),
          stream <- Streaming.get_stream(stream_id),
          true <- stream.streamer_id == streamer.id,
          {:ok, key, token} <-
            OpenTok.generate_token(streamer.ot_session_id, :publisher, stream.id),
          opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
-      broadcast(socket, "streamer:show_started", %{message: message})
+      socket1 = assign(socket0, :role, :streamer)
+      broadcast(socket0, "streamer:show_started", %{message: message})
 
       {:ok, _} =
-        Presence.update(socket, streamer.id, %{
+        Presence.update(socket1, streamer.id, %{
           streamer: true,
           online_at: inspect(System.system_time(:seconds))
         })
@@ -75,7 +76,7 @@ defmodule ZaZaarWeb.StreamChannel do
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
       Process.send_after(self(), {:start_recording, stream, streamer.ot_session_id}, 1_000 * 2)
 
-      {:reply, {:ok, opentok_params}, socket}
+      {:reply, {:ok, opentok_params}, socket1}
     end
   end
 
@@ -93,20 +94,22 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def handle_in("viewer:join", _params, socket) do
-    with %{topic: "stream:" <> stream_id} <- socket,
-         viewer <- current_resource(socket),
+  def handle_in("viewer:join", _params, socket0) do
+    with %{topic: "stream:" <> stream_id} <- socket0,
+         viewer <- current_resource(socket0),
          streamer <-
            Streaming.get_stream(stream_id) |> Map.get(:streamer_id) |> Account.get_user(),
          {:ok, key, token} <- OpenTok.generate_token(streamer.ot_session_id, :subscriber),
          opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
+      socket1 = assign(socket0, :role, :viewer)
+
       if is_nil(viewer) do
-        broadcast(socket, "viewer:joined", %{})
+        broadcast(socket1, "viewer:joined", %{})
       else
-        broadcast(socket, "viewer:joined", %{id: viewer.id})
+        broadcast(socket1, "viewer:joined", %{id: viewer.id})
       end
 
-      {:reply, {:ok, opentok_params}, socket}
+      {:reply, {:ok, opentok_params}, socket1}
     end
   end
 
@@ -125,15 +128,11 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def terminate(_reason, socket) do
-    user = current_resource(socket)
-    archive_stream(socket.topic, user)
+    if socket.assigns[:role] == :streamer do
+      "stream:" <> stream_id = socket.topic
+      Streaming.end_stream(stream_id)
+    end
+
     :ok
   end
-
-  defp archive_stream("stream:" <> streamer_id, %{id: streamer_id}) do
-    Streaming.end_stream(streamer_id)
-    # TODO stop OpenTok archiving
-  end
-
-  defp archive_stream(_, _), do: nil
 end
