@@ -86,6 +86,8 @@ defmodule OpenTok do
   @doc """
   Stop recording a stream
   """
+  def record(:stop, nil), do: nil
+
   def record(:stop, recording_id) do
     headers = generate_headers() ++ [{"Content-Type", "application/json"}]
 

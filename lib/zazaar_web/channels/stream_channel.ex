@@ -44,6 +44,7 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_info({:start_recording, stream, session_id}, socket) do
+    # TODO retry if recording fails
     {:ok, recording_id} = OpenTok.record(:start, session_id)
     Streaming.update_stream(stream, %{recording_id: recording_id})
 
@@ -127,10 +128,12 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def terminate(_reason, socket) do
+  def terminate(_, socket) do
     if socket.assigns[:role] == :streamer do
       "stream:" <> stream_id = socket.topic
-      Streaming.end_stream(stream_id)
+      stream = Streaming.get_stream(stream_id)
+      OpenTok.record(:stop, stream.recording_id)
+      Streaming.end_stream(stream)
     end
 
     :ok
