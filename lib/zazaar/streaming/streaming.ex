@@ -66,21 +66,6 @@ defmodule ZaZaar.Streaming do
 
   def end_stream(_), do: {:error, :stream_not_found}
 
-  def find_or_create_channel(%{id: streamer_id}) do
-    if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
-      channel
-    else
-      {:ok, session_id} = OpenTok.request_session_id()
-
-      %{ot_session_id: session_id, streamer_id: streamer_id}
-      |> Repo.insert([])
-    end
-  end
-
-  def find_or_create_channel(_user) do
-    {:error, :invalid_user}
-  end
-
   def gen_snapshot_key(stream_id) when is_binary(stream_id) do
     stream_id
     |> get_stream

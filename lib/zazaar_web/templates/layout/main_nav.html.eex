@@ -32,10 +32,10 @@
       </a>
     <% end %>
 
-    <a class="button button--zazaar" href="<%= membership_streaming_path(@conn, :show) %>" >
+    <%= link(to: membership_streaming_path(@conn, :create), method: :post, class: "button button--zazaar") do %>
       <i class="far fa-bullseye"></i>
       開始直播
-    </a>
+    <% end %>
     <%= link("登 出", to: "/m/logout", class: "button button--outline", method: :delete)%>
 
     <%= if false do %>
