@@ -18,6 +18,10 @@ defmodule ZaZaar.Account do
     |> Repo.all()
   end
 
+  def get_user(args) when is_list(args) do
+    Repo.get_by(User, args)
+  end
+
   def get_user(user_id) do
     Repo.get(User, user_id)
   end
@@ -32,7 +36,7 @@ defmodule ZaZaar.Account do
       fb_payload: Map.from_struct(info)
     }
 
-    if user = Repo.get_by(User, fb_id: fb_id) do
+    if user = get_user(fb_id: fb_id) do
       {:ok, user}
     else
       create_user(params)
@@ -54,7 +58,9 @@ defmodule ZaZaar.Account do
   end
 
   defp create_user(params) do
-    %User{}
+    {:ok, ot_session_id} = OpenTok.request_session_id()
+
+    %User{ot_session_id: ot_session_id}
     |> User.changeset(params)
     |> Repo.insert()
   end

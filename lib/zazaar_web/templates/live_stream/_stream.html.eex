@@ -1,5 +1,5 @@
 <div class="stream__block">
-  <%= link to: live_stream_path(@conn, :show, @stream.streamer_id) do %>
+  <%= link to: live_stream_path(@conn, :show, @stream.id) do %>
     <%= if @stream.video_snapshot do %>
       <div class="video-player" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
     <% else %>

@@ -18,8 +18,6 @@ defmodule ZaZaar.Streaming do
   end
 
   def get_stream(uuid) do
-    uuid |> IO.inspect(label: "uuid")
-
     Stream
     |> where(id: ^uuid)
     |> or_where([s], s.streamer_id == ^uuid and is_nil(s.archived_at))

@@ -1,6 +1,8 @@
 defmodule ZaZaar.AccountTest do
   use ZaZaar.DataCase
 
+  import Mox
+
   alias ZaZaar.Account
 
   describe "get_users/1" do
@@ -8,20 +10,27 @@ defmodule ZaZaar.AccountTest do
       user_ids =
         insert_list(5, :user)
         |> Enum.map(& &1.id)
+        |> Enum.sort()
 
       users = Account.get_users(user_ids)
 
-      assert Enum.map(users, & &1.id) == user_ids
+      assert Enum.map(users, & &1.id) |> Enum.sort() == user_ids
     end
   end
 
   describe "get_user/1" do
-    test "gets the respective user" do
+    test "gets user from user id" do
       user = insert(:user)
 
       result = Account.get_user(user.id)
 
       assert user.id == result.id
+    end
+
+    test "get user from fb_id" do
+      user = insert(:user, fb_id: "foobar")
+
+      assert Account.get_user(fb_id: user.fb_id) |> Map.get(:fb_id) == user.fb_id
     end
   end
 
@@ -40,7 +49,7 @@ defmodule ZaZaar.AccountTest do
     end
   end
 
-  describe "fb_authed/2" do
+  describe "fb_auth/2" do
     setup do
       uid = "10100000000005206"
 
@@ -56,6 +65,12 @@ defmodule ZaZaar.AccountTest do
         phone: nil,
         urls: %{facebook: nil, website: nil}
       }
+
+      session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
+
+      expect(OpenTok.ApiMock, :request_session_id, fn _ ->
+        {:ok, session_id}
+      end)
 
       {:ok, fb_id: uid, info: info}
     end

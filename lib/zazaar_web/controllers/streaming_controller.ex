@@ -5,7 +5,7 @@ defmodule ZaZaarWeb.StreamingController do
 
   def create(conn, _params) do
     with streamer <- current_resource(conn),
-         {:ok, stream} <- Streaming.start_stream(streamer.id) |> IO.inspect(label: "label") do
+         {:ok, stream} <- Streaming.start_stream(streamer.id) do
       redirect(conn, to: membership_streaming_path(conn, :show, stream.id))
     else
       {:error, :another_stream_is_active, stream_id} ->

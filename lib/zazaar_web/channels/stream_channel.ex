@@ -127,12 +127,12 @@ defmodule ZaZaarWeb.StreamChannel do
   def terminate(_reason, socket) do
     user = current_resource(socket)
     archive_stream(socket.topic, user)
-    # TODO stop OpenTok archiving
     :ok
   end
 
   defp archive_stream("stream:" <> streamer_id, %{id: streamer_id}) do
     Streaming.end_stream(streamer_id)
+    # TODO stop OpenTok archiving
   end
 
   defp archive_stream(_, _), do: nil
