@@ -2,7 +2,7 @@ import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
 
-const streamer_id = window.streamConfig.streamer_id;
+const stream_id = window.streamConfig.stream_id;
 
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
@@ -39,10 +39,10 @@ export default () => {
     mount: () => {
       console.log('Streaming Show mounted');
 
-      let channel = socket.channel("stream:" + streamer_id);
+      let channel = socket.channel("stream:" + stream_id);
       let publisher;
 
-      channel = socket.channel("stream:" + streamer_id);
+      channel = socket.channel("stream:" + stream_id);
       channel.join();
 
       channel

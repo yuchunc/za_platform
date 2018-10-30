@@ -96,7 +96,7 @@ defmodule ZaZaarWeb do
       alias Account.User
 
       alias ZaZaar.Streaming
-      alias Streaming.{Stream, Channel, Comment}
+      alias Streaming.{Stream, Comment}
 
       alias ZaZaar.Feed
       alias Feed.Post

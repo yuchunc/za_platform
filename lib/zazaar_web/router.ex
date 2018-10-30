@@ -46,7 +46,7 @@ defmodule ZaZaarWeb.Router do
       pipe_through(:auth)
 
       resources "/", MembershipController, singleton: true, only: [:show] do
-        resources("/streaming", StreamingController, singleton: true, only: [:show])
+        resources("/streaming", StreamingController, only: [:create, :show])
       end
 
       delete("/logout", SessionController, :delete)

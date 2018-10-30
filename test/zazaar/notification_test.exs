@@ -4,7 +4,7 @@ defmodule ZaZaar.NotificationTest do
   alias ZaZaar.Notification
 
   setup do
-    {:ok, user: insert(:viewer), user1: insert(:streamer)}
+    {:ok, user: insert(:user), user1: insert(:user)}
   end
 
   describe "append_notice/2" do

@@ -4,83 +4,64 @@ defmodule ZaZaar.StreamingTest do
   import Mox
 
   alias ZaZaar.Streaming
-  alias Streaming.Channel
 
   setup [:verify_on_exit!, :insert_user]
 
   defp insert_user(context) do
-    Map.put_new(context, :user, insert(:streamer))
+    Map.put_new(context, :user, insert(:user))
   end
 
-  describe "get_channels/0" do
-    test "gets a list of channels" do
-      channel_list = insert_list(10, :channel)
-
-      result = Streaming.get_channels()
-
-      Enum.each(result, &assert(%Channel{} = &1))
-      assert Enum.count(result) == 10
-
-      assert result |> Enum.map(& &1.id) |> Enum.sort() ==
-               channel_list |> Enum.map(& &1.id) |> Enum.sort()
-    end
-  end
-
-  describe "get_channels/1" do
-    test "gets list of channels with the last active snapshot with snapshot: true" do
-      insert_pair(:channel)
-      |> Enum.map(fn c ->
-        insert(:stream, channel: c, video_snapshot: "jibberish")
-      end)
-
-      result = Streaming.get_channels(snapshot: true)
-
-      assert Enum.map(result, & &1.video_snapshot)
-             |> Enum.reject(&is_nil/1)
-             |> Enum.count() == 2
-    end
-  end
-
-  describe "get_channel/1" do
-    test "gets the current channel" do
-      channel = insert(:channel)
-
-      assert %Channel{} = Streaming.get_channel(channel.streamer_id)
-    end
-  end
-
-  describe "get_active_stream/1" do
+  describe "get_streams/1" do
     setup do
-      streamer_id = insert(:user) |> Map.get(:id)
-      channel = insert(:channel, streamer_id: streamer_id)
-      stream = insert(:stream, channel: channel)
+      streams =
+        Enum.map(0..6, fn
+          n when rem(n, 2) == 0 -> insert(:stream)
+          _n -> insert(:stream, archived_at: NaiveDateTime.utc_now())
+        end)
 
-      {:ok, streamer_id: streamer_id, channel: channel, stream: stream}
+      {:ok, streams: streams}
+    end
+
+    test "gets a list of streams", ctx do
+      %{streams: streams} = ctx
+      stream_ids = streams |> Enum.map(&Map.get(&1, :id))
+
+      results =
+        Streaming.get_streams()
+        |> Enum.map(&Map.get(&1, :id))
+
+      assert results |> Enum.sort() == stream_ids |> Enum.sort()
+    end
+
+    test "gets a list of streams, with active_first option" do
+      results =
+        Streaming.get_streams(order_by: [desc: :archived_at, desc: :inserted_at])
+        |> Enum.map(&Map.get(&1, :archived_at))
+
+      assert [nil, nil, nil, nil, _, _, _] = results
+    end
+  end
+
+  describe "get_stream/1" do
+    setup do
+      stream = insert(:stream)
+
+      {:ok, stream: stream}
     end
 
     test "gets the active stream from streamer_id", context do
-      %{streamer_id: streamer_id, stream: %{id: stream_id}} = context
+      %{stream: stream} = context
 
-      assert Streaming.get_active_stream(streamer_id) |> Map.get(:id) == stream_id
+      stream1 = Streaming.get_stream(stream.streamer_id)
+
+      assert stream1.id == stream.id
+      assert is_nil(stream1.archived_at)
     end
 
-    test "gets the active stream from channel", context do
-      %{stream: %{id: stream_id}, channel: channel} = context
+    test "gets stream by stream_id", context do
+      %{stream: %{id: stream_id}} = context
 
-      assert Streaming.get_active_stream(channel) |> Map.get(:id) == stream_id
-    end
-  end
-
-  describe "find_or_create_channel/1" do
-    test "create a channel with OT session", context do
-      %{user: user, session_id: session_id} = context
-
-      expect(OpenTok.ApiMock, :request_session_id, fn _ ->
-        {:ok, session_id}
-      end)
-
-      assert {:ok, result} = Streaming.find_or_create_channel(user)
-      assert result.ot_session_id == session_id
+      assert Streaming.get_stream(stream_id) |> Map.get(:id) == stream_id
     end
   end
 
@@ -92,13 +73,18 @@ defmodule ZaZaar.StreamingTest do
     test "generates a upload key for uploading snapshot to an active stream", context do
       %{stream: stream} = context
 
-      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.channel)
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream)
+      assert {:ok, _key} = Streaming.gen_snapshot_key(stream.id)
     end
 
-    test "error when no stream is found" do
+    test "error when stream is archived" do
       stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
 
-      assert {:error, :not_found} = Streaming.gen_snapshot_key(stream.channel)
+      assert {:error, _} = Streaming.gen_snapshot_key(stream)
+    end
+
+    test "error when stream is not found" do
+      assert {:error, :stream_not_found} = Streaming.gen_snapshot_key(Ecto.UUID.generate())
     end
   end
 
@@ -112,7 +98,7 @@ defmodule ZaZaar.StreamingTest do
 
       assert :ok =
                Streaming.update_snapshot(
-                 stream.channel,
+                 stream.streamer_id,
                  "foobar",
                  :crypto.strong_rand_bytes(12) |> Base.encode64()
                )
@@ -130,11 +116,9 @@ defmodule ZaZaar.StreamingTest do
     end
 
     test "error if no valid stream is found" do
-      stream = insert(:stream, upload_key: "foobar")
-
-      assert {:error, :not_found} =
+      assert {:error, :stream_not_found} =
                Streaming.update_snapshot(
-                 stream.channel,
+                 Ecto.UUID.generate(),
                  "somethingelse",
                  :crypto.strong_rand_bytes(12) |> Base.encode64()
                )
@@ -142,11 +126,6 @@ defmodule ZaZaar.StreamingTest do
   end
 
   describe "start_stream/1" do
-    setup context do
-      %{user: streamer} = context
-      {:ok, channel: insert(:channel, streamer_id: streamer.id)}
-    end
-
     test "returns a stream", context do
       %{user: streamer} = context
 
@@ -156,41 +135,33 @@ defmodule ZaZaar.StreamingTest do
 
     test "faile if channel already has another active stream", context do
       %{user: streamer} = context
-      assert {:ok, _stream} = Streaming.start_stream(streamer.id)
-      assert {:error, :another_stream_is_active} = Streaming.start_stream(streamer.id)
-    end
-
-    test "failed to find the streamer's channel" do
-      streamer = insert(:streamer)
-
-      assert {:error, :cannot_start_stream} = Streaming.start_stream(streamer.id)
+      assert {:ok, stream} = Streaming.start_stream(streamer.id)
+      assert {:error, :another_stream_is_active, sid} = Streaming.start_stream(streamer.id)
+      assert sid == stream.id
     end
   end
 
   describe "end_stream/1" do
-    setup context do
-      %{user: streamer} = context
-      channel = insert(:channel, streamer_id: streamer.id)
-      {:ok, stream: insert(:stream, channel: channel)}
+    setup do
+      {:ok, stream: insert(:stream)}
     end
 
     test "sets the archived_at time on stream", context do
       %{stream: stream} = context
 
-      assert {:ok, stream1} = Streaming.end_stream(stream.channel.streamer_id)
+      assert {:ok, stream1} = Streaming.end_stream(stream)
       assert stream1.archived_at
     end
 
-    test "errors when invalid stream is used" do
-      assert {:error, :invalid_channel} = Streaming.end_stream(Ecto.UUID.generate())
+    test "sets the archived_at time on stream by streamer_id", context do
+      %{stream: stream} = context
+
+      assert {:ok, stream1} = Streaming.end_stream(stream.streamer_id)
+      assert stream1.archived_at
     end
 
-    test "archived stream cannot be touched" do
-      streamer = insert(:streamer)
-      channel = insert(:channel, streamer_id: streamer.id)
-      insert(:stream, channel: channel, archived_at: NaiveDateTime.utc_now())
-
-      assert {:error, :invalid_channel} = Streaming.end_stream(streamer.id)
+    test "errors when stream is not found" do
+      assert {:error, :stream_not_found} = Streaming.end_stream(Ecto.UUID.generate())
     end
   end
 
@@ -212,24 +183,34 @@ defmodule ZaZaar.StreamingTest do
     end
   end
 
-  describe "stream_to_facebook" do
+  describe "stream_to_facebook/3" do
     setup do
       facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
-      channel = insert(:channel, facebook_key: facebook_key)
-      {:ok, channel: channel}
+      {:ok, stream: insert(:stream), fb_key: facebook_key}
     end
 
-    test "if channel doesn't have facebook_key, does nothing" do
-      channel = insert(:channel, facebook_key: nil)
-      assert Streaming.stream_to_facebook(channel) == nil
+    test "if channel doesn't have facebook_key, does nothing", ctx do
+      %{stream: stream} = ctx
+
+      expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
+        {:error, :noclient}
+      end)
+
+      session_id = "some_ot_session_id"
+      assert {:ok, stream1} = Streaming.stream_to_facebook(stream, nil, session_id)
+      assert stream1.fb_stream_key == nil
     end
 
-    test "activates a rtmp stream on Facebook", context do
+    test "activates a rtmp stream on Facebook", ctx do
+      %{stream: stream, fb_key: fb_key} = ctx
+      session_id = "some_ot_session_id"
+
       expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
         :ok
       end)
 
-      assert Streaming.stream_to_facebook(context.channel) == :ok
+      assert {:ok, stream1} = Streaming.stream_to_facebook(stream, fb_key, session_id)
+      assert stream1.fb_stream_key == fb_key
     end
   end
 
@@ -250,6 +231,12 @@ defmodule ZaZaar.StreamingTest do
       {:ok, stream1} = Streaming.update_stream(stream0, %{recording_id: recording_id})
 
       refute stream1.recording_id == stream0.recording_id
+    end
+
+    test "archived stream cannot be touched" do
+      stream = insert(:stream, archived_at: NaiveDateTime.utc_now())
+
+      assert {:error, :stream_archived} = Streaming.update_stream(stream, %{upload_key: "baz"})
     end
   end
 end

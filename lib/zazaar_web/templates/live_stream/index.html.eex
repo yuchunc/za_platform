@@ -6,6 +6,6 @@
 
   <h2 class="section-title">推薦賣場</h2>
   <div class="stream is-flex">
-    <%= render_many @channels, __MODULE__, "_stream.html", as: :channel, conn: @conn %>
+    <%= render_many @streams, __MODULE__, "_stream.html", as: :stream, conn: @conn %>
   </div>
 </div>

@@ -5,7 +5,7 @@ defmodule ZaZaar.FeedTest do
   alias Feed.Post
 
   setup do
-    {:ok, user: insert(:streamer)}
+    {:ok, user: insert(:user)}
   end
 
   describe "get_feed/1" do

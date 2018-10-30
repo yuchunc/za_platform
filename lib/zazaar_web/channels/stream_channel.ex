@@ -5,14 +5,14 @@ defmodule ZaZaarWeb.StreamChannel do
 
   alias ZaZaarWeb.StreamPresence, as: Presence
 
-  def join("stream:" <> streamer_id, _message, socket) do
+  def join("stream:" <> stream_id, _message, socket) do
     payload =
       case current_resource(socket) do
         %User{} = user -> %{user_id: user.id}
         nil -> %{}
       end
 
-    if Streaming.get_channel(streamer_id) do
+    if Streaming.get_stream(stream_id) do
       send(self(), {:after_join, payload})
       {:ok, socket}
     else
@@ -44,26 +44,27 @@ defmodule ZaZaarWeb.StreamChannel do
   end
 
   def handle_info({:start_recording, stream, session_id}, socket) do
+    # TODO retry if recording fails
     {:ok, recording_id} = OpenTok.record(:start, session_id)
     Streaming.update_stream(stream, %{recording_id: recording_id})
 
     {:noreply, socket}
   end
 
-  def handle_in("streamer:show_start", params, socket) do
+  def handle_in("streamer:show_start", params, socket0) do
     with %{"message" => message} <- params,
-         %{topic: "stream:" <> streamer_id} <- socket,
-         %User{} = streamer <- current_resource(socket),
-         true <- streamer_id == streamer.id,
-         %Channel{} = channel <- Streaming.get_channel(streamer.id),
-         {:ok, stream} <- Streaming.start_stream(channel),
+         %{topic: "stream:" <> stream_id} <- socket0,
+         %User{} = streamer <- current_resource(socket0),
+         stream <- Streaming.get_stream(stream_id),
+         true <- stream.streamer_id == streamer.id,
          {:ok, key, token} <-
-           OpenTok.generate_token(channel.ot_session_id, :publisher, streamer.id),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
-      broadcast(socket, "streamer:show_started", %{message: message})
+           OpenTok.generate_token(streamer.ot_session_id, :publisher, stream.id),
+         opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
+      socket1 = assign(socket0, :role, :streamer)
+      broadcast(socket0, "streamer:show_started", %{message: message})
 
       {:ok, _} =
-        Presence.update(socket, streamer_id, %{
+        Presence.update(socket1, streamer.id, %{
           streamer: true,
           online_at: inspect(System.system_time(:seconds))
         })
@@ -74,46 +75,49 @@ defmodule ZaZaarWeb.StreamChannel do
       |> Notification.append_notice(%{type: :followee_is_live, from_id: streamer.id})
 
       Process.send_after(self(), {:take_snapshot, streamer}, 1_000 * 2)
-      Process.send_after(self(), {:start_recording, stream, channel.ot_session_id}, 1_000 * 2)
+      Process.send_after(self(), {:start_recording, stream, streamer.ot_session_id}, 1_000 * 2)
 
-      {:reply, {:ok, opentok_params}, socket}
+      {:reply, {:ok, opentok_params}, socket1}
     end
   end
 
   def handle_in("streamer:upload_snapshot", params, socket) do
     with %{"upload_key" => key, "snapshot" => snapshot} <- params,
-         %User{} = streamer <- current_resource(socket),
-         %Channel{} = channel <- Streaming.get_channel(streamer.id),
-         %Stream{} = stream <- Streaming.get_active_stream(channel) do
-      if is_nil(stream.video_snapshot) do
-        Streaming.stream_to_facebook(channel)
-      end
+         "stream:" <> stream_id <- socket.topic,
+         stream <- Streaming.get_stream(stream_id) do
+      # TODO need a better way to handle facebook broadcast
+      # if is_nil(stream.video_snapshot) do
+      # Streaming.stream_to_facebook(stream, stream.fb_stream_key, streamer.ot_session_id)
+      # end
 
       Streaming.update_snapshot(stream, key, snapshot)
       {:noreply, socket}
     end
   end
 
-  def handle_in("viewer:join", _params, socket) do
-    with %{topic: "stream:" <> streamer_id} <- socket,
-         viewer <- current_resource(socket),
-         %Channel{} = channel <- Streaming.get_channel(streamer_id),
-         {:ok, key, token} <- OpenTok.generate_token(channel.ot_session_id, :subscriber),
-         opentok_params <- %{session_id: channel.ot_session_id, token: token, key: key} do
+  def handle_in("viewer:join", _params, socket0) do
+    with %{topic: "stream:" <> stream_id} <- socket0,
+         viewer <- current_resource(socket0),
+         streamer <-
+           Streaming.get_stream(stream_id) |> Map.get(:streamer_id) |> Account.get_user(),
+         {:ok, key, token} <- OpenTok.generate_token(streamer.ot_session_id, :subscriber),
+         opentok_params <- %{session_id: streamer.ot_session_id, token: token, key: key} do
+      socket1 = assign(socket0, :role, :viewer)
+
       if is_nil(viewer) do
-        broadcast(socket, "viewer:joined", %{})
+        broadcast(socket1, "viewer:joined", %{})
       else
-        broadcast(socket, "viewer:joined", %{id: viewer.id})
+        broadcast(socket1, "viewer:joined", %{id: viewer.id})
       end
 
-      {:reply, {:ok, opentok_params}, socket}
+      {:reply, {:ok, opentok_params}, socket1}
     end
   end
 
   def handle_in("stream:send_comment", params, socket) do
     with %{"comment" => content} <- params,
-         "stream:" <> streamer_id <- socket.topic,
-         %Stream{} = stream <- Streaming.get_active_stream(streamer_id),
+         "stream:" <> stream_id <- socket.topic,
+         %Stream{} = stream <- Streaming.get_stream(stream_id),
          user <- current_resource(socket),
          params <- %{user_id: user.id, content: content},
          {:ok, comment} <- Streaming.append_comment(stream, params) do
@@ -124,16 +128,14 @@ defmodule ZaZaarWeb.StreamChannel do
     end
   end
 
-  def terminate(_reason, socket) do
-    user = current_resource(socket)
-    archive_stream(socket.topic, user)
-    # TODO stop OpenTok archiving
+  def terminate(_, socket) do
+    if socket.assigns[:role] == :streamer do
+      "stream:" <> stream_id = socket.topic
+      stream = Streaming.get_stream(stream_id)
+      OpenTok.record(:stop, stream.recording_id)
+      Streaming.end_stream(stream)
+    end
+
     :ok
   end
-
-  defp archive_stream("stream:" <> streamer_id, %{id: streamer_id}) do
-    Streaming.end_stream(streamer_id)
-  end
-
-  defp archive_stream(_, _), do: nil
 end

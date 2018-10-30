@@ -8,13 +8,12 @@ defmodule ZaZaar.Streaming.Stream do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "streams" do
-    field(:facebook_stream_key, :string)
+    field(:fb_stream_key, :string)
     field(:archived_at, :naive_datetime)
     field(:upload_key, :string)
     field(:video_snapshot, :string)
     field(:recording_id, Ecto.UUID)
-
-    belongs_to(:channel, Streaming.Channel)
+    field(:streamer_id, Ecto.UUID)
 
     embeds_many(:comments, Streaming.Comment)
 
@@ -25,14 +24,13 @@ defmodule ZaZaar.Streaming.Stream do
   def changeset(%__MODULE__{} = stream, attrs \\ %{}) do
     stream
     |> cast(attrs, [
-      :facebook_stream_key,
+      :fb_stream_key,
       :archived_at,
-      :channel_id,
       :upload_key,
       :video_snapshot,
-      :recording_id
+      :recording_id,
+      :streamer_id
     ])
-    |> assoc_constraint(:channel)
     |> validate_not_archived
   end
 

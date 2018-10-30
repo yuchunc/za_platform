@@ -7,40 +7,20 @@ defmodule ZaZaar.Streaming do
   alias ZaZaar.Repo
 
   alias ZaZaar.Streaming
-  alias Streaming.{Channel, Stream, Comment}
+  alias Streaming.{Stream, Comment}
 
-  def get_channels(opts \\ []) do
-    with_snapshot = Keyword.get(opts, :snapshot, false)
-    query0 = from(c in Channel, order_by: c.updated_at)
-    # TODO add active_at and sort on it
+  def get_streams(opts \\ []) do
+    sort_by = Keyword.get(opts, :order_by, [])
 
-    query1 =
-      if with_snapshot do
-        query0
-        |> join(:inner, [c], s in Stream, c.id == s.channel_id and is_nil(s.archived_at))
-        |> select([c, s], %{c | video_snapshot: s.video_snapshot})
-      else
-        query0
-      end
-
-    Repo.all(query1)
+    Stream
+    |> order_by([s], ^sort_by)
+    |> Repo.all()
   end
 
-  def get_channel(streamer_id) do
-    query = from(s in Channel, where: s.streamer_id == ^streamer_id)
-
-    Repo.one(query)
-  end
-
-  def get_active_stream(streamer_id) when is_binary(streamer_id) do
-    streamer_id
-    |> get_channel()
-    |> get_active_stream()
-  end
-
-  def get_active_stream(%Channel{} = channel) do
-    channel
-    |> active_stream_query()
+  def get_stream(uuid) do
+    Stream
+    |> where(id: ^uuid)
+    |> or_where([s], s.streamer_id == ^uuid and is_nil(s.archived_at))
     |> Repo.one()
   end
 
@@ -49,78 +29,54 @@ defmodule ZaZaar.Streaming do
     |> update_stream(params)
   end
 
+  def update_stream(%Stream{archived_at: dt}, _) when dt != nil do
+    {:error, :stream_archived}
+  end
+
   def update_stream(%Stream{} = stream, params) do
     stream
     |> Stream.changeset(params)
     |> Repo.update()
   end
 
+  # NOTE maybe this should be create stream
   def start_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> start_stream
-  end
-
-  def start_stream(%Channel{} = channel) do
-    case get_active_stream(channel) do
+    case get_stream(streamer_id) do
       nil ->
-        %Stream{channel_id: channel.id}
+        %Stream{streamer_id: streamer_id}
         |> Stream.changeset(%{})
         |> Repo.insert()
 
-      %Stream{} ->
-        {:error, :another_stream_is_active}
+      %Stream{} = stream ->
+        {:error, :another_stream_is_active, stream.id}
     end
   end
 
-  def start_stream(_), do: {:error, :cannot_start_stream}
-
-  def end_stream(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
+  def end_stream(uuid) when is_binary(uuid) do
+    uuid
+    |> get_stream
     |> end_stream
   end
 
-  def end_stream(%Channel{} = channel) do
-    if stream = active_stream_query(channel.id) |> Repo.one() do
-      stream
-      |> Stream.archive()
-      |> Repo.update()
-    else
-      end_stream(nil)
-    end
+  def end_stream(%Stream{} = stream) do
+    stream
+    |> Stream.archive()
+    |> Repo.update()
   end
 
-  def end_stream(_), do: {:error, :invalid_channel}
+  def end_stream(_), do: {:error, :stream_not_found}
 
-  def find_or_create_channel(%{id: streamer_id}) do
-    if channel = Repo.get_by(Channel, streamer_id: streamer_id) do
-      channel
-    else
-      {:ok, session_id} = OpenTok.request_session_id()
-
-      %Channel{ot_session_id: session_id, streamer_id: streamer_id}
-      |> Repo.insert([])
-    end
+  def gen_snapshot_key(stream_id) when is_binary(stream_id) do
+    stream_id
+    |> get_stream
+    |> gen_snapshot_key()
   end
 
-  def find_or_create_channel(_user) do
-    {:error, :invalid_user}
-  end
-
-  def gen_snapshot_key(streamer_id) when is_binary(streamer_id) do
-    get_channel(streamer_id)
-    |> gen_snapshot_key
-  end
-
-  def gen_snapshot_key(%Channel{} = channel) do
-    stream =
-      channel.id
-      |> active_stream_query
-      |> Repo.one()
-
+  def gen_snapshot_key(stream) do
     case stream do
       %Stream{} ->
         random_string = :crypto.strong_rand_bytes(Enum.random(8..12)) |> Base.url_encode64()
-        result = Stream.changeset(stream, %{upload_key: random_string}) |> Repo.update()
+        result = update_stream(stream, %{upload_key: random_string})
 
         case result do
           {:ok, _} -> {:ok, random_string}
@@ -128,31 +84,24 @@ defmodule ZaZaar.Streaming do
         end
 
       _ ->
-        {:error, :not_found}
+        {:error, :stream_not_found}
     end
   end
 
   def update_snapshot(streamer_id, key, data) when is_binary(streamer_id) do
     streamer_id
-    |> get_active_stream()
-    |> update_snapshot(key, data)
-  end
-
-  def update_snapshot(%Channel{} = channel, key, data) do
-    channel
-    |> get_active_stream()
+    |> get_stream()
     |> update_snapshot(key, data)
   end
 
   def update_snapshot(%Stream{upload_key: key} = stream, key, data) do
-    case result =
-           Stream.changeset(stream, %{upload_key: nil, video_snapshot: data}) |> Repo.update() do
+    case result = update_stream(stream, %{upload_key: nil, video_snapshot: data}) do
       {:ok, _} -> :ok
       _ -> result
     end
   end
 
-  def update_snapshot(_, _, _), do: {:error, :not_found}
+  def update_snapshot(_, _, _), do: {:error, :stream_not_found}
 
   def append_comment(%Stream{} = stream0, comment_params) do
     comment = struct(Comment, comment_params)
@@ -166,17 +115,22 @@ defmodule ZaZaar.Streaming do
     {:ok, List.first(stream1.comments)}
   end
 
-  def stream_to_facebook(%Channel{facebook_key: nil}), do: nil
-
-  def stream_to_facebook(%Channel{} = channel) do
-    OpenTok.stream_to_facebook(channel.ot_session_id, channel.streamer_id, channel.facebook_key)
+  def stream_to_facebook(uuid, fb_key, ot_session_id) when is_binary(uuid) do
+    uuid
+    |> get_stream
+    |> stream_to_facebook(fb_key, ot_session_id)
   end
 
-  defp active_stream_query(%Channel{} = channel), do: active_stream_query(channel.id)
+  def stream_to_facebook(%Stream{} = stream, fb_key, ot_session_id) do
+    case OpenTok.stream_to_facebook(ot_session_id, stream.streamer_id, fb_key) do
+      :ok ->
+        update_stream(stream, %{fb_stream_key: fb_key})
 
-  defp active_stream_query(channel_id) do
-    Stream
-    |> where(channel_id: ^channel_id)
-    |> where([s], is_nil(s.archived_at))
+      {:error, :noclient} ->
+        update_stream(stream, %{fb_stream_key: fb_key})
+
+      response ->
+        response
+    end
   end
 end

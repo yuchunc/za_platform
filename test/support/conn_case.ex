@@ -15,7 +15,7 @@ defmodule ZaZaarWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
-  import ZaZaar.Factory
+  # import ZaZaar.Factory
 
   alias ZaZaar.Auth.Guardian
 
