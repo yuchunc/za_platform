@@ -11,9 +11,11 @@
       <h2 class="streamer__name">Streamer's Name</span>
     </div>
 
-    <%= if view_module(@conn) == ZaZaarWeb.LiveStreamView do %>
+    <%= if view_module(@conn) == ZaZaarWeb.LiveStreamView && @user.id != @stream.streamer_id do %>
       <div class="viewer__actions">
-        <a class="viewer__follow-btn button is-outlined " href="#">追蹤</a>
+        <a class="viewer__follow-btn button is-outlined" id="viewer-follow-btn" href="#">
+          追蹤
+        </a>
       </div>
     <% end %>
   </div>
@@ -22,7 +24,7 @@
 <div class="stream-viewing__chatroom">
   <span class="message__title is-block">聊天室</span>
   <div class="message__log" id="chat-log">
-    <%= for c <- @comments do %>
+    <%= for c <- @stream.comments do %>
       <div class="panel-block">
         <%= c.user_name %>：<%= c.content %>
       </div>

@@ -3,12 +3,16 @@ import main from '../main';
 import commentAction from '../util/comment';
 
 const stream_id = window.streamConfig.stream_id;
+const streamer_id = window.streamConfig.streamer_id;
+const user_id = window.streamConfig.user_id;
+
+let followBtn = document.getElementById('viewer-follow-btn');
 
 const startSubscribing = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id)
 
-  session.on("streamCreated", function(event) {
-    console.log("event", event);
+  session.on('streamCreated', function(event) {
+    console.log('event', event);
     session.subscribe(event.stream, 'stream-view', {
       insertMode: 'append',
       width: '100%',
@@ -25,17 +29,39 @@ export default () => {
     mount: () => {
       console.log('LiveStream Show mounted');
 
-      let channel = socket.channel("stream:" + stream_id);
-      channel.join();
+      let streamChannel = socket.channel('stream:' + stream_id);
+      let userChannel = socket.channel('user:' + user_id);
 
-      channel
-        .push("viewer:join", {})
-        .receive("ok", (resp) => {
-          // TODO uncomment this
+      streamChannel.join();
+      userChannel.join();
+
+      streamChannel
+        .push('viewer:join', {})
+        .receive('ok', (resp) => {
           startSubscribing(resp);
         });
 
-      commentAction(channel);
+      commentAction(streamChannel);
+
+      followBtn.addEventListener('click', () => {
+        if(followBtn.classList.contains('following')) {
+          console.log("removing");
+          userChannel
+            .push('following:remove', {followee_id: streamer_id})
+            .receive('ok', () => {
+              followBtn.classList.remove('following');
+              followBtn.innerValue = '跟隨';
+            });
+        } else {
+          console.log("adding");
+          userChannel
+            .push('following:add', {followee_id: streamer_id})
+            .receive('ok', () => {
+              followBtn.classList.add('following');
+              followBtn.innerValue = '已跟隨';
+            });
+        };
+      });
     },
 
     unmount: () => {

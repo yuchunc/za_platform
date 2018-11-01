@@ -9,8 +9,14 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   setup do
     stream = insert(:stream)
-    {:ok, socket} = connect(UserSocket, %{})
-    {:ok, socket: socket, stream: stream}
+    streamer = Repo.get(User, stream.streamer_id)
+
+    socket =
+      sign_socket(streamer)
+      |> subscribe_and_join!(StreamChannel, "stream:" <> stream.id)
+
+    assert_broadcast("user:joined", _)
+    {:ok, socket: socket, stream: stream, streamer: streamer}
   end
 
   def random_string(length) do
@@ -18,42 +24,33 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   describe "join a channel" do
+    setup do
+      {:ok, socket} = connect(UserSocket, %{})
+      {:ok, stream: insert(:stream), socket: socket}
+    end
+
     test "anybody can join a stream", ctx do
-      %{socket: socket, stream: stream} = ctx
+      %{stream: stream, socket: socket} = ctx
 
       subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
-      receiving_topic = "user:joined"
-      assert_broadcast(^receiving_topic, %{})
+      assert_broadcast("user:joined", %{})
     end
 
-    test "a signed in user can join a streaming channel", ctx do
-      %{stream: stream} = ctx
-
+    test "a signed in user can join a streaming channel" do
       user = insert(:user)
+      stream = insert(:stream)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
       {:ok, socket} = connect(UserSocket, %{token: jwt})
 
       subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
-      receiving_topic = "user:joined"
-      assert_broadcast(^receiving_topic, payload)
+      assert_broadcast("user:joined", payload)
       assert payload.user_id == user.id
     end
   end
 
   describe "streamer:show_start" do
-    setup ctx do
-      %{stream: stream} = ctx
-      user = Repo.get(User, stream.streamer_id)
-      insert(:follow, followee_id: user.id)
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
-      {:ok, socket} = connect(UserSocket, %{token: jwt})
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
-
-      {:ok, socket: socket_1}
-    end
-
     test "streamer can start broadcasting on her own stream", ctx do
       %{socket: socket} = ctx
       params = %{message: "hello world"}
@@ -68,7 +65,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
     test "streamer can upload a video snapshot with provided secret" do
       key = random_string(32)
       stream = insert(:stream, upload_key: key)
-      streamer = Repo.get(User, stream.streamer_id)
+      streamer = Repo.get(User, stream.id)
       socket = sign_socket(streamer)
       socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
@@ -85,7 +82,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
       viewer = insert(:user)
       socket = sign_socket(viewer)
 
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       ref = push(socket_1, "viewer:join", %{})
 
@@ -97,7 +94,7 @@ defmodule ZaZaarWeb.StreamChannelTest do
     test "anonymous viewer can join through event", ctx do
       %{socket: socket, stream: stream} = ctx
 
-      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.streamer_id)
+      socket_1 = subscribe_and_join!(socket, StreamChannel, "stream:" <> stream.id)
 
       ref = push(socket_1, "viewer:join", %{})
 
@@ -107,23 +104,12 @@ defmodule ZaZaarWeb.StreamChannelTest do
   end
 
   describe "stream:send_comment" do
-    setup ctx do
-      %{stream: stream} = ctx
-      streamer = Repo.get(User, stream.streamer_id)
-
-      socket =
-        sign_socket(streamer)
-        |> subscribe_and_join!(StreamChannel, "stream:" <> stream.id)
-
-      {:ok, socket: socket}
-    end
-
     test "receive stream:comment_sent with comment in payload if a stream is active", ctx do
-      %{socket: socket_signed, stream: stream} = ctx
+      %{socket: socket, stream: stream} = ctx
 
       content = "Ga Ga Woo Lala ah~"
 
-      push(socket_signed, "stream:send_comment", %{comment: content})
+      push(socket, "stream:send_comment", %{comment: content})
 
       assert_broadcast("stream:comment_sent", %{comment: comment})
       assert comment.user_id == stream.streamer_id

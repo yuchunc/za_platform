@@ -6,8 +6,13 @@
       <div class="video-player" style="background-image:url(http://via.placeholder.com/362x225)">
     <% end %>
       <div class="video-player__header is-inline-block">
-        <i class="far fa-bullseye"></i>
-        666 <%# 正在觀看人數 %>
+        <%= if @stream.archived_at == nil do %>
+          <i class="far fa-bullseye"></i>
+          666 <%# 正在觀看人數 %>
+        <% else %>
+          <i class="fas fa-play"></i>
+          <%= cal_time_diff(@stream.archived_at, @stream.inserted_at) %>
+        <% end %>
       </div>
       <div class="video-player__footer is-gradient is-flex">
         <figure class="video-player__avatar image">

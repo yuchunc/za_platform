@@ -66,7 +66,7 @@ defmodule ZaZaarWeb.UserChannel do
     {:noreply, socket}
   end
 
-  def handle_in("follower:add", params, socket) do
+  def handle_in("following:add", params, socket) do
     with %{"followee_id" => followee_id} <- params,
          user <- current_resource(socket),
          :ok <- Following.start_following(user, %{id: followee_id}) do
@@ -76,7 +76,7 @@ defmodule ZaZaarWeb.UserChannel do
     end
   end
 
-  def handle_in("follower:remove", params, socket) do
+  def handle_in("following:remove", params, socket) do
     with %{"followee_id" => followee_id} <- params,
          user <- current_resource(socket),
          :ok <- Following.stop_following(user, %{id: followee_id}) do
