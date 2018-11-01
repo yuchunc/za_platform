@@ -16,7 +16,7 @@ defmodule ZaZaarWeb.LiveStreamController do
     with stream0 <- Streaming.get_stream(stream_id),
          comments <- include_user_names(stream0.comments) do
       stream1 = Map.replace(stream0, :comments, comments)
-      render(conn, "show.html", stream: stream1)
+      render(conn, "show.html", stream: stream1, user: current_resource(conn))
     end
   end
 

@@ -3,6 +3,8 @@ import main from '../main';
 import commentAction from '../util/comment';
 
 const stream_id = window.streamConfig.stream_id;
+const streamer_id = window.streamConfig.streamer_id;
+const user_id = window.streamConfig.user_id;
 
 let followBtn = document.getElementById('viewer-follow-btn');
 
@@ -27,28 +29,33 @@ export default () => {
     mount: () => {
       console.log('LiveStream Show mounted');
 
-      let channel = socket.channel('stream:' + stream_id);
-      channel.join();
+      let streamChannel = socket.channel('stream:' + stream_id);
+      let userChannel = socket.channel('user:' + user_id);
 
-      channel
+      streamChannel.join();
+      userChannel.join();
+
+      streamChannel
         .push('viewer:join', {})
         .receive('ok', (resp) => {
           startSubscribing(resp);
         });
 
-      commentAction(channel);
+      commentAction(streamChannel);
 
       followBtn.addEventListener('click', () => {
         if(followBtn.classList.contains('following')) {
-          channel
-            .push('viewer:stop_follow')
+          console.log("removing");
+          userChannel
+            .push('following:remove', {followee_id: streamer_id})
             .receive('ok', () => {
               followBtn.classList.remove('following');
               followBtn.innerValue = '跟隨';
             });
         } else {
-          channel
-            .push('viewer:start_following')
+          console.log("adding");
+          userChannel
+            .push('following:add', {followee_id: streamer_id})
             .receive('ok', () => {
               followBtn.classList.add('following');
               followBtn.innerValue = '已跟隨';

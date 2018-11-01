@@ -16,6 +16,12 @@ defmodule ZaZaarWeb.StreamingController do
   end
 
   def show(conn, %{"id" => stream_id}) do
-    render(conn, "show.html", stream_id: stream_id)
+    render(
+      conn,
+      "show.html",
+      stream_id: stream_id,
+      stream: %Stream{},
+      user: current_resource(@conn)
+    )
   end
 end

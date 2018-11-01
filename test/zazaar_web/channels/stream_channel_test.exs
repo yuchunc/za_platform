@@ -105,21 +105,16 @@ defmodule ZaZaarWeb.StreamChannelTest do
 
   describe "stream:send_comment" do
     test "receive stream:comment_sent with comment in payload if a stream is active", ctx do
-      %{socket: socket_signed, stream: stream} = ctx
+      %{socket: socket, stream: stream} = ctx
 
       content = "Ga Ga Woo Lala ah~"
 
-      push(socket_signed, "stream:send_comment", %{comment: content})
+      push(socket, "stream:send_comment", %{comment: content})
 
       assert_broadcast("stream:comment_sent", %{comment: comment})
       assert comment.user_id == stream.streamer_id
       assert comment.content == content
       assert comment.inserted_at
-    end
-  end
-
-  describe "viewer:start_following" do
-    test "viewer starts following the streamer", ctx do
     end
   end
 

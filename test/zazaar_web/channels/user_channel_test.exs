@@ -112,7 +112,7 @@ defmodule ZaZaarWeb.UserChannelTest do
     end
   end
 
-  describe "follower:add event" do
+  describe "following:add event" do
     setup context do
       %{user: user} = context
 
@@ -122,13 +122,13 @@ defmodule ZaZaarWeb.UserChannelTest do
     test "follows another user", context do
       %{socket: socket} = context
       followee = insert(:user)
-      ref = push(socket, "follower:add", %{followee_id: followee.id})
+      ref = push(socket, "following:add", %{followee_id: followee.id})
 
       assert_reply(ref, :ok, %{})
     end
   end
 
-  describe "follower:remove event" do
+  describe "following:remove event" do
     setup context do
       %{user: user} = context
 
@@ -137,7 +137,7 @@ defmodule ZaZaarWeb.UserChannelTest do
 
     test "stop following another user", context do
       %{socket: socket} = context
-      ref = push(socket, "follower:remove", %{followee_id: Ecto.UUID.generate()})
+      ref = push(socket, "following:remove", %{followee_id: Ecto.UUID.generate()})
 
       assert_reply(ref, :ok, %{})
     end

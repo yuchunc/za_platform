@@ -1,13 +1,15 @@
 <div class="stream-viewing is-flex">
-  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn, comments: @stream.comments) %>
+  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn, stream: @stream, user: @user) %>
 </div>
 
 <script charset="utf-8">
 
   window.streamConfig =
     {
-      stream_id: "<%= @stream.id %>",
-      jwt: "<%= current_token(@conn) %>"
+      user_id: '<%= @user.id %>',
+      stream_id: '<%= @stream.id %>',
+      streamer_id: '<%= @stream.streamer_id %>',
+      jwt: '<%= current_token(@conn) %>'
     }
 
 </script>
