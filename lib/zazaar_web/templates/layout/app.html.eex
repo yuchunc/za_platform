@@ -20,7 +20,7 @@
 
     <main class="main-container is-flex">
 
-    <%= if current_resource(@conn) do %>
+    <%= if false && current_resource(@conn) do %>
       <aside role="sidebar" class="z-sidebar is-flex is-collapsed">
         <%= render("sidebar.html", conn: @conn) %>
       </aside>
