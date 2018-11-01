@@ -45,7 +45,6 @@ export default () => {
 
       followBtn.addEventListener('click', () => {
         if(followBtn.classList.contains('following')) {
-          console.log("removing");
           userChannel
             .push('following:remove', {followee_id: streamer_id})
             .receive('ok', () => {
@@ -53,13 +52,16 @@ export default () => {
               followBtn.innerValue = '跟隨';
             });
         } else {
-          console.log("adding");
+          if(user_id === "") {
+            alert("請先從右上角登入");
+          } else {
           userChannel
             .push('following:add', {followee_id: streamer_id})
             .receive('ok', () => {
               followBtn.classList.add('following');
               followBtn.innerValue = '已跟隨';
             });
+          };
         };
       });
     },

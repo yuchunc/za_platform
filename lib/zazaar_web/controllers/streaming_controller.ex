@@ -21,7 +21,7 @@ defmodule ZaZaarWeb.StreamingController do
       "show.html",
       stream_id: stream_id,
       stream: %Stream{},
-      user: current_resource(@conn)
+      user: current_resource(conn)
     )
   end
 end
