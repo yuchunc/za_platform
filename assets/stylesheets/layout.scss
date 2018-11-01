@@ -1,1 +1,6 @@
-@import "layout/simple_main";
+@import "layout/main_nav";
+@import "layout/sidebar";
+
+.notification:not(:last-child) {
+  margin-bottom: 0;
+}

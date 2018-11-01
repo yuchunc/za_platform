@@ -5,10 +5,6 @@
 # is restricted to this project.
 use Mix.Config
 
-# fb_names = "name,email,first_name,last_name,middle_name,name_format,short_name"
-# fb_info = "birthday,context,gender,profile_pic,security_settings,significant_other"
-# fb_location = "address,hometown,language,location"
-
 # General application configuration
 config :zazaar, namespace: ZaZaarWeb, ecto_repos: [ZaZaar.Repo]
 
@@ -46,7 +42,6 @@ config :ueberauth, Ueberauth,
       {Ueberauth.Strategy.Facebook,
        [
          profile_fields: "name,email,first_name,last_name",
-         # profile_fields: fb_names <> fb_info <> fb_location,
          display: "popup"
        ]}
   ]

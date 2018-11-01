@@ -71,22 +71,22 @@ notificationCloseBtns.forEach( (btn) => {
 })
 
 // Sidebar
-const bodyClasses = document.body.classList;
-const ww = document.body.clientWidth;
-let sidebar = document.querySelector('.z-sidebar');
-let sidebarToggle = document.querySelector('.sidebar-toggle');
-
-if(!bodyClasses.contains("message") && ww >= 1024) {
-  sidebar.classList.remove("is-collapsed");
-  sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
-}
-
-sidebarToggle.addEventListener('click', () => {
-  sidebar.classList.toggle("is-collapsed");
-
-  if(sidebar.classList.contains("is-collapsed")) {
-    sidebarToggle.innerHTML = '<i class="fal fa-angle-double-left"></i>';
-  } else {
-    sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
-  };
-});
+// const bodyClasses = document.body.classList;
+// const ww = document.body.clientWidth;
+// let sidebar = document.querySelector('.z-sidebar');
+// let sidebarToggle = document.querySelector('.sidebar-toggle');
+//
+// if(!bodyClasses.contains("message") && ww >= 1024) {
+//   sidebar.classList.remove("is-collapsed");
+//   sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
+// }
+//
+// sidebarToggle.addEventListener('click', () => {
+//   sidebar.classList.toggle("is-collapsed");
+//
+//   if(sidebar.classList.contains("is-collapsed")) {
+//     sidebarToggle.innerHTML = '<i class="fal fa-angle-double-left"></i>';
+//   } else {
+//     sidebarToggle.innerHTML = '<i class="fal fa-angle-double-right"></i>';
+//   };
+// });
