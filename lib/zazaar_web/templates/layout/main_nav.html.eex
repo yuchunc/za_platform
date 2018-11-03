@@ -1,52 +1,65 @@
-<div class="navbar-brand">
-  <a class="navbar-item is-paddingless" href="/">
-    <%= svg_image(@conn, "zazaar_logo") %>
-  </a>
-</div>
+<nav class="navbar is-flex has-background-zazaar has-shadow" role="navigation" aria-label="main navigation">
 
-<%# Search Bar %>
-<%= if false do %>
-  <div class="navbar-search is-flex">
-    <div class="field has-addons">
-      <div class="control bar">
-        <input class="input z-input" type="text" placeholder="搜尋">
-      </div>
-      <div class="control z-submit">
-        <a class="#">
-          <i class="fal fa-search"></i>
-        </a>
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <%= svg_image(@conn, "zazaar_logo") %>
+    </a>
+  </div>
+
+  <div id="main-navbar" class="navbar-menu is-flex is-justified-between is-hidden-mobile has-background-zazaar">
+
+    <%# Search Bar %>
+    <%= if false do %>
+    <div class="navbar-start search-bar is-flex is-aligned-center">
+      <div class="navbar-item">
+        <div class="field has-addons">
+          <div class="control bar">
+            <input class="input z-input" type="text" placeholder="搜尋">
+          </div>
+          <div class="control z-submit">
+            <a class="has-text-white">
+              <i class="fal fa-search"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
+    <% end %>
+
+    <div class="navbar-end is-flex">
+      <%= if current_resource(@conn) do %>
+        <a class="navbar-item navbar-icon" href="<%= message_path(@conn, :show) %>">
+          <i class="fas fa-comments"></i>
+        </a>
+
+        <%# Notification %>
+        <% if false do %>
+        <a class="navbar-item navbar-icon">
+          <i class="fas fa-bell"></i>
+        </a>
+        <% end %>
+
+        <%= link(to: membership_streaming_path(@conn, :create), method: :post, class: "navbar-item button button--zazaar") do %>
+          <i class="far fa-bullseye has-text-zazaar"></i>
+          開始直播
+        <% end %>
+
+        <%= link("登 出", to: "/m/logout", class: "navbar-item button is-outlined", method: :delete)%>
+
+        <%= if false do %>
+        <%# User Avatar %>
+        <a href="#" class="navbar-item is-avatar">
+          <figure class="image is-square">
+            <img class="is-rounded" src="https://bulma.io/images/placeholders/48x48.png">
+          </figure>
+        </a>
+        <% end %>
+
+      <% else %>
+
+        <a class="button is-outlined" href="/auth/facebook" >Facebook 登入</a>
+
+      <% end %>
+    </div>
   </div>
-<% end %>
-
-<div class="navbar-menu is-flex">
-  <%= if current_resource(@conn) do %>
-    <a class="navbar-item z-icon" href="<%= message_path(@conn, :show) %>">
-      <i class="fas fa-comments"></i>
-    </a>
-
-    <% if false do %>
-      <a class="navbar-item z-icon">
-        <i class="fas fa-bell"></i>
-      </a>
-    <% end %>
-
-    <%= link(to: membership_streaming_path(@conn, :create), method: :post, class: "button button--zazaar") do %>
-      <i class="far fa-bullseye"></i>
-      開始直播
-    <% end %>
-    <%= link("登 出", to: "/m/logout", class: "button button--outline", method: :delete)%>
-
-    <%= if false do %>
-      <%# Avatar %>
-      <a href="#" class="navbar-item avatar">
-        <figure class="image is-32x32">
-          <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
-        </figure>
-      </a>
-    <% end %>
-  <% else %>
-    <a class="button button--outline" href="/auth/facebook">Facebook 登入</a>
-  <% end %>
-</div>
+</nav>

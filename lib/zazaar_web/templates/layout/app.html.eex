@@ -14,9 +14,7 @@
   </head>
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>" class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
-    <nav class="navbar is-flex with-shadow" role="navigation" aria-label="main navigation">
-      <%= render("main_nav.html", conn: @conn) %>
-    </nav>
+    <%= render("main_nav.html", conn: @conn) %>
 
     <main class="main-container is-flex">
 
