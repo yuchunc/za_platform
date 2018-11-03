@@ -8,7 +8,7 @@
       <div class="video-player__header is-inline-block">
         <%= if @stream.archived_at == nil do %>
           <i class="far fa-bullseye"></i>
-          666 <%# 正在觀看人數 %>
+          <%= @stream.viewer_count %>
         <% else %>
           <i class="fas fa-play"></i>
           <%= cal_time_diff(@stream.archived_at, @stream.inserted_at) %>
