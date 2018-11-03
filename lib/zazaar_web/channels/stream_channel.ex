@@ -27,6 +27,8 @@ defmodule ZaZaarWeb.StreamChannel do
       online_at: inspect(System.system_time(:seconds))
     })
 
+    push(socket, "presence_state", Presence.list(socket))
+
     {:noreply, socket}
   end
 

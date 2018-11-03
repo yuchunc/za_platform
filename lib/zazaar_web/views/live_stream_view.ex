@@ -7,7 +7,7 @@ defmodule ZaZaarWeb.LiveStreamView do
       |> abs
 
     seconds = rem(seconds_diff, 60)
-    minutes = (seconds_diff - seconds * 60) |> abs |> div(60)
+    minutes = div(seconds_diff, 60)
     hours = div(seconds_diff, 3600)
 
     [hours, minutes, seconds]

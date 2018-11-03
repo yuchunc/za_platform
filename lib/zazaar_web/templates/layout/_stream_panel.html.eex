@@ -1,5 +1,12 @@
 <div class="stream-viewing__main">
-  <div class="streamer__window" id="stream-view"></div>
+  <div class="streamer__window" id="stream-view">
+    <div class="video-player__header is-inline-block">
+      <i class="far fa-bullseye"></i>
+      <span id="viewer-count">
+        <%= @stream.viewer_count %>
+      </span>
+    </div>
+  </div>
   <div class="streamer__intro is-flex">
     <a href="#" class="streamer__link is-block">
       <figure class="image streamer__avatar">

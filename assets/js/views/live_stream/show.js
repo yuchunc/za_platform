@@ -1,3 +1,4 @@
+import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
@@ -7,12 +8,12 @@ const streamer_id = window.streamConfig.streamer_id;
 const user_id = window.streamConfig.user_id;
 
 let followBtn = document.getElementById('viewer-follow-btn');
+let viewerCount = document.getElementById('viewer-count');
 
 const startSubscribing = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id)
 
   session.on('streamCreated', function(event) {
-    console.log('event', event);
     session.subscribe(event.stream, 'stream-view', {
       insertMode: 'append',
       width: '100%',
@@ -35,6 +36,8 @@ export default () => {
       streamChannel.join();
       userChannel.join();
 
+      let presences = {};
+
       streamChannel
         .push('viewer:join', {})
         .receive('ok', (resp) => {
@@ -43,27 +46,40 @@ export default () => {
 
       commentAction(streamChannel);
 
-      followBtn.addEventListener('click', () => {
-        if(followBtn.classList.contains('following')) {
-          userChannel
-            .push('following:remove', {followee_id: streamer_id})
-            .receive('ok', () => {
-              followBtn.classList.remove('following');
-              followBtn.innerValue = '跟隨';
-            });
-        } else {
-          if(user_id === "") {
-            alert("請先從右上角登入");
-          } else {
-          userChannel
-            .push('following:add', {followee_id: streamer_id})
-            .receive('ok', () => {
-              followBtn.classList.add('following');
-              followBtn.innerValue = '已跟隨';
-            });
-          };
-        };
+      streamChannel.on("presence_state", state => {
+        presences = Presence.syncState(presences, state);
+        viewerCount.innerHTML = Object.keys(presences).length;
+      })
+
+      streamChannel.on("presence_diff", diff => {
+        presences = Presence.syncDiff(presences, diff);
+        viewerCount.innerHTML = Object.keys(presences).length;
       });
+
+      if(followBtn !== null) {
+        followBtn.addEventListener('click', event => {
+          event.preventDefault();
+          if(followBtn.classList.contains('following')) {
+            userChannel
+              .push('following:remove', {followee_id: streamer_id})
+              .receive('ok', () => {
+                followBtn.classList.remove('following');
+                followBtn.innerHTML = '跟隨';
+              });
+          } else {
+            if(user_id === "") {
+              alert("請先從右上角登入");
+            } else {
+              userChannel
+                .push('following:add', {followee_id: streamer_id})
+                .receive('ok', () => {
+                  followBtn.classList.add('following');
+                  followBtn.innerHTML = '已跟隨';
+                });
+            };
+          };
+        });
+      };
     },
 
     unmount: () => {

@@ -17,7 +17,11 @@ defmodule ZaZaarWeb.LiveStreamController do
   def show(conn, %{"id" => stream_id}) do
     with stream0 <- Streaming.get_stream(stream_id),
          comments <- include_user_names(stream0.comments) do
-      stream1 = Map.put(stream0, :comments, comments)
+      stream1 =
+        stream0
+        |> Map.put(:comments, comments)
+        |> Map.put_new(:viewer_count, get_viewer_count(stream0))
+
       user = current_resource(conn) || %User{}
       render(conn, "show.html", stream: stream1, user: user)
     end
@@ -29,8 +33,12 @@ defmodule ZaZaarWeb.LiveStreamController do
 
       stream
       |> Map.put_new(:streamer, user)
-      |> Map.put_new(:viewer_count, Presence.list("stream:" <> stream.id) |> Enum.count())
+      |> Map.put_new(:viewer_count, get_viewer_count(stream))
     end)
+  end
+
+  defp get_viewer_count(stream) do
+    Presence.list("stream:" <> stream.id) |> Enum.count()
   end
 
   defp include_user_names(comments) do
