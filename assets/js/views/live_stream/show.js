@@ -1,14 +1,14 @@
-import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
+import setViewerCount from '../util/streamPresences';
 
 const stream_id = window.streamConfig.stream_id;
 const streamer_id = window.streamConfig.streamer_id;
 const user_id = window.streamConfig.user_id;
 
 let followBtn = document.getElementById('viewer-follow-btn');
-let viewerCount = document.getElementById('viewer-count');
+let viewerCountElem = document.getElementById('viewer-count');
 
 const startSubscribing = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id)
@@ -45,16 +45,7 @@ export default () => {
         });
 
       commentAction(streamChannel);
-
-      streamChannel.on("presence_state", state => {
-        presences = Presence.syncState(presences, state);
-        viewerCount.innerHTML = Object.keys(presences).length;
-      })
-
-      streamChannel.on("presence_diff", diff => {
-        presences = Presence.syncDiff(presences, diff);
-        viewerCount.innerHTML = Object.keys(presences).length;
-      });
+      setViewerCount(streamChannel, presences, viewerCountElem)
 
       if(followBtn !== null) {
         followBtn.addEventListener('click', event => {
