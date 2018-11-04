@@ -1,11 +1,11 @@
-<div class="stream__block">
+<div class="column is-half-tablet is-one-third-desktop">
   <%= link to: live_stream_path(@conn, :show, @stream.id) do %>
     <%= if @stream.video_snapshot do %>
-      <div class="video-player" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
+      <div class="stream" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
     <% else %>
-      <div class="video-player" style="background-image:url(http://via.placeholder.com/362x225)">
+      <div class="stream" style="background-image:url(http://via.placeholder.com/362x225)">
     <% end %>
-      <div class="video-player__header is-inline-block">
+      <div class="stream__header is-inline-block">
         <%= if @stream.archived_at == nil do %>
           <i class="far fa-bullseye"></i>
           666 <%# 正在觀看人數 %>
@@ -14,11 +14,11 @@
           <%= cal_time_diff(@stream.archived_at, @stream.inserted_at) %>
         <% end %>
       </div>
-      <div class="video-player__footer is-gradient is-flex">
-        <figure class="video-player__avatar image">
+      <div class="is-flex has-z-gradient stream__footer">
+        <figure class="image stream__avatar">
           <img class="is-rounded" src="http://via.placeholder.com/128x128.png"/>
         </figure>
-        <h3 class="video-player__title"><%= @stream.streamer.name %> 的直播<h3>
+        <h3 class="stream__title"><%= @stream.streamer.name %> 的直播<h3>
       </div>
     </div>
   <% end %>

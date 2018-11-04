@@ -40,15 +40,6 @@ $c-marble: #fafafa;
 
 .has-shadow {box-shadow: 0 2px 4px 0 rgba($c-z-dark ,0.3) !important;}
 
-
-// .section-title {
-//   font-family: NotoSansTC;
-//   font-size: 18px;
-//   color: $zazaar-orange;
-
-;
-//   margin-bottom: 20px;
-// }
 /* Overwritten Bulma */
 
 .button {
@@ -127,35 +118,49 @@ main {
   }
 }
 
-// /* Typography Helpers */
-
-
 // /* Layouts styles */
 
+.stream {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  height: 300px;
 
-// .content {
-//   padding: 40px;
-// }
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-// .video-player {
-//   position: relative;
-//   background-position: center center;
-//   background-repeat: no-repeat;
-//   background-size: cover;
+  &__header {
+    background-color: rgba(#fff, 0.5);
+    border-radius: 2px;
+    padding: 2px 6px;
+    margin: 10px;
 
-//   &__header {
-//     font-size: 14px;
-//     background-color: rgba(#fff, 0.5);
-//     border-radius: 2px;
-//     padding: 2px 6px;
-//     margin: 10px;
-//     color: $zazaar-dark;
+    font-size: 14px;
+    color: $c-z-dark;
 
-//     .fa-bullseye {
-//       color: $zazaar-red;
-//     }
-//   }
+    .fa-bullseye, .fa-play {
+      color: $c-z-red;
+    }
+  }
 
+  &__footer {
+    width: 100%;
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    margin: 10px;
+  }
+
+  &__title {
+    font-size: 14px;
+    color: #fff;
+    line-height: 56px;
+  }
+}
 //   &__control-bar {
 //     position: absolute;
 //     bottom: 0;
@@ -175,22 +180,3 @@ main {
 //       font-size: 20px;
 //     }
 //   }
-
-//   &__footer {
-//     position: absolute;
-//     bottom: 0;
-//     width: 100%;
-//   }
-
-//   &__avatar {
-//     width: 36px;
-//     height: 36px;
-//     margin: 10px;
-//   }
-
-//   &__title {
-//     font-size: 14px;
-//     color: #fff;
-//     line-height: 56px;
-//   }
-// }

@@ -15,19 +15,19 @@
 
   <body data-js-view-path="<%= js_view_path(@conn, @view_template) %>" class="<%= view_name(@conn) %> <%= template_name(@view_template) %>">
     <%= render("main_nav.html", conn: @conn) %>
+    <%= show_flash(@conn) %>
 
-    <main class="main-container is-flex">
+    <main class="main is-flex">
 
-    <%= if false && current_resource(@conn) do %>
-      <aside role="sidebar" class="z-sidebar is-flex is-collapsed">
+      <%= if false && current_resource(@conn) do %>
+      <aside role="sidebar" class="main-sidebar is-flex has-background-z-dark is-collapsed">
         <%= render("sidebar.html", conn: @conn) %>
       </aside>
-    <% end %>
+      <% end %>
 
-    <section role="main" class="z-main is-flex">
-      <%= show_flash(@conn) %>
-      <%= render @view_module, @view_template, assigns %>
-    </section>
+      <div class="main-container">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
 
     </main>
 

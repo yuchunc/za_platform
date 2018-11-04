@@ -1,11 +1,18 @@
-<div class="live-stream">
-  <% if false do %>
-    <h2 class="section-title">熱門賣場</h2>
-    <%= render("_popularStream.html", conn: @conn) %>
-  <% end %>
+<section class="section live-stream">
+  <div class="container">
+    <% if false do %>
+      <h2 class="title has-text-weight-semibold has-text-zazaar">熱門賣場</h2>
+      <%= render("_popularStream.html", conn: @conn) %>
+    <% end %>
 
-  <h2 class="section-title">推薦賣場</h2>
-  <div class="stream is-flex">
-    <%= render_many @streams, __MODULE__, "_stream.html", as: :stream, conn: @conn %>
+    <header>
+      <h2 class="title has-text-weight-semibold has-text-zazaar has-border-bottom-zazaar">推薦賣場</h2>
+    </header>
+
+    <div class="live-stream__list">
+      <div class="columns is-flex-wrap">
+        <%= render_many @streams, __MODULE__, "_stream.html", as: :stream, conn: @conn %>
+      </div>
+    </div>
   </div>
-</div>
+</section>
