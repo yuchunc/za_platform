@@ -1,23 +1,23 @@
-<button class="button sidebar-toggle">
-  <i class="fal fa-angle-double-left"></i>
+<button class="button is-justified-start sidebar-toggle">
+  <i class="fal fa-angle-double-right"></i>
 </button>
 
-<section role="following" class="following is-flex">
+<div class="following is-flex is-flex-wrap">
   <%= for n <- [1, 1, 1, 1, 0, 0, 0, 0, 0, 0] do %> <%# 最多顯示 10 筆 %>
-    <a href="#" class="followed-user is-flex <%= if n > 0, do: 'online', else: 'offline' %>" >
-      <figure class="followed-user__avatar image is-32x32">
+    <a href="#" class="following__user is-flex <%= if n > 0, do: 'online', else: 'offline' %>" >
+      <figure class="following__user__avatar image is-32x32">
         <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
       </figure>
-      <span class="followed-user__name">
+      <span class="following__user__name">
         Username Placeholder
       </span>
     </a>
   <% end %>
-  <a href="#" class="more-btn"> <%# 10 筆以上預設隱藏，點擊後全部展開 %>
+  <button class="more-btn"> <%# 10 筆以上預設隱藏，點擊後全部展開 %>
     MORE
     <i class="fal fa-angle-down"></i>
-  </a>
-</section>
+  </button>
+</div>
 
 <footer class="z-footer">
   <ul class="guide-links">
@@ -25,5 +25,5 @@
     <li><a href="/service" class="item">服務條款</a></li>
     <li><a href="/privacy" class="item">隱私權條款</a></li>
   </ul>
-  <span class="copyright is-block">© 2018 ZaZaar</span>
+  <span class="is-block has-text-zazaar copyright">© 2018 ZaZaar</span>
 </footer>

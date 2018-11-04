@@ -28,6 +28,11 @@ $c-marble: #fafafa;
 
 .has-text-zazaar {color: $c-zazaar;}
 
+.has-border-bottom-zazaar {
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba($c-zazaar, 0.3);
+}
+
 .has-background-zazaar {background-color: $c-zazaar;}
 .has-background-z-dark {background-color: $c-z-dark;}
 
@@ -35,6 +40,15 @@ $c-marble: #fafafa;
 
 .has-shadow {box-shadow: 0 2px 4px 0 rgba($c-z-dark ,0.3) !important;}
 
+
+// .section-title {
+//   font-family: NotoSansTC;
+//   font-size: 18px;
+//   color: $zazaar-orange;
+
+;
+//   margin-bottom: 20px;
+// }
 /* Overwritten Bulma */
 
 .button {
@@ -71,81 +85,53 @@ $c-marble: #fafafa;
   }
 }
 
-// .more-btn {
-//   font-family: Lato;
-//   font-size: 12px;
-//   color: #fff;
-//   letter-spacing: 0.7px;
-//   padding: 15px 20px;
-//   transition: color, 0.3s;
+/* Layouts Styles */
 
-//   &:hover {
-//     color: $zazaar-orange;
-//   }
-// }
+main {
+  height: calc( 100vh - 68px );
+  overflow: hidden;
+}
 
+.main-container, .main-sidebar{
+  height: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.main-container {
+  flex-grow: 1;
+  order: 1;
+}
+
+.z-footer {
+  border-top: 1px solid $c-z-grey;
+  padding: 20px;
+
+  .guide-links {
+    font-size: 14px;
+
+    .item{
+      color: $c-warm;
+      line-height: 24px;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .copyright {
+    font-family: Lato;
+    font-size: 14px;
+    padding-top: 20px;
+  }
+}
 
 // /* Typography Helpers */
-// .section-title {
-//   font-family: NotoSansTC;
-//   font-size: 18px;
-//   color: $zazaar-orange;
 
-//   border-bottom: 1px solid $zazaar-orange;
-//   margin-bottom: 20px;
-// }
 
 // /* Layouts styles */
-// html, body {
-//   height: 100%;
-//   font-family: -apple-system, BlinkMacSystemFont, Noto Sans TC, "微軟正黑體", Helvetica, sans-serif;
-// }
 
-// .main-container{
-//   height: calc( 100% - 60px );
-//   box-sizing: border-box;
-//   overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
-// }
-
-// .z-main, .z-sidebar{
-//   flex-direction: column;
-//   height: 100%;
-//   overflow-y: scroll;
-// }
-
-// .z-main {
-//   order: 1;
-//   flex-grow: 2;
-// }
-
-// .z-sidebar{
-//   order: 2;
-//   flex-shrink: 0;
-//   width: 20%;
-//   max-width: 200px;
-//   background-color: $zazaar-dark;
-
-//   &.is-collapsed {
-//     width: 60px;
-
-//     .followed-user{
-//       padding: 10px 13px;
-
-//       .user-name{
-//         display: none;
-//       }
-//     }
-
-//     .more-btn {
-//       padding: 15px 12px;
-//       text-align: center;
-//     }
-
-//     footer {
-//       display: none;
-//     }
-//   }
-// }
 
 // .content {
 //   padding: 40px;
