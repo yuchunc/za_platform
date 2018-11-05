@@ -20,7 +20,7 @@ defmodule ZaZaarWeb.StreamingController do
       conn,
       "show.html",
       stream_id: stream_id,
-      stream: %Stream{},
+      stream: %Stream{} |> Map.put(:viewer_count, 1),
       user: current_resource(conn)
     )
   end

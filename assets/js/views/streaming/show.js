@@ -1,8 +1,11 @@
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
+import setViewerCount from '../util/streamPresences';
 
 const stream_id = window.streamConfig.stream_id;
+
+let viewerCountElem = document.getElementById('viewer-count');
 
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
@@ -45,6 +48,8 @@ export default () => {
       channel = socket.channel("stream:" + stream_id);
       channel.join();
 
+      let presences = {};
+
       channel
         .push("streamer:show_start", {message: ""})
         .receive("ok", (resp) => {
@@ -57,6 +62,7 @@ export default () => {
         });
 
       commentAction(channel);
+      setViewerCount(streamChannel, presences, viewerCountElem)
     },
 
     unmount: () => {

@@ -1,5 +1,13 @@
 <div class="streaming__main is-flex is-flex-column is-justified-between">
-  <div class="streaming__main__view" id="stream-view"></div>
+  <div class="streaming__main__view is-flex is-aligned-start" id="stream-view">
+    <div class="stream__header ">
+      <i class="far fa-bullseye"></i>
+      <span id="viewer-count">
+        <%= @stream.viewer_count %>
+      </span>
+    </div>
+  </div>
+
   <div class="streaming__main__info is-flex">
     <a href="#" class="streamer__link is-block">
       <figure class="image is-64x64 streamer__avatar">
