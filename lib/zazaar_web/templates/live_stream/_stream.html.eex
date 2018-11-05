@@ -3,9 +3,9 @@
     <%= if @stream.video_snapshot do %>
       <div class="stream" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
     <% else %>
-      <div class="stream" style="background-image:url(http://via.placeholder.com/362x225)">
+      <div class="stream" style="background-image:url(https://dummyimage.com/600x400/ddd/ddd.png)">
     <% end %>
-      <div class="stream__header is-inline-block">
+      <div class="stream__header">
         <%= if @stream.archived_at == nil do %>
           <i class="far fa-bullseye"></i>
           666 <%# 正在觀看人數 %>
@@ -14,9 +14,9 @@
           <%= cal_time_diff(@stream.archived_at, @stream.inserted_at) %>
         <% end %>
       </div>
-      <div class="is-flex has-z-gradient stream__footer">
+      <div class="is-flex is-32x32 has-z-gradient stream__footer">
         <figure class="image stream__avatar">
-          <img class="is-rounded" src="http://via.placeholder.com/128x128.png"/>
+          <img class="is-rounded" src="http://via.placeholder.com/32x32.png"/>
         </figure>
         <h3 class="stream__title"><%= @stream.streamer.name %> 的直播<h3>
       </div>

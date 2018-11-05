@@ -1,4 +1,4 @@
-<div class="stream-viewing is-flex">
+<div class="streaming is-flex">
   <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn, stream: @stream, user: @user) %>
 </div>
 

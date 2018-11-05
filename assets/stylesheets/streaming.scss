@@ -1,0 +1,104 @@
+.streaming {
+  height: 100%;
+
+  &__main {
+    flex-grow: 1;
+
+    position: relative;
+    background: #282828;
+
+    &__window {
+      flex-grow: 1;
+    }
+
+    &__info {
+      flex-shrink: 0;
+
+      background: #fff;
+      padding: 30px;
+
+      .streamer {
+
+        &__info {
+          flex-grow: 1;
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+
+  &__chatroom {
+    flex-shrink: 0;
+
+    width: 20%;
+    min-width: 240px;
+    background: $c-z-dark;
+    border-right: 1px solid $c-z-grey;
+
+    &__title {
+      border-bottom: 1px solid $c-z-grey;
+      padding: 10px 20px;
+    }
+
+    &__log {
+      flex-grow: 1;
+      margin: 20px;
+      
+      .chatroom__log {
+        overflow: auto;
+
+        &__message {
+          width: 100%;
+          color: #fff;
+  
+          + .chatroom__log__message {
+            margin-top: 10px;
+          }
+  
+          span {
+            margin-right: 5px;
+            color: $c-z-light;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    &__input {
+      padding: 0 20px 20px;
+
+      .textarea {
+        background-color: rgba(0,0,0,0) !important;
+        border: 1px solid $c-z-light;
+        border-radius: 0px;
+        min-height: 60px;
+
+        font-size: 1rem;
+        color: $c-z-light;
+
+        &::placeholder {
+          color: rgba($c-z-light, 0.5);
+        }
+      }
+
+      .msgSubmit, .msgSubmit:focus {
+        border: 1px solid $c-z-light;
+        border-radius: 0px !important;
+        background-color: rgba(0,0,0,0) !important;
+        float: right;
+        width: 60px;
+        padding: 0;
+        margin-top: 10px;
+
+        color: $c-z-light;
+        line-height: 30px;
+
+        &:hover {
+          border: 1px solid $c-z-light !important;
+          background-color: $c-z-light !important;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

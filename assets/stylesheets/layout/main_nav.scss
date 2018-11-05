@@ -1,4 +1,5 @@
 .navbar {
+  padding: 0.5rem 1rem;
 
   .navbar-brand .main-logo {
     width: 114px;
@@ -86,9 +87,5 @@
         background: transparent !important;
       }
     }
-  }
-
-  @include tablet {
-    padding: 0.5rem 1rem;
   }
 }

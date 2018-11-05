@@ -27,6 +27,7 @@ $c-marble: #fafafa;
 .is-aligned-self-end  {align-self: flex-end;}
 
 .has-text-zazaar {color: $c-zazaar;}
+.has-text-z-light {color: $c-z-light;}
 
 .has-border-bottom-zazaar {
   padding-bottom: 10px;
@@ -56,6 +57,18 @@ $c-marble: #fafafa;
       color: $c-zazaar;
     }
   }
+
+  &.is-inverted.is-outlined {
+    background-color: transparent;
+    border-color: $c-zazaar;
+    color: $c-zazaar;
+
+    &:hover, &:focus {
+      background-color: $c-zazaar;
+      border-color: $c-zazaar;
+      color: #fff;
+    }
+  }
     
   &--zazaar {
     background-color: $c-z-dark;
@@ -81,6 +94,10 @@ $c-marble: #fafafa;
 main {
   height: calc( 100vh - 68px );
   overflow: hidden;
+}
+
+header {
+  margin-bottom: 40px;
 }
 
 .main-container, .main-sidebar{
@@ -124,15 +141,17 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   position: relative;
-  height: 300px;
+
+  height: 60vw;
 
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 
   &__header {
-    background-color: rgba(#fff, 0.5);
+    background-color: rgba(#fff, 0.3);
     border-radius: 2px;
     padding: 2px 6px;
     margin: 10px;
@@ -142,6 +161,7 @@ main {
 
     .fa-bullseye, .fa-play {
       color: $c-z-red;
+      margin-right: 5px;
     }
   }
 
@@ -159,6 +179,22 @@ main {
     font-size: 14px;
     color: #fff;
     line-height: 56px;
+  }
+
+  @include tablet {
+    height: 30vw;
+  }
+
+  @include desktop {
+    height: 16vw;
+  }
+
+  @include widescreen {
+    height: 14vw;
+  }
+
+  @include fullhd {
+    height: 12vw;
   }
 }
 //   &__control-bar {

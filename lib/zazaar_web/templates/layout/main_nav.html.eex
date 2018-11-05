@@ -6,7 +6,7 @@
     </a>
   </div>
 
-  <div id="main-navbar" class="navbar-menu is-flex is-justified-between is-hidden-mobile has-background-zazaar">
+  <div id="main-navbar" class="navbar-menu is-flex is-justified-between has-background-zazaar">
 
     <%# Search Bar %>
     <%= if false do %>
