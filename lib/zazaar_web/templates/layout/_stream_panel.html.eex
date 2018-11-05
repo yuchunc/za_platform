@@ -5,6 +5,9 @@
       <span id="viewer-count">
         <%= @stream.viewer_count %>
       </span>
+      <%= if @stream.archived_at do %>
+        <video controls src="<%= archived_video_url(@stream) %>"></video>
+      <% end %>
     </div>
   </div>
 
