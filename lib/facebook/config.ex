@@ -3,7 +3,5 @@ defmodule Facebook.Config do
 
   def graph_url, do: "https://graph.facebook.com"
 
-  def api_id, do: Keyword.fetch!(@fb_creds, :client_id)
-
-  def api_key, do: Keyword.fetch!(@fb_creds, :client_key)
+  def access_token, do: Keyword.fetch!(@fb_creds, :client_access_token)
 end
