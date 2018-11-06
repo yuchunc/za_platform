@@ -31,6 +31,8 @@ config :guardian, Guardian.DB, repo: ZaZaar.Repo
 
 config :zazaar, :ot_api, OpenTok.Api
 
+config :zazaar, :fb_api, Facebook.GraphApi
+
 config :phoenix_inline_svg,
   dir: "/priv/static/images",
   default_collection: "",
