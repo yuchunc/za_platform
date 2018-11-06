@@ -4,7 +4,7 @@ defmodule OpenTok do
   """
   use HTTPoison.Base
 
-  alias OpenTok.{Util}
+  alias OpenTok.Util
 
   @token_prefix "T1=="
   @config Util.get_config()
