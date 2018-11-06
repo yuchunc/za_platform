@@ -83,7 +83,7 @@ defmodule ZaZaar.Mixfile do
       ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
-      "test.api": ["test --only ot_api"]
+      "test.api": ["test --only ot_api --only fb_api"]
     ]
   end
 end

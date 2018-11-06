@@ -3,8 +3,11 @@ defmodule Facebook.GraphApiTest do
 
   @moduletag :fb_api
 
-  describe "request/0" do
-    test "it works" do
+  alias Facebook.GraphApi, as: Api
+
+  describe "request/1" do
+    test "it is hitting fb's api" do
+      assert {400, %{}} = Api.request(nil)
     end
   end
 end
