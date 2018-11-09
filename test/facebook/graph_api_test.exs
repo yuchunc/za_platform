@@ -11,7 +11,12 @@ defmodule Facebook.GraphApiTest do
     end
 
     test "it gets the comments live videos" do
-      assert {200, %{"data" => []}} = Api.request("/554311878324637/comments")
+      response = Api.request("/554311878324637/comments")
+
+      assert {200, %{"data" => data, "paging" => paging}} = response
+      assert is_list(data)
+      assert Map.has_key?(paging, "cursors")
+      assert Map.has_key?(paging, "next")
     end
   end
 end
