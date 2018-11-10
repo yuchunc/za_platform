@@ -1,173 +1,171 @@
 /* Color palette */
-$zazaar-orange: #fd5f00;
-$zazaar-light:  #fa9856;
-$zazaar-dark:   #243342;
-$zazaar-grey:   #455a64;
-$dark-grey:     #4a4a4a;
-$warm-grey:     #9b9b9b;
-$light-grey:    #dddddd;
-$marble:        #fafafa;
-$zazaar-red:    #D0021B;
+$c-zazaar: #fd5f00;
+$c-z-light:#fa9856;
+$c-z-red:  #D0021B;
+$c-z-dark: #243342;
+$c-z-grey: #455a64;
+$c-dark:   #4a4a4a;
+$c-warm:   #9b9b9b;
+$c-light:  #dddddd;
+$c-marble: #fafafa;
 
-/* Custome Style Helpers */
-.with-shadow {
-  box-shadow: 0 2px 4px 0 rgba(36,51,66,0.30);
+/* Customized Helpers */
+
+.is-flex-wrap         {flex-wrap: wrap;}
+.is-flex-column       {flex-direction: column;}
+.is-justified-center  {justify-content: center;}
+.is-justified-start   {justify-content: flex-start;}
+.is-justified-end     {justify-content: flex-end;}
+.is-justified-around  {justify-content: space-around;}
+.is-justified-between {justify-content: space-between;}
+.is-aligned-start     {align-items: flex-start;}
+.is-aligned-center    {align-items: center;}
+.is-aligned-end       {align-items: flex-end;}
+.is-aligned-stretch   {align-items: stretch;}
+.is-aligned-around    {align-items: space-around;}
+.is-aligned-between   {align-items: space-between;}
+.is-aligned-self-end  {align-self: flex-end;}
+
+.has-text-zazaar {color: $c-zazaar;}
+.has-text-z-light {color: $c-z-light;}
+
+.has-border-bottom-zazaar {
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba($c-zazaar, 0.3);
 }
 
-.is-gradient {
-  background-image: linear-gradient(to top, $zazaar-orange, rgba(#fff, 0));
-}
+.has-background-zazaar {background-color: $c-zazaar;}
+.has-background-z-dark {background-color: $c-z-dark;}
 
-.more-btn {
-  font-family: Lato;
-  font-size: 12px;
-  color: #fff;
-  letter-spacing: 0.7px;
-  padding: 15px 20px;
-  transition: color, 0.3s;
+.has-z-gradient {background-image: linear-gradient(to top, $c-zazaar, rgba(#fff, 0));}
 
-  &:hover {
-    color: $zazaar-orange;
-  }
-}
+.has-shadow {box-shadow: 0 2px 4px 0 rgba($c-z-dark ,0.3) !important;}
+
+/* Overwritten Bulma */
 
 .button {
-  border-radius: 2px;
+  border-radius: 2px !important;
+
+  &.is-outlined {
+    background-color: transparent;
+    border-color: #fff;
+    color: #fff;
+
+    &:hover, &:focus {
+      background-color: #fff;
+      border-color: #fff;
+      color: $c-zazaar;
+    }
+  }
+
+  &.is-inverted.is-outlined {
+    background-color: transparent;
+    border-color: $c-zazaar;
+    color: $c-zazaar;
+
+    &:hover, &:focus {
+      background-color: $c-zazaar;
+      border-color: $c-zazaar;
+      color: #fff;
+    }
+  }
     
   &--zazaar {
-    background-color: $zazaar-dark;
-    border: 1px solid $zazaar-dark;
-    margin-top: 2px;
+    background-color: $c-z-dark;
+    border: 1px solid $c-z-dark;
     transition: all 0.3s;
+    color: #fff;
+    margin-bottom: -2px;
 
     &:hover {
-      transform: translate3d(0, -2px, 0);
-      border: 1px solid $zazaar-dark;
-      color: #fff;
+      border-color: $c-zazaar !important;
+      color: $c-zazaar !important;
     }
 
     .fa-bullseye {
-      color: $zazaar-orange;
       padding-top: 1px;
       margin-right: 5px;
     }
   }
-
-  &--outline {
-    background-color: rgba(0,0,0,0);
-    border: 1px solid #fff;
-    transition: background-color 0.3s;
-    
-    &:hover {
-      background-color: #fff;
-      border: 1px solid #fff;
-      color: $zazaar-orange;
-    }
-  }
 }
 
-/* Typography Helpers */
-.section-title {
-  font-family: NotoSansTC;
-  font-size: 18px;
-  color: $zazaar-orange;
+/* Layouts Styles */
 
-  border-bottom: 1px solid $zazaar-orange;
-  margin-bottom: 20px;
+main {
+  height: calc( 100vh - 68px );
+  overflow: hidden;
 }
 
-/* Layouts styles */
-html, body {
+header {
+  margin-bottom: 40px;
+}
+
+.main-container, .main-sidebar{
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, Noto Sans TC, "微軟正黑體", Helvetica, sans-serif;
-}
-
-.main-container{
-  height: calc( 100% - 60px );
-  box-sizing: border-box;
-  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
-}
-
-.z-main, .z-sidebar{
   flex-direction: column;
-  height: 100%;
   overflow-y: scroll;
 }
 
-.z-main {
+.main-container {
+  flex-grow: 1;
   order: 1;
-  flex-grow: 2;
 }
 
-.z-sidebar{
-  order: 2;
-  flex-shrink: 0;
-  width: 20%;
-  max-width: 200px;
-  background-color: $zazaar-dark;
+.z-footer {
+  border-top: 1px solid $c-z-grey;
+  padding: 20px;
 
-  &.is-collapsed {
-    width: 60px;
+  .guide-links {
+    font-size: 14px;
 
-    .followed-user{
-      padding: 10px 13px;
+    .item{
+      color: $c-warm;
+      line-height: 24px;
 
-      .user-name{
-        display: none;
+      &:hover {
+        color: #fff;
       }
     }
+  }
 
-    .more-btn {
-      padding: 15px 12px;
-      text-align: center;
-    }
-
-    footer {
-      display: none;
-    }
+  .copyright {
+    font-family: Lato;
+    font-size: 14px;
+    padding-top: 20px;
   }
 }
 
-.content {
-  padding: 40px;
-}
+// /* Layouts styles */
 
-.video-player {
+.stream {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   position: relative;
+
+  height: 60vw;
+
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 
   &__header {
-    font-size: 14px;
-    background-color: rgba(#fff, 0.5);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+
+    background-color: rgba(#fff, 0.3);
     border-radius: 2px;
     padding: 2px 6px;
-    margin: 10px;
-    color: $zazaar-dark;
 
-    .fa-bullseye {
-      color: $zazaar-red;
-    }
-  }
+    font-size: 14px;
+    color: $c-z-dark;
 
-  &__control-bar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-
-    justify-content: space-between;
-    padding: 25px 30px 0;
-    font-size: 17px;
-    color: #fff;
-
-    svg + svg {
-      margin-left: 10px;
-    }
-
-    .fa-volume-down {
-      font-size: 20px;
+    .fa-bullseye, .fa-play {
+      color: $c-z-red;
+      margin-right: 5px;
     }
   }
 
@@ -188,4 +186,39 @@ html, body {
     color: #fff;
     line-height: 56px;
   }
+
+  @include tablet {
+    height: 30vw;
+  }
+
+  @include desktop {
+    height: 16vw;
+  }
+
+  @include widescreen {
+    height: 14vw;
+  }
+
+  @include fullhd {
+    height: 12vw;
+  }
 }
+//   &__control-bar {
+//     position: absolute;
+//     bottom: 0;
+//     width: 100%;
+//     height: 60px;
+
+//     justify-content: space-between;
+//     padding: 25px 30px 0;
+//     font-size: 17px;
+//     color: #fff;
+
+//     svg + svg {
+//       margin-left: 10px;
+//     }
+
+//     .fa-volume-down {
+//       font-size: 20px;
+//     }
+//   }

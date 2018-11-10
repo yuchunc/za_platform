@@ -11,8 +11,8 @@
 
     <ul class="private-message__sidebar__list">
       <%= for n <- [1, 0, 0, 0, 0] do %>
-        <li class="contact__user is-flex <%= if n > 0, do: 'is-active' %>">
-          <figure class="contact__user__avatar image">
+        <li class="contact__user is-flex is-aligned-center <%= if n > 0, do: 'is-active' %>">
+          <figure class="contact__user__avatar image is-32x32">
             <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
           </figure>
           <span class="contact__user__name">
@@ -27,7 +27,7 @@
 
   <div class="private-message__conversation is-flex">
 
-    <div class="private-message__conversation__title">
+    <div class="private-message__conversation__title has-text-centered">
       <div class="user-name">
         User Name
       </div>
@@ -47,14 +47,14 @@
           <img class="dialog attachment" src="https://bulma.io/images/placeholders/640x360.png">
           <span class="timestamp" >送出時間</span>
         </div>
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
       </div>
 
       <%# Template of Receiver %>
       <div class="private-message__conversation__receiver is-flex" >
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
         <div class="private-message__conversation__dialog" >
@@ -72,13 +72,13 @@
           <img class="dialog attachment" src="https://bulma.io/images/placeholders/640x360.png">
           <span class="timestamp" >2018-09-15 14:54</span>
         </div>
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
       </div>
 
       <div class="private-message__conversation__receiver is-flex" >
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
         <div class="private-message__conversation__dialog" >
@@ -94,13 +94,13 @@
           <div class="dialog" >350 元 / 個</div>
           <span class="timestamp" >2018-09-15 14:54</span>
         </div>
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
       </div>
     
       <div class="private-message__conversation__receiver is-flex" >
-        <figure class="private-message__conversation__avatar image is-inline-block">
+        <figure class="private-message__conversation__avatar image is-32x32 is-inline-block">
           <img class="is-rounded" src="https://bulma.io/images/placeholders/32x32.png">
         </figure>
         <div class="private-message__conversation__dialog" >
