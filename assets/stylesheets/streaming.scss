@@ -9,6 +9,11 @@
 
     &__view {
       flex-grow: 1;
+      position: relative;
+
+      .OT_publisher, .OT_subscriber {
+        position: static;
+      }
     }
 
     &__info {
