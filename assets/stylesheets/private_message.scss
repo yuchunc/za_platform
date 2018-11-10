@@ -5,25 +5,19 @@
   &__sidebar {
     width: 20%;
     max-width: 240px;
-    background: #fff;
-    border-right: 1px solid $light-grey;
+    border-right: 1px solid $c-light;
 
     &__search {
-      height: 60px;
       padding: 15px;
-      border-bottom: 1px solid $light-grey;
+      border-bottom: 1px solid $c-light;
 
       .filter {
-        height: 28px;
-        border: 1px solid $light-grey;
+        border: 1px solid $c-light;
         border-radius: 4px;
         overflow: hidden;
 
-        font-size: 12px;
-        color: $warm-grey;
-        line-height: 28px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        color: $c-warm;
+        line-height: 30px;
 
         .fa-search {
           margin: 0 10px;
@@ -33,35 +27,28 @@
 
     &__list {
       height: 100%;
+      overflow-y: scroll;
 
       .contact__user {
         width: 100%;
         overflow: hidden;
-        border-bottom: 1px solid $light-grey;
-        padding: 10px;
-
-        @include desktop {
-          padding: 15px;
-        }
+        border-bottom: 1px solid $c-light;
+        padding: 15px;
 
         &.is-active {
-          background-color: rgba($light-grey, 0.3);
+          background-color: rgba($c-light, 0.3);
         }
 
         &:hover {
-          background-color: rgba($light-grey, 0.5);
+          background-color: rgba($c-light, 0.5);
         }
 
         &__avatar {
-          min-width: 30px;
-          height: 30px;
-          border-radius: 100%;
+          flex-shrink: 0;
           margin-right: 10px;
         }
     
         &__name {
-          font-size: 14px;
-          line-height: 30px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -71,42 +58,35 @@
   }
 
   &__conversation {
-    width: 100%;
-    background: rgba(221, 221, 221, 0.3);
+    flex-grow: 1;
     flex-direction: column;
     align-items: stretch;
 
     &__title {
-      width: 100%;
-      height: 60px;
       position: relative;
-      background: #fff;
-      border-bottom: 1px solid $light-grey;
+      border-bottom: 1px solid $c-light;
+      padding: 15px;
 
-      font-size: 16px;
-      text-align: center;
-
-      .user-name {
-        line-height: 60px;
-      }
+      line-height: 32px;
 
       .user-page {
         position: absolute;
         top: 18px;
         right: 20px;
-        color: $zazaar-light;
+        color: $c-z-light;
 
         &:hover {
-          color: $zazaar-orange;
+          color: $c-zazaar;
         }
       }
     }
 
     &__log {
+      flex-grow: 1;
       flex-direction: column-reverse;
-      flex-grow: 2;
       align-items: flex-end;
       align-content: flex-end;
+      background: rgba(221, 221, 221, 0.3);
       overflow-y: scroll;
       padding: 20px;
     }
@@ -124,9 +104,7 @@
     }
 
     &__avatar {
-      width: 36px;
-      height: 36px;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
 
     &__dialog {
@@ -137,7 +115,7 @@
         display: inline-block;
         background: #fff;
         border-radius: 6px;
-        padding: 3px 10px;
+        padding: 5px 10px;
   
         word-wrap: break-word;
       }
@@ -150,7 +128,7 @@
         display: block;
         margin-top: 5px;
         font-size: 10px;
-        color: $warm-grey;
+        color: $c-warm;
 
         + .dialog {
           margin-top: 10px;
@@ -162,7 +140,7 @@
       width: 100%;
       height: 120px;
       background: #fff;
-      border-top: 1px solid $light-grey;
+      border-top: 1px solid $c-light;
 
       textarea {
         min-height: 80px !important;
@@ -178,7 +156,7 @@
 
       .msgSubmit {
         width: 60px;
-        background: $zazaar-orange;
+        background: $c-zazaar;
         border-radius: 1px;
         border-width: 0;
         float: right;
@@ -189,7 +167,7 @@
         text-align: center;
 
         &:hover {
-          background-color: rgba($zazaar-orange, 0.8);
+          background-color: rgba($c-zazaar, 0.8);
         }
       }
     }
