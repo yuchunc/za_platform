@@ -24,7 +24,7 @@ defmodule ZaZaarWeb.StreamChannel do
     broadcast(socket, "user:joined", payload)
 
     Presence.track(socket, "anon:" <> Ecto.UUID.generate(), %{
-      online_at: inspect(System.system_time(:seconds))
+      online_at: NaiveDateTime.utc_now()
     })
 
     push(socket, "presence_state", Presence.list(socket))
@@ -34,7 +34,7 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def handle_info({:after_join, payload}, socket) do
     broadcast(socket, "user:joined", payload)
-    Presence.track(socket, payload.user_id, %{online_at: inspect(System.system_time(:seconds))})
+    Presence.track(socket, payload.user_id, %{online_at: NaiveDateTime.utc_now()})
     {:noreply, socket}
   end
 
@@ -68,7 +68,7 @@ defmodule ZaZaarWeb.StreamChannel do
       {:ok, _} =
         Presence.update(socket1, streamer.id, %{
           streamer: true,
-          online_at: inspect(System.system_time(:seconds))
+          online_at: NaiveDateTime.utc_now()
         })
 
       streamer

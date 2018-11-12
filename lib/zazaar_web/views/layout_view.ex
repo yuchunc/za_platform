@@ -44,4 +44,9 @@ defmodule ZaZaarWeb.LayoutView do
   end
 
   def flash_html(_), do: nil
+
+  def archived_video_url(stream) do
+    ot_key = Application.get_env(:zazaar, OpenTok) |> Keyword.get(:key)
+    "http://#{Mix.env()}.zazaar.tv.s3.amazonaws.com/#{ot_key}/#{stream.recording_id}/archive.mp4"
+  end
 end

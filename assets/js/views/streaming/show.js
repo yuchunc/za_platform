@@ -62,7 +62,7 @@ export default () => {
         });
 
       commentAction(channel);
-      setViewerCount(streamChannel, presences, viewerCountElem)
+      setViewerCount(channel, presences, viewerCountElem)
     },
 
     unmount: () => {

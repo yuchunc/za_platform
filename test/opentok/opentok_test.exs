@@ -1,4 +1,4 @@
-defmodule OpenTok.OpenTokTest do
+defmodule OpenTokTest do
   @moduledoc """
   Tests the OpenTok Module
   """
@@ -7,12 +7,14 @@ defmodule OpenTok.OpenTokTest do
 
   import Mox
 
+  alias OpenTok.ApiMock, as: ApiMock
+
   setup :verify_on_exit!
 
   setup do
     session_id = "1_MX40NjA3NDA1Mn5-MTUy000000000000N35LNjFOVkI3RWR6M2U3dUw4aXZyQ1hOU3B-fg"
 
-    expect(OpenTok.ApiMock, :request_session_id, fn _ ->
+    expect(ApiMock, :request_session_id, fn _ ->
       {:ok, session_id}
     end)
 
@@ -41,7 +43,7 @@ defmodule OpenTok.OpenTokTest do
 
   describe "session_state/2" do
     test "session_id is active" do
-      expect(OpenTok.ApiMock, :get_session_state, fn _, _ ->
+      expect(ApiMock, :get_session_state, fn _, _ ->
         {:ok, :active}
       end)
 
@@ -51,7 +53,7 @@ defmodule OpenTok.OpenTokTest do
     end
 
     test "session_id is nohost" do
-      expect(OpenTok.ApiMock, :get_session_state, fn _, _ ->
+      expect(ApiMock, :get_session_state, fn _, _ ->
         {:ok, :nohost}
       end)
 
@@ -61,7 +63,7 @@ defmodule OpenTok.OpenTokTest do
     end
 
     test "session_id is inactive" do
-      expect(OpenTok.ApiMock, :get_session_state, fn _, _ ->
+      expect(ApiMock, :get_session_state, fn _, _ ->
         {:ok, :inactive}
       end)
 
@@ -73,7 +75,7 @@ defmodule OpenTok.OpenTokTest do
 
   describe "stream_to_facebook/3" do
     test "successfully stream to Facebook" do
-      expect(OpenTok.ApiMock, :external_broadcast, fn _, _, _ ->
+      expect(ApiMock, :external_broadcast, fn _, _, _ ->
         :ok
       end)
 
@@ -89,7 +91,7 @@ defmodule OpenTok.OpenTokTest do
     test ":start, start recording a stream" do
       recording_id = Ecto.UUID.generate()
 
-      expect(OpenTok.ApiMock, :start_recording, fn _, _ ->
+      expect(ApiMock, :start_recording, fn _, _ ->
         {:ok, %{"id" => recording_id}}
       end)
 
@@ -99,7 +101,7 @@ defmodule OpenTok.OpenTokTest do
     end
 
     test ":stop, stop recording a stream" do
-      expect(OpenTok.ApiMock, :stop_recording, fn _, _ ->
+      expect(ApiMock, :stop_recording, fn _, _ ->
         :ok
       end)
 

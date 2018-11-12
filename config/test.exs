@@ -23,4 +23,6 @@ config :argon2_elixir, t_cost: 1, m_cost: 8
 
 config :zazaar, :ot_api, OpenTok.ApiMock
 
+config :zazaar, :fb_api, Facebook.GraphApiMock
+
 import_config "test.secret.exs"

@@ -48,23 +48,23 @@ defmodule OpenTok.ApiTest do
       headers = create_session_headers(@ot_config)
 
       {:ok, session_id} = OpenTok.Api.request_session_id(headers)
-      facebook_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
+      fb_stream_key = "2066820000000027?s_ps=1&s_vt=api&a=ATg43wd400000000"
 
-      channel =
+      user =
         insert(
-          :channel,
-          facebook_key: facebook_key,
+          :user,
+          fb_stream_key: fb_stream_key,
           ot_session_id: session_id
         )
 
-      {:ok, headers: headers ++ [{"Content-Type", "application/json"}], channel: channel}
+      {:ok, headers: headers ++ [{"Content-Type", "application/json"}], user: user}
     end
 
     test "broadcasts to external services", context do
-      %{headers: headers, channel: channel} = context
+      %{headers: headers, user: user} = context
 
-      session_id = channel.ot_session_id
-      rtmp_list = [Util.build_facebook_rtmp(session_id, channel.facebook_key)]
+      session_id = user.ot_session_id
+      rtmp_list = [Util.build_facebook_rtmp(session_id, user.fb_stream_key)]
 
       assert OpenTok.Api.external_broadcast(session_id, headers, rtmp_list) == {:error, :noclient}
     end
