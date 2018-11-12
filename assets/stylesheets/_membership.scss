@@ -1,0 +1,43 @@
+.membership {
+
+  .is-banner {
+    height: calc((100vw - 240px) / 6.2 - 1px);
+    overflow: hidden;
+  }
+
+  &__cover {
+    padding: 2rem;
+  }
+
+  &__profile {
+
+    .is-avatar {
+      flex-shrink: 0;
+      width: 160px;
+      margin-top: -112px;
+
+      img {
+        border: 3px solid $c-zazaar;
+      }
+    }
+
+    .buttons {
+      margin-top: 1rem;
+    }
+  }
+
+  &__introduction {
+    flex-grow: 1;
+    padding: 0 3rem;
+    
+    .introduction {
+      white-space: pre-line;
+    }
+  }
+
+  @media (min-width: $desktop) {
+    &__cover {
+      padding: 2rem 0;
+    }
+  }
+}

@@ -1,3 +1,68 @@
-<div>
-  This will be the Dashboard
-</div>
+<section class="membership">
+  <div class="hero has-shadow">
+    <div class="hero-body is-paddingless">
+
+      <%# User Banner %>
+      <figure class="image is-banner">
+        <img src="https://bulma.io/images/placeholders/720x240.png">
+      </figure>
+
+      <div class="container">
+
+        <div class="membership__cover is-flex">
+
+          <%# User Profile %>
+          <div class="membership__profile">
+            
+            <figure class="image is-avatar">
+              <img class="is-rounded has-shadow" src="https://bulma.io/images/placeholders/256x256.png">
+            </figure>
+
+            <div class="buttons">
+
+              <a class="button is-fullwidth is-inverted is-outlined" id="viewer-follow-btn" href="#">
+                追蹤
+              </a>
+
+              <a class="button is-fullwidth is-inverted is-outlined" id="viewer-follow-btn" href="#">
+                聊聊
+              </a>
+
+            </div>
+
+          </div>
+
+          <%# User Introduction %>
+          <div class="membership__introduction">
+
+            <h1 class="has-text-weight-semibold has-text-zazaar is-size-4">
+              User's Name
+            </h1>
+
+            <div class="introduction">
+              Hi there, my name is Evelyn, I'm a biomedical engineer by training. I live in the Bay Area, aka the silicon valley. Being a mom has dramatically changed my life, I'm making videos to record the changes and share science small talks with my loved ones far far away.   
+              Hi，我是Evelyn，我是醫學工程工程師，目前住在矽谷。當了媽媽後，生活和對於人生的看法有極大的轉變，我希望在這邊紀錄生活，分享一些想法和跟生活相關的科學給我在台灣遙遠的家人朋友們。
+
+              P.S. People have been asking so in case you cared, I have a master’s degree in biomedical engineering from Columbia University and a bachelor’s degree in molecular, cellular biology from University of Michigan - Ann Arbor. But I hope my visitors enjoy the content I create irregardless of my degrees. Thank you for supporting a mom and talking science with me.
+
+              附註：因為有些人想知道，所以我在這邊附上我的學歷。我是哥倫比亞大學生物醫學工程的碩士，密西根大學安納堡分校學士。我想講的是，學歷不代表一切，也不代表你應該比較相信我，很多人自學比我懂得多，只是想表達這樣而已。謝謝你願意看地方媽媽，聊科學。
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <header>
+        <h2 class="is-size-5 has-text-weight-semibold has-text-zazaar has-border-bottom-zazaar">正在直播</h2>
+      </header>
+
+      <header>
+        <h2 class="is-size-5 has-text-weight-semibold has-text-zazaar has-border-bottom-zazaar">影片</h2>
+      </header>
+    </div>
+  </div>
+</section>
