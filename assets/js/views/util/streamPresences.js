@@ -1,15 +1,9 @@
-import {Presence} from 'phoenix';
+let renderViewersCount(presence, element) {
+  element.innerHTML = Object.keys(presence.list()).length;
+};
 
-export default (channel, presences, element) => {
-  if(element !== null) {
-    channel.on("presence_state", state => {
-      presences = Presence.syncState(presences, state);
-      element.innerHTML = Object.keys(presences).length;
-    })
-
-    channel.on("presence_diff", diff => {
-      presences = Presence.syncDiff(presences, diff);
-      element.innerHTML = Object.keys(presences).length;
-    });
-  };
+export default (presence, element) => {
+  // onJoin
+  // onLeave
+  presence.onSync(() => renderViewersCount(presence));
 };

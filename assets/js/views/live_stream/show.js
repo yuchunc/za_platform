@@ -1,3 +1,4 @@
+import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
@@ -36,7 +37,7 @@ export default () => {
       streamChannel.join();
       userChannel.join();
 
-      let presences = {};
+      let presence = new Presence(streamChannel);
 
       streamChannel
         .push('viewer:join', {})
@@ -45,7 +46,7 @@ export default () => {
         });
 
       commentAction(streamChannel);
-      setViewerCount(streamChannel, presences, viewerCountElem)
+      setViewerCount(presence, viewerCountElem)
 
       if(followBtn !== null) {
         followBtn.addEventListener('click', event => {

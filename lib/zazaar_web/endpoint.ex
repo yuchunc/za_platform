@@ -1,7 +1,7 @@
 defmodule ZaZaarWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :zazaar
 
-  socket("/socket", ZaZaarWeb.UserSocket)
+  socket("/socket", ZaZaarWeb.UserSocket, websocket: true, longpoll: true)
 
   # Serve at "/" the static files from "priv/static" directory.
   #

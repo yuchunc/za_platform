@@ -1,5 +1,5 @@
-import_if_available LiveAuction.Factory
-import_if_available Ecto.Query
+import_if_available(LiveAuction.Factory)
+import_if_available(Ecto.Query)
 
 alias ZaZaar.Repo
 
