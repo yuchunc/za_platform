@@ -21,12 +21,13 @@ defmodule ZaZaarWeb do
     quote do
       use Phoenix.Controller, namespace: ZaZaarWeb
       import Plug.Conn
-      import ZaZaarWeb.Router.Helpers
       import ZaZaarWeb.Gettext
 
       ZaZaarWeb.context_schema_aliases()
 
       def current_resource(conn), do: Guardian.Plug.current_resource(conn)
+
+      alias ZaZaarWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -44,10 +45,11 @@ defmodule ZaZaarWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import ZaZaarWeb.Router.Helpers
       import ZaZaarWeb.ErrorHelpers
       import ZaZaarWeb.Gettext
       import PhoenixInlineSvg.Helpers
+
+      alias ZaZaarWeb.Router.Helpers, as: Routes
 
       def current_token(conn), do: Guardian.Plug.current_token(conn)
       def current_resource(conn), do: Guardian.Plug.current_resource(conn)

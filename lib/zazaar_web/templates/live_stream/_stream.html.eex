@@ -1,5 +1,5 @@
 <div class="column is-half-tablet is-one-third-desktop">
-  <%= link to: live_stream_path(@conn, :show, @stream.id) do %>
+  <%= link to: Routes.live_stream_path(@conn, :show, @stream.id) do %>
     <%= if @stream.video_snapshot do %>
       <div class="stream" style="background-image:url(data:image/png;base64,<%= @stream.video_snapshot %>)">
     <% else %>
