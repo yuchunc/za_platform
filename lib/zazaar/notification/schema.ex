@@ -9,7 +9,7 @@ defmodule ZaZaar.Notification.Schema do
     type: NoticeSchemaEnum,
     from_id: Ecto.UUID,
     content: :string,
-    at: :datetime
+    at: :naive_datetime
   }
 
   def validate(user_id, attrs) do
