@@ -1,7 +1,7 @@
+import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
-import setViewerCount from '../util/streamPresences';
 
 const stream_id = window.streamConfig.stream_id;
 
@@ -40,15 +40,12 @@ const uploadSnapshot = (publisher, channel, key) => {
 export default () => {
   return Object.assign(main(), {
     mount: () => {
-      console.log('Streaming Show mounted');
-
       let channel = socket.channel("stream:" + stream_id);
+      let presence = new Presence(channel);
       let publisher;
 
       channel = socket.channel("stream:" + stream_id);
       channel.join();
-
-      let presences = {};
 
       channel
         .push("streamer:show_start", {message: ""})
@@ -62,7 +59,14 @@ export default () => {
         });
 
       commentAction(channel);
-      setViewerCount(channel, presences, viewerCountElem)
+      console.log("pres", presence);
+
+      presence.onSync(() => {
+        let count = Object.keys(presence.list()).length
+        viewerCountElem.innerHTML = count;
+      });
+
+      console.log('Streaming Show mounted');
     },
 
     unmount: () => {

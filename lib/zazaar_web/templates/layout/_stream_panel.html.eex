@@ -1,7 +1,7 @@
 <div class="streaming__main is-flex is-flex-column is-justified-between">
-  <%= if @stream.archived_at do %>
-    <video class="streaming__main__view is-flex is-aligned-start" id="stream-view" src="<%= archived_video_url(@stream) %>" controls autoplay></video>
-  <% else %>
+  <%#<%= if @stream.archived_at do %>%>
+    <%#<video class="streaming__main__view is-flex is-aligned-start" id="stream-view" src="<%= archived_video_url(@stream) %>" controls autoplay></video>%>
+  <%#<% else %>%>
     <div class="streaming__main__view is-flex is-aligned-start" id="stream-view">
       <div class="stream__header ">
         <i class="far fa-bullseye"></i>
@@ -10,7 +10,7 @@
         </span>
       </div>
     </div>
-  <% end %>
+  <%#<% end %>%>
 
   <div class="streaming__main__info is-flex">
     <a href="#" class="streamer__link is-block">

@@ -22,18 +22,18 @@ defmodule ZaZaarWeb.StreamChannel do
 
   def handle_info({:after_join, payload}, socket) when payload == %{} do
     broadcast(socket, "user:joined", payload)
+    push(socket, "presence_state", Presence.list(socket))
 
     Presence.track(socket, "anon:" <> Ecto.UUID.generate(), %{
       online_at: NaiveDateTime.utc_now()
     })
-
-    push(socket, "presence_state", Presence.list(socket))
 
     {:noreply, socket}
   end
 
   def handle_info({:after_join, payload}, socket) do
     broadcast(socket, "user:joined", payload)
+    push(socket, "presence_state", Presence.list(socket))
     Presence.track(socket, payload.user_id, %{online_at: NaiveDateTime.utc_now()})
     {:noreply, socket}
   end
