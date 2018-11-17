@@ -1,7 +1,7 @@
 defmodule Facebook do
   @fb_api Application.get_env(:zazaar, :fb_api)
 
-  def get_comments(obj_id, opts \\ []) do
+  def get_comments(obj_id) do
     path = "/" <> obj_id <> "/comments"
 
     case @fb_api.request(path) do
