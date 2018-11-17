@@ -1,5 +1,5 @@
 <%= if false do %>
-  <%= link to: live_stream_path(@conn, :show, @channel.streamer_id) do %>
+  <%= link to: Routes.live_stream_path(@conn, :show, @channel.streamer_id) do %>
     <%#display default image if snapshot does not exist%>
     <%= if @channel.video_snapshot do %>
       <img src="data:image/png;base64, <%= @channel.video_snapshot %>" class="ui rounded image" />

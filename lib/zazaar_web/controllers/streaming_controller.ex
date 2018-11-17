@@ -6,12 +6,12 @@ defmodule ZaZaarWeb.StreamingController do
   def create(conn, _params) do
     with streamer <- current_resource(conn),
          {:ok, stream} <- Streaming.start_stream(streamer.id) do
-      redirect(conn, to: membership_streaming_path(conn, :show, stream.id))
+      redirect(conn, to: Routes.membership_streaming_path(conn, :show, stream.id))
     else
       {:error, :another_stream_is_active, stream_id} ->
         conn
         |> put_flash(:warning, "您已經在直播囉！")
-        |> redirect(to: live_stream_path(conn, :show, stream_id))
+        |> redirect(to: Routes.live_stream_path(conn, :show, stream_id))
     end
   end
 

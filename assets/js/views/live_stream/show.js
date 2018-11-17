@@ -1,7 +1,7 @@
+import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
 import commentAction from '../util/comment';
-import setViewerCount from '../util/streamPresences';
 
 const stream_id = window.streamConfig.stream_id;
 const streamer_id = window.streamConfig.streamer_id;
@@ -32,11 +32,10 @@ export default () => {
 
       let streamChannel = socket.channel('stream:' + stream_id);
       let userChannel = socket.channel('user:' + user_id);
+      let presence = new Presence(streamChannel);
 
       streamChannel.join();
       userChannel.join();
-
-      let presences = {};
 
       streamChannel
         .push('viewer:join', {})
@@ -45,7 +44,10 @@ export default () => {
         });
 
       commentAction(streamChannel);
-      setViewerCount(streamChannel, presences, viewerCountElem)
+      presence.onSync(() => {
+        let count = Object.keys(presence.list()).length
+        viewerCountElem.innerHTML = count;
+      });
 
       if(followBtn !== null) {
         followBtn.addEventListener('click', event => {

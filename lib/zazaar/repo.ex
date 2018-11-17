@@ -1,5 +1,5 @@
 defmodule ZaZaar.Repo do
-  use Ecto.Repo, otp_app: :zazaar
+  use Ecto.Repo, otp_app: :zazaar, adapter: Ecto.Adapters.Postgres
 
   @doc """
   Dynamically loads the repository url from the

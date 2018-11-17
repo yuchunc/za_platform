@@ -3,11 +3,10 @@ defmodule ZaZaar.Repo.Migrations.CreateFollows do
 
   def change do
     create table(:follows) do
-      add :follower_id, :uuid, null: false
-      add :followee_id, :uuid, null: false
+      add(:follower_id, :uuid, null: false)
+      add(:followee_id, :uuid, null: false)
 
       timestamps()
     end
-
   end
 end

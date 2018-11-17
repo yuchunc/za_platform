@@ -2,6 +2,6 @@ defmodule ZaZaar.Repo.Migrations.DropChannels do
   use Ecto.Migration
 
   def change do
-    drop table("channels")
+    drop(table("channels"))
   end
 end

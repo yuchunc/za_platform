@@ -36,17 +36,19 @@ defmodule ZaZaar.Mixfile do
   defp deps do
     [
       # phoenix
-      {:cowboy, "~> 1.0"},
-      {:phoenix, "~> 1.3.2"},
-      {:phoenix_ecto, "~> 3.2"},
-      {:phoenix_html, "~> 2.10"},
-      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix, "~> 1.4.0"},
+      {:phoenix_html, "~> 2.11"},
+      {:phoenix_pubsub, "~> 1.1"},
+      {:plug, "~> 1.7"},
+      {:plug_cowboy, "~> 2.0"},
       {:gettext, "~> 0.11"},
       # DB
+      {:ecto_sql, "~> 3.0"},
+      {:phoenix_ecto, "~> 4.0"},
       {:postgrex, ">= 0.0.0"},
       # authentication
       {:guardian, "~> 1.0"},
-      {:guardian_db, "~> 1.0"},
+      {:guardian_db, github: "ueberauth/guardian_db"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       {:ueberauth, "~> 0.4"},
@@ -56,6 +58,7 @@ defmodule ZaZaar.Mixfile do
       {:hackney,
        github: "yuchunc/hackney", branch: "add-user-headers-only-option", override: true},
       {:httpoison, "~> 1.0"},
+      {:jason, "~> 1.0"},
       {:phoenix_inline_svg, "~> 1.1"},
       # deployment
       {:distillery, "~> 2.0"},

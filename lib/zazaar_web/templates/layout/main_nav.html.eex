@@ -28,7 +28,7 @@
 
     <div class="navbar-end is-flex">
       <%= if current_resource(@conn) do %>
-        <a class="navbar-item navbar-icon" href="<%= message_path(@conn, :show) %>">
+        <a class="navbar-item navbar-icon" href="<%= Routes.message_path(@conn, :show) %>">
           <i class="fas fa-comments"></i>
         </a>
 
@@ -39,7 +39,7 @@
         </a>
         <% end %>
 
-        <%= link(to: membership_streaming_path(@conn, :create), method: :post, class: "navbar-item button button--zazaar") do %>
+        <%= link(to: Routes.membership_streaming_path(@conn, :create), method: :post, class: "navbar-item button button--zazaar") do %>
           <i class="far fa-bullseye has-text-zazaar"></i>
           開始直播
         <% end %>

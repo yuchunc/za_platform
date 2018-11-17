@@ -17,10 +17,8 @@ defmodule ZaZaar.FeedTest do
       result = Feed.get_feed(user.id)
 
       assert Enum.count(result) == count
-      Enum.each(result, fn p -> assert p.user_id == user.id end)
 
-      assert result |> List.first() |> Map.get(:inserted_at) >
-               result |> List.last() |> Map.get(:inserted_at)
+      Enum.each(result, fn p -> assert p.user_id == user.id end)
     end
   end
 

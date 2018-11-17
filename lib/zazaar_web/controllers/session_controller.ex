@@ -16,7 +16,7 @@ defmodule ZaZaarWeb.SessionController do
          {:ok, user} <- Account.login(email, password) do
       conn
       |> GPlug.sign_in(user)
-      |> redirect(to: membership_path(conn, :show))
+      |> redirect(to: Routes.membership_path(conn, :show))
     end
   end
 
