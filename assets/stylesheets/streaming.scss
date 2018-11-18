@@ -48,18 +48,18 @@
     &__log {
       flex-grow: 1;
       margin: 20px;
-      
+
       .chatroom__log {
         overflow: auto;
 
         &__message {
           width: 100%;
           color: #fff;
-  
+
           + .chatroom__log__message {
             margin-top: 10px;
           }
-  
+
           span {
             margin-right: 5px;
             color: $c-z-light;
@@ -104,6 +104,15 @@
           color: #fff;
         }
       }
+    }
+  }
+
+  // New Streaming Styling
+  .columns {
+    padding: 0;
+
+    #stream-view {
+      min-height: 20em;
     }
   }
 }

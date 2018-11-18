@@ -1,5 +1,25 @@
-<div class="streaming is-flex">
-  <%= render(ZaZaarWeb.LayoutView, "_stream_panel.html", conn: @conn, stream: @stream, user: @user) %>
+<div class="streaming hero">
+  <div class="hero-body columns">
+    <div class="column is-one-quarter">
+      <div id="stream-view">
+      </div>
+
+      <div class="streaming-metrics">
+        metris
+
+      </div>
+    </div>
+
+    <div class="column is-half">
+      comment area
+
+    </div>
+
+    <div class="column is-one-quarter">
+      sold-products
+
+    </div>
+  </div>
 </div>
 
 <script charset="utf-8">
