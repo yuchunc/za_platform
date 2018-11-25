@@ -11,6 +11,7 @@
     "bulma": "^0.7.2",
     "bulma-extensions": "^2.2.2",
     "octicons": "^7.1.0",
+    "opentok": "^2.8.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "popper.js": "^1.12.9"
