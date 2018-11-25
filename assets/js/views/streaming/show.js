@@ -13,6 +13,9 @@ const startStreaming = (ot_config) => {
   // Create a publisher
   const publisher = OT.initPublisher('stream-view', {
     insertMode: 'append',
+    publishAudio: false,
+    fitMode: 'contain',
+    width: '100%',
   }, main.handleError);
 
   // Connect to the session

@@ -112,7 +112,27 @@
     padding: 0;
 
     #stream-view {
-      min-height: 20em;
+      margin-top: 1em;
+      height: 18em;
+      width: 100%;
+
+      &:only-child{
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
+
+  }
+
+  &__metrics {
+    background: lightblue;
+  }
+
+  &__comments {
+    background: red;
+  }
+
+  &__products {
+    background: green;
   }
 }

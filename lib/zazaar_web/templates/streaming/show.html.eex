@@ -1,21 +1,27 @@
 <div class="streaming hero">
-  <div class="hero-body columns">
+  <div class="hero-body columns is-flex">
     <div class="column is-one-quarter">
-      <div id="stream-view">
+
+      <div class="hero">
+        <div id="stream-view"></div>
       </div>
 
-      <div class="streaming-metrics">
-        metris
+      <div class="streaming__buttons">
+        <a class="button">兩分鐘競標倒數</a>
+      </div>
+
+      <div class="streaming__metrics">
+        metrics
 
       </div>
     </div>
 
-    <div class="column is-half">
+    <div class="streaming__comments column is-half">
       comment area
 
     </div>
 
-    <div class="column is-one-quarter">
+    <div class="streaming__products column is-one-quarter">
       sold-products
 
     </div>
