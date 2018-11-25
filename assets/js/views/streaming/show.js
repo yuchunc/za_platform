@@ -1,11 +1,11 @@
 import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
-import commentAction from '../util/comment';
+//import commentAction from '../util/comment';
 
 const stream_id = window.streamConfig.stream_id;
 
-let viewerCountElem = document.getElementById('viewer-count');
+let zazaarViewerCountElem = document.getElementById('zazaar-viewer-count');
 
 const startStreaming = (ot_config) => {
   const session = OT.initSession(ot_config.key, ot_config.session_id);
@@ -15,7 +15,6 @@ const startStreaming = (ot_config) => {
     insertMode: 'append',
     publishAudio: false,
     fitMode: 'contain',
-    width: '100%',
   }, main.handleError);
 
   // Connect to the session
@@ -59,12 +58,12 @@ export default () => {
             })
         });
 
-      commentAction(channel);
+      //commentAction(channel);
       console.log("pres", presence);
 
       presence.onSync(() => {
         let count = Object.keys(presence.list()).length
-        viewerCountElem.innerHTML = count;
+        zazaarViewerCountElem.innerHTML = count;
       });
 
       console.log('Streaming Show mounted');

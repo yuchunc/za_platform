@@ -112,20 +112,19 @@
     padding: 0;
 
     #stream-view {
+      height: 17em;
       margin-top: 1em;
-      height: 18em;
-      width: 100%;
 
       &:only-child{
         margin-left: auto;
         margin-right: auto;
       }
     }
-
   }
 
   &__metrics {
-    background: lightblue;
+    margin: 1em auto;
+    max-width: 15em;
   }
 
   &__comments {

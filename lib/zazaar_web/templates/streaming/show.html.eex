@@ -7,12 +7,19 @@
       </div>
 
       <div class="streaming__buttons">
-        <a class="button">兩分鐘競標倒數</a>
+        <a class="button">競標倒數</a>
       </div>
 
-      <div class="streaming__metrics">
-        metrics
+      <div class="streaming__metrics content panel">
+        <div class="panel-block">
 
+          <dl>
+            <dt>ZaZaar 觀眾人數：</dt>
+            <dd id="zazaar-viewer-count">0</dd>
+            <dt>FB 觀眾人數：</dt>
+            <dd id="fb-viewer-count">10</dd>
+          </dl>
+        </div>
       </div>
     </div>
 
@@ -23,7 +30,6 @@
 
     <div class="streaming__products column is-one-quarter">
       sold-products
-
     </div>
   </div>
 </div>
