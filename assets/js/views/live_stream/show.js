@@ -45,8 +45,10 @@ export default () => {
 
       commentAction(streamChannel);
       presence.onSync(() => {
-        let count = Object.keys(presence.list()).length
-        viewerCountElem.innerHTML = count;
+        if(viewerCountElem) {
+          let count = Object.keys(presence.list()).length
+          viewerCountElem.innerHTML = count;
+        };
       });
 
       if(followBtn !== null) {

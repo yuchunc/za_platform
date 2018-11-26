@@ -51,7 +51,7 @@
   <div class="field streaming__chatroom__input">
     <div class="control">
       <textarea class="textarea" id="user-comment" name="user[comment]" type="text" placeholder="留言..."></textarea>
-      <button id="send-comment" class="button msgSubmit">傳送</button>
+      <button class="button msgSubmit" id="send-comment">傳送</button>
     </div>
   </div>
 </div>

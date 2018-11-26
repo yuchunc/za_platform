@@ -1,5 +1,5 @@
 <div class="streaming hero">
-  <div class="hero-body columns is-flex">
+  <div class="hero-body columns is-flex is-4">
     <div class="column is-one-quarter">
 
       <div class="hero">
@@ -14,22 +14,60 @@
         <div class="panel-block">
 
           <dl>
+            <dt>主題：</dt>
+            <dd> TODO </dd>
+
             <dt>ZaZaar 觀眾人數：</dt>
             <dd id="zazaar-viewer-count">0</dd>
+
             <dt>FB 觀眾人數：</dt>
-            <dd id="fb-viewer-count">10</dd>
+            <dd id="fb-viewer-count"> TODO </dd>
           </dl>
         </div>
       </div>
     </div>
 
-    <div class="streaming__comments column is-half">
-      comment area
+    <div class="streaming__chatroom is-flex is-flex-column column is-half is-narrow publisher">
+        <div class="streaming__chatroom__log">
+          <div class="chatroom__log">
+            <div class="chatroom__log__message media">
+              <div class="media-left">
+                <span> name here</span>
+              </div>
+              <div class="media-content">
+                ping
+              </div>
+              <div class="media-right">
+                action
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="streaming__input">
+          <textarea class="textarea" id="user-comment" rows="2"></textarea>
+          <button class="button" id="send-comment" placeholder="請輸入訊息"> 送出</button>
+        </div>
     </div>
 
-    <div class="streaming__products column is-one-quarter">
-      sold-products
+    <div class="streaming__products column is-one-quarter is-narrow">
+      <div class="products media">
+        <div class="products__image media-left">
+          <img src="https://via.placeholder.com/90" alt=""/>
+        </div>
+
+        <div class="prodcuts__info media-content">
+          <div class="content">
+            <ul>
+              <li>title</li>
+              <li>buyer name</li>
+              <li>amount</li>
+
+              <li>actions</li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

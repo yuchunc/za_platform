@@ -122,16 +122,32 @@
     }
   }
 
-  &__metrics {
-    margin: 1em auto;
-    max-width: 15em;
+  .publisher {
+    background-color: white;
+
+    .chatroom__log__message {
+      color: #363636;
+      border: 1px solid $c-dark;
+    }
+
+    textarea {
+      resize: none;
+    }
   }
 
-  &__comments {
-    background: red;
+  &__metrics {
+    margin: 1em auto;
+    max-width: 17em;
   }
 
   &__products {
-    background: green;
+    .products {
+      margin: 1em;
+
+      &__image {
+        width: 90px;
+        margin-right: 0;
+      }
+    }
   }
 }

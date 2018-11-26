@@ -1,7 +1,7 @@
 import {Presence} from 'phoenix';
 import socket from '../../socket';
 import main from '../main';
-//import commentAction from '../util/comment';
+import commentAction from '../util/comment';
 
 const stream_id = window.streamConfig.stream_id;
 
@@ -14,6 +14,7 @@ const startStreaming = (ot_config) => {
   const publisher = OT.initPublisher('stream-view', {
     insertMode: 'append',
     publishAudio: false,
+    disableAudioProcessing: true,
     fitMode: 'contain',
   }, main.handleError);
 
@@ -58,13 +59,14 @@ export default () => {
             })
         });
 
-      //commentAction(channel);
       console.log("pres", presence);
 
       presence.onSync(() => {
         let count = Object.keys(presence.list()).length
         zazaarViewerCountElem.innerHTML = count;
       });
+
+      commentAction(channel);
 
       console.log('Streaming Show mounted');
     },
