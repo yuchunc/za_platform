@@ -14,7 +14,10 @@
 import "phoenix_html";
 import "popper.js";
 
-import "@opentok/client";
+// NOTE
+// @opentok/client is a webrtc client for TokBox, which we
+// are not using at the moment
+//import "@opentok/client";
 //import "@fortawesome/fontawesome-free/js/all.js";
 import "../fontawesome-pro-5.2.0-web/js/all.js";
 
