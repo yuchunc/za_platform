@@ -1,5 +1,4 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
@@ -29,13 +28,6 @@ module.exports = {
         query: {
           presets: ['@babel/preset-env'],
         },
-      },
-      {
-        test: /\.(css|scss|sass)$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "sass-loader",
-          use: ['css-loader', 'postcss-loader', 'sass-loader']
-        })
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -75,12 +67,7 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: "./static",
       to: path.resolve(__dirname, "../priv/static")
-    }]),
-
-    new ExtractTextPlugin({
-      filename: "css/[name].css",
-      allChunks: true
-    })
+    }])
   ]
 };
 
